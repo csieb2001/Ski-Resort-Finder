@@ -1,0 +1,232 @@
+/* Головний екран */
+"ski_resort_finder" = "Пошук гірськолижних курортів";
+"find_perfect_resort" = "Знайдіть свій ідеальний гірськолижний курорт";
+"select_resort" = "Обрати гірськолижний курорт";
+"tap_to_select" = "Натисніть для вибору";
+"travel_period" = "Період подорожі";
+"from" = "З";
+"to" = "До";
+"search_accommodations" = "Знайти житло";
+"search_again" = "Шукати знову";
+"selected_resort" = "Обраний гірськолижний курорт";
+
+/* Вибір курорту */
+"select_ski_resort" = "Обрати гірськолижний курорт";
+"search_placeholder" = "Пошук за місцем або країною...";
+"close" = "Закрити";
+
+/* Житло */
+"available_accommodations" = "Доступне житло";
+"accommodations_found" = "знайдено варіантів житла";
+"searching_accommodations" = "Пошук житла...";
+"searching_accommodations_radius" = "Пошук у радіусі 5км";
+"accommodations_found_live" = "%d варіантів житла знайдено";
+"distance_to_lift" = "%d м до підйомника";
+"pool" = "Басейн";
+"jacuzzi" = "Джакузі";
+"spa" = "СПА";
+"per_night" = "за ніч";
+"make_request" = "Зробити запит";
+"demo_data" = "ДЕМО ДАНІ";
+"demo" = "Демо";
+
+/* Запит на бронювання */
+"booking_request" = "Запит на бронювання";
+"contact_data" = "Контактна інформація";
+"name" = "Ім'я";
+"email" = "Електронна пошта";
+"mobile_phone" = "Мобільний телефон";
+"travel_period" = "Період подорожі";
+"guest_details" = "Деталі гостей";
+"guests_count" = "%d гостей";
+"rooms_count" = "%d номерів";
+"message" = "Повідомлення";
+"accommodation" = "Житло";
+"cancel" = "Скасувати";
+"contact" = "Зв'язатися";
+"send" = "Надіслати";
+"not_available" = "Недоступно";
+"request_sent" = "Запит надіслано";
+"request_sent_message" = "Ваш запит було успішно надіслано до %@. Ви отримаєте відповідь електронною поштою найближчим часом.";
+
+/* Сканування контенту */
+"content_scanning_in_progress" = "Сканування контенту в процесі";
+"content_scanning_completed" = "Сканування контенту завершено";
+"content_scanning_error" = "Помилка сканування контенту";
+"current_accommodation_processing" = "Обробка: %@";
+"emails_found_short" = "знайдено email";
+"wellness_features_found" = "знайдено wellness-опцій";
+"total_emails_found" = "%d email знайдено для %d житла";
+"verified" = "перевірено";
+"scanned" = "відскановано";
+"progress_percentage" = "%d%% завершено";
+"tap_to_stop" = "Натисніть для зупинки";
+
+/* База даних житла */
+"accommodation_database" = "База даних житла";
+"total_resorts" = "Всього курортів";
+"resorts_with_accommodations" = "Курорти з житлом";
+"total_accommodations" = "Всього житла";
+"avg_per_resort" = "В середньому на курорт";
+"avg_distance_to_lift" = "Середня відстань до підйомників";
+"loading_status" = "Статус завантаження";
+"current_resort" = "Поточний курорт";
+"progress" = "Прогрес";
+"accommodation_features" = "Особливості житла";
+"complete_contact_info" = "Повна контактна інформація";
+"wellness_features" = "Wellness-опції";
+"last_full_update" = "Останнє повне оновлення";
+"force_update_all" = "Примусово оновити все";
+"idle" = "Готово";
+"loading" = "Завантаження";
+"completed" = "Завершено";
+"error" = "Помилка";
+
+/* Множинні запити на бронювання */
+"multi_booking_request" = "Множинний запит на бронювання";
+"selected_accommodations" = "Обране житло (%d)";
+"summary" = "Підсумок";
+"total_requests" = "Всього запитів:";
+"price_categories" = "Цінові категорії:";
+"average_rating" = "Середній рейтинг:";
+"send_all" = "Надіслати все";
+"sending" = "Надсилання...";
+"requests_sent" = "Запити надіслано";
+"requests_sent_message" = "Ваші запити на бронювання були успішно надіслані до всіх %d варіантів житла. Ви отримаєте відповіді електронною поштою найближчим часом.";
+"request_to_count" = "Запит до %d";
+"scan_email_spa" = "Сканувати Email та Спа";
+
+/* Сортування */
+"sort_by" = "Сортувати за:";
+"sort_by_title" = "Сортувати за";
+"choose_sort_option" = "Оберіть опцію сортування";
+"sort_by_distance" = "Відстань до підйомника";
+"sort_by_price_asc" = "Ціна (низька → висока)";
+"sort_by_price_desc" = "Ціна (висока → низька)";
+"sort_by_rating" = "Рейтинг";
+"sort_by_spa" = "SPA-опції";
+"sort_by_contact" = "Контакти доступні";
+
+/* Цінові категорії */
+"budget" = "Бюджет";
+"mid" = "Середній";
+"luxury" = "Люкс";
+
+/* Загальні терміни */
+"ok" = "ОК";
+"done" = "Готово";
+"deselect_all" = "Скасувати все";
+"map" = "Карта";
+
+/* Погода */
+"weather" = "Погода";
+"current_weather" = "Поточна погода";
+"temperature" = "Температура";
+"snow_depth" = "Глибina снігу";
+"wind_speed" = "Швидкість вітру";
+"feels_like" = "Відчувається як: %d°C";
+"min_max_temp" = "Мін: %d° Макс: %d°";
+
+/* Інформація про курорт */
+"resort_details" = "Деталі курорту";
+"slopes" = "Схили";
+"max_height" = "Макс висота";
+"avg_snow_3y" = "⌀ Сніг (3р)";
+"avg_snow_5y" = "⌀ Сніг (5р)";
+"detailed_snow_statistics" = "Показати детальну статистику снігу";
+
+/* Історичні дані про сніг */
+"snow_statistics_3y" = "Статистика снігу (3 роки)";
+"snow_statistics_5y" = "Статистика снігу (5 років)";
+"avg_snowfall" = "⌀ Снігопад";
+"avg_snow_days" = "⌀ Снігові дні";
+"days" = "Дні";
+
+/* Особливості SPA та wellness */
+"spa_wellness_features" = "SPA та Wellness особливості";
+"sauna" = "Сауна";
+"no_spa_features" = "Немає SPA-опцій";
+"spa_pending" = "СПА в очікуванні";
+"scan_tip" = "Порада: Використовуйте 'Scan Email & Spa' для завантаження деталей";
+
+/* Методи контакту */
+"choose_contact_method" = "Оберіть спосіб зв'язку";
+"how_to_contact" = "Як ви хочете зв'язатися з %@?";
+"call" = "Подзвонити";
+"website" = "Веб-сайт";
+"email_opened" = "Email відкрито";
+"website_opened" = "Веб-сайт відкрито";
+
+/* Помилки */
+"error" = "Помилка";
+"network_error" = "Помилка мережі";
+"no_results_found" = "Результати не знайдено";
+"loading" = "Завантаження...";
+
+/* Обране */
+"favorites_star" = "⭐ Обране";
+
+/* Топ 3 курорти */
+"top3_ski_resorts" = "Топ 3 гірськолижні курорти";
+
+/* Одиниці вимірювання */
+"cm_unit" = "см";
+"mm_unit" = "мм";
+"m_unit" = "м";
+"km_unit" = "км";
+"celsius_unit" = "°C";
+"percent_unit" = "%";
+
+/* Сканування контенту */
+"search_all_emails" = "Знайти email для всього житла";
+"search_email" = "Знайти email";
+
+/* Графік Снігу */
+"snowfall_trend" = "Тренд Снігопаду";
+"snow_days_trend" = "Тренд Снігових Днів";
+"3_years" = "3 Роки";
+"range" = "Діапазон";
+"increasing_trend" = "Зростаючий Тренд";
+"decreasing_trend" = "Спадний Тренд";
+"stable_trend" = "Стабільний Тренд";
+"no_chart_data" = "Немає даних для графіку";
+
+/* Помилки ERA5 */
+"retry" = "Спробувати Знову";
+"setup_instructions" = "Інструкції з Налаштування";
+"era5_api_key_missing_title" = "Відсутній API Ключ ERA5";
+"era5_api_key_missing_message" = "Безкоштовний API ключ ERA5 потрібен для реальних історичних даних про сніг.";
+"era5_unauthorized_title" = "Помилка Автентифікації ERA5";
+"era5_unauthorized_message" = "API ключ ERA5 недійсний або прострочений.";
+"era5_rate_limit_title" = "Досягнуто Ліміт Швидкості ERA5";
+"era5_rate_limit_message" = "Занадто багато запитів. Зачекайте трохи і спробуйте знову.";
+"era5_parsing_not_implemented_title" = "Аналіз NetCDF Недоступний";
+"era5_parsing_not_implemented_message" = "Бібліотека NetCDF для даних ERA5 ще не реалізована.";
+"era5_no_data_title" = "Немає Доступних Даних ERA5";
+"era5_no_data_message" = "Немає історичних даних про сніг для цих координат.";
+"era5_connection_error_title" = "Помилка Підключення";
+"era5_connection_error_message" = "Помилка завантаження даних ERA5. Перевірте з'єднання з інтернетом.";
+"snow_data_error_title" = "Дані про Сніг Недоступні";
+"snow_data_error_message" = "Історичні дані про сніг не вдалося завантажити.";
+"era5_setup_step_1" = "1. Створити безкоштовний обліковий запис у Copernicus Climate Data Store";
+"era5_setup_step_2" = "2. Згенерувати API ключ";
+"era5_setup_step_3" = "3. Додати API ключ до налаштувань програми";
+"era5_setup_guide" = "Відкрити Посібник з Налаштування";
+"netcdf_setup_message" = "Бібліотека NetCDF потрібна для аналізу даних ERA5.";
+"netcdf_setup_note" = "Це технічна проблема налаштування для розробників.";
+"detailed_snow_statistics" = "Детальна Статистика Снігу";
+"era5_historical_data" = "Реальні історичні дані про сніг через ERA5";
+"multi_language_support" = "Підтримка Багатьох Мов";
+"localized_8_languages" = "Доступно 8 мовами по всьому світу";
+"era5_api" = "API Кліматичних Даних ERA5";
+"era5_error" = "Помилка ERA5: %@";
+"beta" = "БЕТА";
+"debug_access_required" = "Потрібен доступ до налагодження";
+"enter_debug_pin" = "Введіть 4-значний PIN для функцій налагодження";
+"debug_access" = "Доступ до налагодження";
+"incorrect_pin" = "Невірний PIN. Спробуйте знову.";
+
+/* Maps */
+"trail_map" = "Карта Трас";
+"slopes_and_trails" = "Траси та схили";
+"piste_label" = "Траса";

@@ -1,0 +1,570 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		0FFC67282E2007F2004B163E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FFC67122E2007F1004B163E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0FFC67192E2007F1004B163E;
+			remoteInfo = "Ski Resort Finder";
+		};
+		0FFC67322E2007F2004B163E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FFC67122E2007F1004B163E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0FFC67192E2007F1004B163E;
+			remoteInfo = "Ski Resort Finder";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0FFC671A2E2007F1004B163E /* Ski Resort Finder.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ski Resort Finder.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FFC67272E2007F2004B163E /* Ski Resort FinderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ski Resort FinderTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0FFC67312E2007F2004B163E /* Ski Resort FinderUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Ski Resort FinderUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		0FFC671C2E2007F1004B163E /* Ski Resort Finder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Ski Resort Finder";
+			sourceTree = "<group>";
+		};
+		0FFC672A2E2007F2004B163E /* Ski Resort FinderTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Ski Resort FinderTests";
+			sourceTree = "<group>";
+		};
+		0FFC67342E2007F2004B163E /* Ski Resort FinderUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Ski Resort FinderUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0FFC67172E2007F1004B163E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC67242E2007F2004B163E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC672E2E2007F2004B163E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0FFC67112E2007F1004B163E = {
+			isa = PBXGroup;
+			children = (
+				0FFC671C2E2007F1004B163E /* Ski Resort Finder */,
+				0FFC672A2E2007F2004B163E /* Ski Resort FinderTests */,
+				0FFC67342E2007F2004B163E /* Ski Resort FinderUITests */,
+				0FFC671B2E2007F1004B163E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0FFC671B2E2007F1004B163E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0FFC671A2E2007F1004B163E /* Ski Resort Finder.app */,
+				0FFC67272E2007F2004B163E /* Ski Resort FinderTests.xctest */,
+				0FFC67312E2007F2004B163E /* Ski Resort FinderUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0FFC67192E2007F1004B163E /* Ski Resort Finder */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0FFC673B2E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort Finder" */;
+			buildPhases = (
+				0FFC67162E2007F1004B163E /* Sources */,
+				0FFC67172E2007F1004B163E /* Frameworks */,
+				0FFC67182E2007F1004B163E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				0FFC671C2E2007F1004B163E /* Ski Resort Finder */,
+			);
+			name = "Ski Resort Finder";
+			packageProductDependencies = (
+			);
+			productName = "Ski Resort Finder";
+			productReference = 0FFC671A2E2007F1004B163E /* Ski Resort Finder.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0FFC67262E2007F2004B163E /* Ski Resort FinderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0FFC673E2E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort FinderTests" */;
+			buildPhases = (
+				0FFC67232E2007F2004B163E /* Sources */,
+				0FFC67242E2007F2004B163E /* Frameworks */,
+				0FFC67252E2007F2004B163E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0FFC67292E2007F2004B163E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0FFC672A2E2007F2004B163E /* Ski Resort FinderTests */,
+			);
+			name = "Ski Resort FinderTests";
+			packageProductDependencies = (
+			);
+			productName = "Ski Resort FinderTests";
+			productReference = 0FFC67272E2007F2004B163E /* Ski Resort FinderTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		0FFC67302E2007F2004B163E /* Ski Resort FinderUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0FFC67412E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort FinderUITests" */;
+			buildPhases = (
+				0FFC672D2E2007F2004B163E /* Sources */,
+				0FFC672E2E2007F2004B163E /* Frameworks */,
+				0FFC672F2E2007F2004B163E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0FFC67332E2007F2004B163E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				0FFC67342E2007F2004B163E /* Ski Resort FinderUITests */,
+			);
+			name = "Ski Resort FinderUITests";
+			packageProductDependencies = (
+			);
+			productName = "Ski Resort FinderUITests";
+			productReference = 0FFC67312E2007F2004B163E /* Ski Resort FinderUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0FFC67122E2007F1004B163E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					0FFC67192E2007F1004B163E = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					0FFC67262E2007F2004B163E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 0FFC67192E2007F1004B163E;
+					};
+					0FFC67302E2007F2004B163E = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 0FFC67192E2007F1004B163E;
+					};
+				};
+			};
+			buildConfigurationList = 0FFC67152E2007F1004B163E /* Build configuration list for PBXProject "Ski Resort Finder" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				de,
+				ru,
+				es,
+				fr,
+				it,
+				uk,
+				pt,
+			);
+			mainGroup = 0FFC67112E2007F1004B163E;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 0FFC671B2E2007F1004B163E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0FFC67192E2007F1004B163E /* Ski Resort Finder */,
+				0FFC67262E2007F2004B163E /* Ski Resort FinderTests */,
+				0FFC67302E2007F2004B163E /* Ski Resort FinderUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0FFC67182E2007F1004B163E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC67252E2007F2004B163E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC672F2E2007F2004B163E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0FFC67162E2007F1004B163E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC67232E2007F2004B163E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0FFC672D2E2007F2004B163E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0FFC67292E2007F2004B163E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0FFC67192E2007F1004B163E /* Ski Resort Finder */;
+			targetProxy = 0FFC67282E2007F2004B163E /* PBXContainerItemProxy */;
+		};
+		0FFC67332E2007F2004B163E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0FFC67192E2007F1004B163E /* Ski Resort Finder */;
+			targetProxy = 0FFC67322E2007F2004B163E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0FFC67392E2007F2004B163E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		0FFC673A2E2007F2004B163E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0FFC673C2E2007F2004B163E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-Finder";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		0FFC673D2E2007F2004B163E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-Finder";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		0FFC673F2E2007F2004B163E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-FinderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ski Resort Finder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ski Resort Finder";
+			};
+			name = Debug;
+		};
+		0FFC67402E2007F2004B163E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-FinderTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Ski Resort Finder.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Ski Resort Finder";
+			};
+			name = Release;
+		};
+		0FFC67422E2007F2004B163E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-FinderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Ski Resort Finder";
+			};
+			name = Debug;
+		};
+		0FFC67432E2007F2004B163E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GJKWP99G62;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "de.csieb.Ski-Resort-FinderUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Ski Resort Finder";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0FFC67152E2007F1004B163E /* Build configuration list for PBXProject "Ski Resort Finder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0FFC67392E2007F2004B163E /* Debug */,
+				0FFC673A2E2007F2004B163E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0FFC673B2E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort Finder" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0FFC673C2E2007F2004B163E /* Debug */,
+				0FFC673D2E2007F2004B163E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0FFC673E2E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort FinderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0FFC673F2E2007F2004B163E /* Debug */,
+				0FFC67402E2007F2004B163E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0FFC67412E2007F2004B163E /* Build configuration list for PBXNativeTarget "Ski Resort FinderUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0FFC67422E2007F2004B163E /* Debug */,
+				0FFC67432E2007F2004B163E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0FFC67122E2007F1004B163E /* Project object */;
+}

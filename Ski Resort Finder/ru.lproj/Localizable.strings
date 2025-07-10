@@ -1,0 +1,265 @@
+/* Главный экран */
+"ski_resort_finder" = "Поиск горнолыжных курортов";
+"find_perfect_resort" = "Найдите свой идеальный горнолыжный курорт";
+"select_resort" = "Выбрать горнолыжный курорт";
+"tap_to_select" = "Нажмите для выбора";
+"travel_period" = "Период поездки";
+"from" = "С";
+"to" = "По";
+"search_accommodations" = "Найти жилье";
+"search_again" = "Искать снова";
+"selected_resort" = "Выбранный горнолыжный курорт";
+
+/* Выбор курорта */
+"select_ski_resort" = "Выбрать горнолыжный курорт";
+"search_placeholder" = "Поиск по местоположению или стране...";
+"close" = "Закрыть";
+
+/* Размещение */
+"available_accommodations" = "Доступное жилье";
+"accommodations_found" = "найдено вариантов жилья";
+"searching_accommodations" = "Поиск жилья...";
+"searching_accommodations_radius" = "Поиск в радиусе 5км";
+"accommodations_found_live" = "%d вариантов жилья найдено";
+"distance_to_lift" = "%d м до подъемника";
+"pool" = "Бассейн";
+"jacuzzi" = "Джакузи";
+"spa" = "СПА";
+"per_night" = "за ночь";
+"make_request" = "Сделать запрос";
+"demo_data" = "ДЕМО ДАННЫЕ";
+"demo" = "Демо";
+
+/* Запрос на бронирование */
+"booking_request" = "Запрос на бронирование";
+"contact_data" = "Контактная информация";
+"name" = "Имя";
+"email" = "Электронная почта";
+"mobile_phone" = "Мобильный телефон";
+"travel_period" = "Период поездки";
+"guest_details" = "Детали гостей";
+"guests_count" = "%d гостей";
+"rooms_count" = "%d номеров";
+"message" = "Сообщение";
+"accommodation" = "Размещение";
+"cancel" = "Отмена";
+"contact" = "Связаться";
+"send" = "Отправить";
+"not_available" = "Недоступно";
+"request_sent" = "Запрос отправлен";
+"request_sent_message" = "Ваш запрос был успешно отправлен в %@. Вы получите ответ по электронной почте в ближайшее время.";
+
+/* Сканирование контента */
+"content_scanning_in_progress" = "Сканирование контента в процессе";
+"content_scanning_completed" = "Сканирование контента завершено";
+"content_scanning_error" = "Ошибка сканирования контента";
+"current_accommodation_processing" = "Обработка: %@";
+"emails_found_short" = "найдено email";
+"wellness_features_found" = "найдено wellness-опций";
+"total_emails_found" = "%d email найдено для %d размещений";
+"verified" = "проверено";
+"scanned" = "отсканировано";
+"progress_percentage" = "%d%% завершено";
+"tap_to_stop" = "Нажмите для остановки";
+
+/* База данных размещений */
+"accommodation_database" = "База данных размещений";
+"total_resorts" = "Всего курортов";
+"resorts_with_accommodations" = "Курорты с жильем";
+"total_accommodations" = "Всего размещений";
+"avg_per_resort" = "В среднем на курорт";
+"avg_distance_to_lift" = "Среднее расстояние до подъемников";
+"loading_status" = "Статус загрузки";
+"current_resort" = "Текущий курорт";
+"progress" = "Прогресс";
+"accommodation_features" = "Особенности размещения";
+"complete_contact_info" = "Полная контактная информация";
+"wellness_features" = "Wellness-опции";
+"last_full_update" = "Последнее полное обновление";
+"force_update_all" = "Принудительно обновить все";
+"idle" = "Готов";
+"loading" = "Загрузка";
+"completed" = "Завершено";
+"error" = "Ошибка";
+
+/* Множественные запросы на бронирование */
+"multi_booking_request" = "Множественный запрос на бронирование";
+"selected_accommodations" = "Выбранные размещения (%d)";
+"summary" = "Сводка";
+"total_requests" = "Всего запросов:";
+"price_categories" = "Ценовые категории:";
+"average_rating" = "Средний рейтинг:";
+"send_all" = "Отправить все";
+"sending" = "Отправка...";
+"requests_sent" = "Запросы отправлены";
+"requests_sent_message" = "Ваши запросы на бронирование были успешно отправлены во все %d размещений. Вы получите ответы по электронной почте в ближайшее время.";
+"request_to_count" = "Запрос в %d";
+"scan_email_spa" = "Сканировать Email и Спа";
+
+/* Сортировка */
+"sort_by" = "Сортировать по:";
+"sort_by_title" = "Сортировать по";
+"choose_sort_option" = "Выберите опцию сортировки";
+"sort_by_distance" = "Расстояние до подъемника";
+"sort_by_price_asc" = "Цена (низкая → высокая)";
+"sort_by_price_desc" = "Цена (высокая → низкая)";
+"sort_by_rating" = "Рейтинг";
+"sort_by_spa" = "SPA-опции";
+"sort_by_contact" = "Контакты доступны";
+
+/* Ценовые категории */
+"budget" = "Бюджет";
+"mid" = "Средний";
+"luxury" = "Люкс";
+
+/* Общие термины */
+"ok" = "ОК";
+"done" = "Готово";
+"deselect_all" = "Отменить все";
+"map" = "Карта";
+
+/* Погода */
+"weather" = "Погода";
+"current_weather" = "Текущая погода";
+"temperature" = "Температура";
+"snow_depth" = "Глубина снега";
+"wind_speed" = "Скорость ветра";
+"feels_like" = "Ощущается как: %d°C";
+"min_max_temp" = "Мин: %d° Макс: %d°";
+
+/* Информация о курорте */
+"resort_details" = "Детали курорта";
+"slopes" = "Склоны";
+"max_height" = "Макс высота";
+"avg_snow_3y" = "⌀ Снег (3г)";
+"avg_snow_5y" = "⌀ Снег (5л)";
+"detailed_snow_statistics" = "Показать подробную статистику снега";
+
+/* Исторические данные о снеге */
+"snow_statistics_3y" = "Статистика снега (3 года)";
+"snow_statistics_5y" = "Статистика снега (5 лет)";
+"avg_snowfall" = "⌀ Снегопад";
+"avg_snow_days" = "⌀ Снежные дни";
+"days" = "Дни";
+
+/* Особенности SPA и wellness */
+"spa_wellness_features" = "SPA и Wellness особенности";
+"sauna" = "Сауна";
+"no_spa_features" = "Нет SPA-опций";
+"spa_pending" = "СПА в ожидании";
+"scan_tip" = "Совет: Нажмите 'Scan Email & Spa' для загрузки деталей";
+
+/* Контактные методы */
+"choose_contact_method" = "Выберите способ связи";
+"how_to_contact" = "Как вы хотите связаться с %@?";
+"call" = "Позвонить";
+"website" = "Веб-сайт";
+"email_opened" = "Email открыт";
+"website_opened" = "Веб-сайт открыт";
+
+/* Ошибки */
+"error" = "Ошибка";
+"network_error" = "Ошибка сети";
+"no_results_found" = "Результаты не найдены";
+"loading" = "Загрузка...";
+
+/* Избранное */
+"favorites_star" = "⭐ Избранное";
+
+/* Топ 3 курорта */
+"top3_ski_resorts" = "Топ 3 горнолыжных курорта";
+
+/* Единицы измерения */
+"cm_unit" = "см";
+"mm_unit" = "мм";
+"m_unit" = "м";
+"km_unit" = "км";
+"celsius_unit" = "°C";
+"percent_unit" = "%";
+
+/* Сканирование контента */
+"search_all_emails" = "Найти email для всех размещений";
+"search_email" = "Найти email";
+
+/* График Снега */
+"snowfall_trend" = "Тренд Снегопада";
+"snow_days_trend" = "Тренд Снежных Дней";
+"3_years" = "3 Года";
+"5_years" = "5 Лет";
+"range" = "Диапазон";
+"increasing_trend" = "Растущий Тренд";
+"decreasing_trend" = "Убывающий Тренд";
+"stable_trend" = "Стабильный Тренд";  
+"no_chart_data" = "Нет данных для графика";
+
+/* Страны */
+"country_schweiz" = "Швейцария"; 
+"country_österreich" = "Австрия";
+"country_frankreich" = "Франция";
+"country_italien" = "Италия";
+"country_deutschland" = "Германия";
+"country_usa" = "США";
+"country_kanada" = "Канада";
+"country_norwegen" = "Норвегия";
+"country_schweden" = "Швеция";
+"country_finnland" = "Финляндия";
+
+/* Описания погоды */
+"weather_clear_sky" = "Ясное небо";
+"weather_few_clouds" = "Мало облаков";
+"weather_scattered_clouds" = "Рассеянные облака";
+"weather_broken_clouds" = "Переменная облачность";
+"weather_overcast_clouds" = "Пасмурно";
+"weather_shower_rain" = "Ливень";
+"weather_rain" = "Дождь";
+"weather_thunderstorm" = "Гроза";
+"weather_snow" = "Снег";
+"weather_mist" = "Туман";
+"weather_partly_cloudy" = "Переменная облачность";
+"weather_cloudy" = "Облачно";
+"weather_light_rain" = "Легкий дождь";
+"weather_moderate_rain" = "Умеренный дождь";
+"weather_heavy_rain" = "Сильный дождь";
+"weather_light_snow" = "Легкий снегопад";
+"weather_moderate_snow" = "Умеренный снегопад";
+"weather_heavy_snow" = "Сильный снегопад";
+
+/* Ошибки ERA5 */
+"retry" = "Попробовать Снова";
+"setup_instructions" = "Инструкции по Настройке";
+"era5_api_key_missing_title" = "Отсутствует API Ключ ERA5";
+"era5_api_key_missing_message" = "Бесплатный API ключ ERA5 требуется для реальных исторических данных о снеге.";
+"era5_unauthorized_title" = "Ошибка Аутентификации ERA5";
+"era5_unauthorized_message" = "API ключ ERA5 недействителен или истек.";
+"era5_rate_limit_title" = "Достигнут Лимит Скорости ERA5";
+"era5_rate_limit_message" = "Слишком много запросов. Подождите немного и попробуйте снова.";
+"era5_parsing_not_implemented_title" = "Анализ NetCDF Недоступен";
+"era5_parsing_not_implemented_message" = "Библиотека NetCDF для данных ERA5 еще не реализована.";
+"era5_no_data_title" = "Нет Доступных Данных ERA5";
+"era5_no_data_message" = "Нет исторических данных о снеге для этих координат.";
+"era5_connection_error_title" = "Ошибка Соединения";
+"era5_connection_error_message" = "Ошибка загрузки данных ERA5. Проверьте подключение к интернету.";
+"snow_data_error_title" = "Данные о Снеге Недоступны";
+"snow_data_error_message" = "Исторические данные о снеге не удалось загрузить.";
+"era5_setup_step_1" = "1. Создать бесплатную учетную запись в Copernicus Climate Data Store";
+"era5_setup_step_2" = "2. Сгенерировать API ключ";
+"era5_setup_step_3" = "3. Добавить API ключ в настройки приложения";
+"era5_setup_guide" = "Открыть Руководство по Настройке";
+"netcdf_setup_message" = "Библиотека NetCDF требуется для анализа данных ERA5.";
+"netcdf_setup_note" = "Это техническая проблема настройки для разработчиков.";
+"detailed_snow_statistics" = "Подробная Статистика Снега";
+"era5_historical_data" = "Реальные исторические данные о снеге через ERA5";
+"multi_language_support" = "Поддержка Множественных Языков";
+"localized_8_languages" = "Доступно на 8 языках по всему миру";
+"era5_api" = "API Климатических Данных ERA5";
+"era5_error" = "Ошибка ERA5: %@";
+"beta" = "БЕТА";
+"debug_access_required" = "Требуется доступ к отладке";
+"enter_debug_pin" = "Введите 4-значный PIN для функций отладки";
+"debug_access" = "Доступ к отладке";
+"incorrect_pin" = "Неверный PIN. Попробуйте снова.";
+
+/* Maps */
+"trail_map" = "Карта Трасс";
+"slopes_and_trails" = "Трассы и склоны";
+"piste_label" = "Трасса";

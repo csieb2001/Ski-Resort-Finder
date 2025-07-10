@@ -1,0 +1,255 @@
+/* Écran Principal */
+"ski_resort_finder" = "Recherche de Stations de Ski";
+"find_perfect_resort" = "Trouvez votre station de ski parfaite";
+"select_resort" = "Sélectionner une Station de Ski";
+"tap_to_select" = "Appuyez pour sélectionner";
+"travel_period" = "Période de Voyage";
+"from" = "Du";
+"to" = "Au";
+"search_accommodations" = "Rechercher des Hébergements";
+"search_again" = "Rechercher à Nouveau";
+"selected_resort" = "Station de Ski Sélectionnée";
+
+/* Sélection de Station */
+"select_ski_resort" = "Sélectionner une Station de Ski";
+"search_placeholder" = "Rechercher par lieu ou pays...";
+"close" = "Fermer";
+
+/* Hébergements */
+"available_accommodations" = "Hébergements Disponibles";
+"accommodations_found" = "hébergements trouvés";
+"searching_accommodations" = "Recherche d'hébergements...";
+"searching_accommodations_radius" = "Recherche dans un rayon de 5km";
+"accommodations_found_live" = "%d hébergements trouvés";
+"distance_to_lift" = "%d m de la remontée";
+"pool" = "Piscine";
+"jacuzzi" = "Jacuzzi";
+"spa" = "SPA";
+"per_night" = "par nuit";
+"make_request" = "Faire une Demande";
+"demo_data" = "DONNÉES DÉMO";
+"demo" = "Démo";
+
+/* Demande de Réservation */
+"booking_request" = "Demande de Réservation";
+"contact_data" = "Informations de Contact";
+"name" = "Nom";
+"email" = "E-mail";
+"mobile_phone" = "Téléphone Mobile";
+"travel_period" = "Période de Voyage";
+"guest_details" = "Détails des Invités";
+"guests_count" = "%d Invités";
+"rooms_count" = "%d Chambres";
+"message" = "Message";
+"accommodation" = "Hébergement";
+"cancel" = "Annuler";
+"contact" = "Contacter";
+"send" = "Envoyer";
+"not_available" = "Non Disponible";
+"request_sent" = "Demande Envoyée";
+"request_sent_message" = "Votre demande a été envoyée avec succès à %@. Vous recevrez une réponse par e-mail sous peu.";
+
+/* Scan de Contenu */
+"content_scanning_in_progress" = "Scan de Contenu en Cours";
+"content_scanning_completed" = "Scan de Contenu Terminé";
+"content_scanning_error" = "Erreur de Scan de Contenu";
+"current_accommodation_processing" = "Traitement : %@";
+"emails_found_short" = "e-mails trouvés";
+"wellness_features_found" = "caractéristiques bien-être trouvées";
+"total_emails_found" = "%d e-mails trouvés pour %d hébergements";
+"verified" = "vérifié";
+"scanned" = "scanné";
+"progress_percentage" = "%d%% terminé";
+"tap_to_stop" = "Appuyez pour arrêter";
+
+/* Base de Données d'Hébergements */
+"accommodation_database" = "Base de Données d'Hébergements";
+"total_resorts" = "Total des Stations";
+"resorts_with_accommodations" = "Stations avec Hébergements";
+"total_accommodations" = "Total des Hébergements";
+"avg_per_resort" = "Moyenne par Station";
+"avg_distance_to_lift" = "Distance Moyenne aux Remontées";
+"loading_status" = "État de Chargement";
+"current_resort" = "Station Actuelle";
+"progress" = "Progrès";
+"accommodation_features" = "Caractéristiques d'Hébergement";
+"complete_contact_info" = "Informations de Contact Complètes";
+"wellness_features" = "Caractéristiques Bien-être";
+"last_full_update" = "Dernière Mise à Jour Complète";
+"force_update_all" = "Forcer la Mise à Jour Complète";
+"idle" = "Inactif";
+"loading" = "Chargement";
+"completed" = "Terminé";
+"error" = "Erreur";
+
+/* Demandes Multiples de Réservation */
+"multi_booking_request" = "Demande de Réservation Multiple";
+"selected_accommodations" = "Hébergements Sélectionnés (%d)";
+"summary" = "Résumé";
+"total_requests" = "Total des demandes :";
+"price_categories" = "Catégories de prix :";
+"average_rating" = "Note moyenne :";
+"send_all" = "Tout Envoyer";
+"sending" = "Envoi...";
+"requests_sent" = "Demandes Envoyées";
+"requests_sent_message" = "Vos demandes de réservation ont été envoyées avec succès à tous les %d hébergements. Vous recevrez des réponses par e-mail sous peu.";
+"request_to_count" = "Demande à %d";
+"scan_email_spa" = "Scanner Email & Spa";
+
+/* Tri */
+"sort_by" = "Trier par :";
+"sort_by_title" = "Trier par";
+"choose_sort_option" = "Choisir une option de tri";
+"sort_by_distance" = "Distance à la Remontée";
+"sort_by_price_asc" = "Prix (bas → élevé)";
+"sort_by_price_desc" = "Prix (élevé → bas)";
+"sort_by_rating" = "Note";
+"sort_by_spa" = "Caractéristiques SPA";
+"sort_by_contact" = "Contact Disponible";
+
+/* Catégories de Prix */
+"budget" = "Budget";
+"mid" = "Moyen";
+"luxury" = "Luxe";
+
+/* Termes Généraux */
+"ok" = "OK";
+"done" = "Terminé";
+"deselect_all" = "Tout Désélectionner";
+"map" = "Carte";
+
+/* Météo */
+"weather" = "Météo";
+"current_weather" = "Météo Actuelle";
+"temperature" = "Température";
+"snow_depth" = "Profondeur de Neige";
+"wind_speed" = "Vitesse du Vent";
+"feels_like" = "Ressenti : %d°C";
+"min_max_temp" = "Min : %d° Max : %d°";
+
+/* Informations de la Station */
+"resort_details" = "Détails de la Station";
+"slopes" = "Pistes";
+"max_height" = "Hauteur Max";
+"avg_snow_3y" = "⌀ Neige (3A)";
+"avg_snow_5y" = "⌀ Neige (5A)";
+"detailed_snow_statistics" = "Afficher les statistiques détaillées de neige";
+
+/* Données Historiques de Neige */
+"snow_statistics_3y" = "Statistiques de Neige (3 Ans)";
+"snow_statistics_5y" = "Statistiques de Neige (5 Ans)";
+"avg_snowfall" = "⌀ Chute de Neige";
+"avg_snow_days" = "⌀ Jours de Neige";
+"days" = "Jours";
+
+/* Caractéristiques SPA et Bien-être */
+"spa_wellness_features" = "Caractéristiques SPA et Bien-être";
+"sauna" = "Sauna";
+"no_spa_features" = "Aucune Caractéristique SPA";
+"spa_pending" = "SPA en attente";
+"scan_tip" = "Astuce: Utilisez 'Scan Email & Spa' pour charger les détails";
+
+/* Méthodes de Contact */
+"choose_contact_method" = "Choisir une Méthode de Contact";
+"how_to_contact" = "Comment souhaitez-vous contacter %@ ?";
+"call" = "Appeler";
+"website" = "Site Web";
+"email_opened" = "E-mail Ouvert";
+"website_opened" = "Site Web Ouvert";
+
+/* Erreurs */
+"error" = "Erreur";
+"network_error" = "Erreur Réseau";
+"no_results_found" = "Aucun Résultat Trouvé";
+"loading" = "Chargement...";
+
+/* Favoris */
+"favorites_star" = "⭐ Favoris";
+
+/* Top 3 Stations */
+"top3_ski_resorts" = "Top 3 Stations de Ski";
+
+/* Unités de Mesure */
+"cm_unit" = "cm";
+"mm_unit" = "mm";
+"m_unit" = "m";
+"km_unit" = "km";
+"celsius_unit" = "°C";
+"percent_unit" = "%";
+
+/* Scan de Contenu */
+"search_all_emails" = "Rechercher les e-mails pour tous les hébergements";
+"search_email" = "Rechercher E-mail";
+
+/* Graphique de Neige */
+"snowfall_trend" = "Tendance des Chutes de Neige";
+"snow_days_trend" = "Tendance des Jours de Neige";
+"3_years" = "3 Ans";
+"5_years" = "5 Ans";
+"range" = "Plage";
+"increasing_trend" = "Tendance Croissante";
+"decreasing_trend" = "Tendance Décroissante";
+"stable_trend" = "Tendance Stable";
+"no_chart_data" = "Aucune donnée de graphique disponible";
+
+/* Erreurs ERA5 */
+"retry" = "Réessayer";
+"setup_instructions" = "Instructions de Configuration";
+"era5_api_key_missing_title" = "Clé API ERA5 Manquante";
+"era5_api_key_missing_message" = "Une clé API ERA5 gratuite est requise pour les données historiques réelles de neige.";
+"era5_unauthorized_title" = "Échec d'Authentification ERA5";
+"era5_unauthorized_message" = "La clé API ERA5 est invalide ou expirée.";
+"era5_rate_limit_title" = "Limite de Débit ERA5 Atteinte";
+"era5_rate_limit_message" = "Trop de requêtes. Veuillez patienter un moment et réessayer.";
+"era5_parsing_not_implemented_title" = "Analyse NetCDF Non Disponible";
+"era5_parsing_not_implemented_message" = "La bibliothèque NetCDF pour les données ERA5 n'est pas encore implémentée.";
+"era5_no_data_title" = "Aucune Donnée ERA5 Disponible";
+"era5_no_data_message" = "Aucune donnée historique de neige disponible pour ces coordonnées.";
+"era5_connection_error_title" = "Erreur de Connexion";
+"era5_connection_error_message" = "Erreur lors du chargement des données ERA5. Vérifiez votre connexion internet.";
+"snow_data_error_title" = "Données de Neige Non Disponibles";
+"snow_data_error_message" = "Les données historiques de neige n'ont pas pu être chargées.";
+"era5_setup_step_1" = "1. Créer un compte gratuit sur Copernicus Climate Data Store";
+"era5_setup_step_2" = "2. Générer une clé API";
+"era5_setup_step_3" = "3. Ajouter la clé API aux paramètres de l'application";
+"era5_setup_guide" = "Ouvrir le Guide de Configuration";
+"netcdf_setup_message" = "La bibliothèque NetCDF est requise pour analyser les données ERA5.";
+"netcdf_setup_note" = "Ceci est un problème de configuration technique pour les développeurs.";
+"detailed_snow_statistics" = "Statistiques Détaillées de la Neige";
+"era5_historical_data" = "Données historiques réelles de neige via ERA5";
+"multi_language_support" = "Support Multi-Langues";
+"localized_8_languages" = "Disponible en 8 langues dans le monde";
+"era5_api" = "API de Données Climatiques ERA5";
+"era5_error" = "Erreur ERA5: %@";
+"beta" = "BÊTA";
+"debug_access_required" = "Accès Debug Requis";
+"enter_debug_pin" = "Entrez le code PIN à 4 chiffres pour les fonctions debug";
+"debug_access" = "Accès Debug";
+"incorrect_pin" = "Code PIN incorrect. Ressayez.";
+
+/* Pistes */
+"piste_type_downhill" = "Descente";
+"piste_type_nordic" = "Nordique";
+"piste_type_skitour" = "Ski de Randonnée";
+"piste_type_sled" = "Luge";
+"piste_type_connection" = "Connexion";
+"piste_type_snow_park" = "Snow Park";
+"piste_type_playground" = "Zone Débutant";
+"piste_difficulty_novice" = "Débutant";
+"piste_difficulty_easy" = "Facile";
+"piste_difficulty_intermediate" = "Intermédiaire";
+"piste_difficulty_advanced" = "Difficile";
+"piste_difficulty_expert" = "Expert";
+"piste_difficulty_freeride" = "Freeride";
+"piste_grooming_classic" = "Classique";
+"piste_grooming_skating" = "Skating";
+"piste_grooming_backcountry" = "Hors-Piste";
+"piste_grooming_mogul" = "Bosses";
+"piste_status_open" = "Ouverte";
+"piste_status_closed" = "Fermée";
+"piste_status_unknown" = "Inconnue";
+"piste_label" = "Piste";
+
+/* Maps */
+"trail_map" = "Carte des Pistes";
+"slopes_and_trails" = "Pistes et tracés";
