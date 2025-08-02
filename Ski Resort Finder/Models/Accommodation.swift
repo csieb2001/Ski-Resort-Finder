@@ -10,7 +10,7 @@ struct Accommodation: Identifiable, Equatable {
     let hasSpa: Bool
     let hasSauna: Bool
     let pricePerNight: Double
-    let rating: Double
+    let rating: Double? // Objektive Bewertung - nur wenn berechenbar
     let imageUrl: String
     let imageUrls: [String] // Mehrere Bilder pro Unterkunft
     let resort: SkiResort
@@ -20,7 +20,7 @@ struct Accommodation: Identifiable, Equatable {
     let website: String?
     let coordinate: CLLocationCoordinate2D? // Echte GPS-Koordinaten von Google Places
     
-    init(name: String, distanceToLift: Int, hasPool: Bool, hasJacuzzi: Bool, hasSpa: Bool, hasSauna: Bool = false, pricePerNight: Double, rating: Double, imageUrl: String, imageUrls: [String] = [], resort: SkiResort, isRealData: Bool = true, email: String? = nil, phone: String? = nil, website: String? = nil, coordinate: CLLocationCoordinate2D? = nil) {
+    init(name: String, distanceToLift: Int, hasPool: Bool, hasJacuzzi: Bool, hasSpa: Bool, hasSauna: Bool = false, pricePerNight: Double, rating: Double? = nil, imageUrl: String, imageUrls: [String] = [], resort: SkiResort, isRealData: Bool = true, email: String? = nil, phone: String? = nil, website: String? = nil, coordinate: CLLocationCoordinate2D? = nil) {
         // Generate stable ID based on name and resort
         self.id = UUID(uuidString: Accommodation.generateStableUUID(name: name, resortId: resort.id.uuidString)) ?? UUID()
         self.name = name
@@ -42,7 +42,7 @@ struct Accommodation: Identifiable, Equatable {
     }
     
     // Initializer that preserves existing ID (for updates)
-    init(id: UUID, name: String, distanceToLift: Int, hasPool: Bool, hasJacuzzi: Bool, hasSpa: Bool, hasSauna: Bool = false, pricePerNight: Double, rating: Double, imageUrl: String, imageUrls: [String] = [], resort: SkiResort, isRealData: Bool = true, email: String? = nil, phone: String? = nil, website: String? = nil, coordinate: CLLocationCoordinate2D? = nil) {
+    init(id: UUID, name: String, distanceToLift: Int, hasPool: Bool, hasJacuzzi: Bool, hasSpa: Bool, hasSauna: Bool = false, pricePerNight: Double, rating: Double? = nil, imageUrl: String, imageUrls: [String] = [], resort: SkiResort, isRealData: Bool = true, email: String? = nil, phone: String? = nil, website: String? = nil, coordinate: CLLocationCoordinate2D? = nil) {
         self.id = id
         self.name = name
         self.distanceToLift = distanceToLift

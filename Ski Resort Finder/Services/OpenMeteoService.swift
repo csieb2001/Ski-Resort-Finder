@@ -42,19 +42,106 @@ class OpenMeteoService: ObservableObject {
     
     // MARK: - Historical Snow Data (Will use ERA5 in future)
     func fetchHistoricalSnowData(for coordinate: CLLocationCoordinate2D) async throws -> HistoricalSnowData {
-        // Temporarily create instance of ERA5 service for testing
-        let era5Service = ERA5SnowService()
+        print("🌨️ OpenMeteo: Loading historical snow data for \(coordinate.latitude), \(coordinate.longitude)")
         
-        do {
-            // Use ERA5 data if available
-            return try await era5Service.fetchHistoricalSnowData(for: coordinate)
-        } catch let error as ERA5Error {
-            // Spezifische ERA5 Fehler weiterleiten
-            throw OpenMeteoError.era5Error(error.localizedDescription)
-        } catch {
-            // Andere Fehler als Netzwerk-Fehler behandeln
-            throw OpenMeteoError.networkError("ERA5 Daten konnten nicht geladen werden: \(error.localizedDescription)")
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let years = Array((currentYear-9)...currentYear) // Letzten 10 Jahre
+        var yearlyData: [YearlySnowData] = []
+        
+        for year in years {
+            do {
+                let snowData = try await fetchSnowDataForYear(coordinate: coordinate, year: year)
+                yearlyData.append(snowData)
+                print("✅ OpenMeteo: Jahr \(year) erfolgreich geladen - \(String(format: "%.1f", snowData.totalSnowfall))cm")
+            } catch {
+                print("❌ OpenMeteo: Fehler für Jahr \(year): \(error)")
+                // Bei der KEINE FAKE-DATEN POLICY: Jahr überspringen
+            }
         }
+        
+        guard !yearlyData.isEmpty else {
+            throw OpenMeteoError.noDataAvailable("Keine historischen Schneedaten verfügbar")
+        }
+        
+        return HistoricalSnowData(
+            coordinate: coordinate,
+            yearlyData: yearlyData,
+            averageSnowfall: yearlyData.map { $0.totalSnowfall }.reduce(0, +) / Double(yearlyData.count),
+            averageSnowDays: Int(yearlyData.map { Double($0.snowDays) }.reduce(0, +) / Double(yearlyData.count))
+        )
+    }
+    
+    private func fetchSnowDataForYear(coordinate: CLLocationCoordinate2D, year: Int) async throws -> YearlySnowData {
+        // OpenMeteo Archive API für historische Daten
+        var components = URLComponents(string: "https://archive-api.open-meteo.com/v1/archive")!
+        
+        // Zeitraum: Wintersaison (November bis April)
+        let startDate = "\(year-1)-11-01"
+        let endDate = "\(year)-04-30"
+        
+        components.queryItems = [
+            URLQueryItem(name: "latitude", value: String(coordinate.latitude)),
+            URLQueryItem(name: "longitude", value: String(coordinate.longitude)),
+            URLQueryItem(name: "start_date", value: startDate),
+            URLQueryItem(name: "end_date", value: endDate),
+            URLQueryItem(name: "daily", value: "snowfall_sum,temperature_2m_mean"),
+            URLQueryItem(name: "timezone", value: "auto")
+        ]
+        
+        guard let url = components.url else {
+            throw OpenMeteoError.invalidURL
+        }
+        
+        let (data, response) = try await URLSession.shared.data(from: url)
+        
+        guard let httpResponse = response as? HTTPURLResponse,
+              httpResponse.statusCode == 200 else {
+            throw OpenMeteoError.networkError("HTTP \((response as? HTTPURLResponse)?.statusCode ?? 0)")
+        }
+        
+        // Parse OpenMeteo Archive Response
+        let archiveResponse = try JSONDecoder().decode(OpenMeteoArchiveResponse.self, from: data)
+        
+        // Berechne Schnee-Statistiken
+        var totalSnowfall: Double = 0
+        var snowDays = 0
+        var peakSnowfall: Double = 0
+        var firstSnowDate: Date?
+        var lastSnowDate: Date?
+        
+        if let snowfallData = archiveResponse.daily.snowfall_sum {
+            let timeData = archiveResponse.daily.time
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            for (index, snowfall) in snowfallData.enumerated() {
+                if let snow = snowfall, snow > 0.1 { // Mindestens 0.1mm als Schneetag
+                    totalSnowfall += snow
+                    snowDays += 1
+                    peakSnowfall = max(peakSnowfall, snow)
+                    
+                    // Datum bestimmen
+                    if index < timeData.count,
+                       let date = dateFormatter.date(from: timeData[index]) {
+                        if firstSnowDate == nil {
+                            firstSnowDate = date
+                        }
+                        lastSnowDate = date
+                    }
+                }
+            }
+        }
+        
+        return YearlySnowData(
+            year: year,
+            totalSnowfall: totalSnowfall,
+            averageSnowDepth: 0, // OpenMeteo Archive hat keine Schnee-Tiefe
+            snowDays: snowDays,
+            peakSnowfall: peakSnowfall,
+            seasonStart: firstSnowDate,
+            seasonEnd: lastSnowDate
+        )
     }
     
     
@@ -275,16 +362,10 @@ struct OpenMeteoArchiveResponse: Codable {
 
 struct OpenMeteoArchiveDaily: Codable {
     let time: [String]
-    let snowfallSum: [Double]
-    let snowDepthMean: [Double?]
-    let temperature2mMean: [Double]
+    let snowfall_sum: [Double?]?
+    let temperature_2m_mean: [Double?]?
     
-    enum CodingKeys: String, CodingKey {
-        case time
-        case snowfallSum = "snowfall_sum"
-        case snowDepthMean = "snow_depth_mean"
-        case temperature2mMean = "temperature_2m_mean"
-    }
+    // Kein CodingKeys nötig - verwende direkte JSON-Keys
 }
 
 // MARK: - Error Handling
@@ -295,6 +376,7 @@ enum OpenMeteoError: Error, LocalizedError {
     case decodingError
     case networkError(String)
     case era5Error(String)
+    case noDataAvailable(String)
     
     var errorDescription: String? {
         switch self {
@@ -308,6 +390,8 @@ enum OpenMeteoError: Error, LocalizedError {
             return "Netzwerk-Fehler: \(message)"
         case .era5Error(let message):
             return "ERA5 Fehler: \(message)"
+        case .noDataAvailable(let message):
+            return "Keine Daten verfügbar: \(message)"
         }
     }
 }

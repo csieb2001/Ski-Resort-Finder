@@ -133,13 +133,16 @@ struct AccommodationDetailView: View {
                                     .font(DesignSystem.Typography.subheadline)
                                     .foregroundColor(DesignSystem.Colors.primary)
                                 
-                                HStack(spacing: DesignSystem.Spacing.xs) {
-                                    Image(systemName: "star.fill")
-                                        .font(DesignSystem.Typography.subheadline)
-                                        .foregroundColor(DesignSystem.Colors.accent)
-                                    Text(String(format: "%.1f", currentAccommodation.rating))
-                                        .font(DesignSystem.Typography.subheadline)
-                                        .foregroundColor(DesignSystem.Colors.secondaryText)
+                                // Only show rating if available (NO FAKE DATA policy)
+                                if let rating = currentAccommodation.rating {
+                                    HStack(spacing: DesignSystem.Spacing.xs) {
+                                        Image(systemName: "star.fill")
+                                            .font(DesignSystem.Typography.subheadline)
+                                            .foregroundColor(DesignSystem.Colors.accent)
+                                        Text(String(format: "%.1f", rating))
+                                            .font(DesignSystem.Typography.subheadline)
+                                            .foregroundColor(DesignSystem.Colors.secondaryText)
+                                    }
                                 }
                                 
                                 Spacer()

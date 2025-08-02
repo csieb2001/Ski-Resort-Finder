@@ -5,6 +5,7 @@ struct Top3SkiResortsCard: View {
     @ObservedObject private var localization = LocalizationService.shared
     @ObservedObject private var accommodationDB = AccommodationDatabase.shared
     @State private var selectedCategory: TopCategory = .snowfall
+    @State private var topResorts: [SkiResort] = []
     let onResortSelected: ((SkiResort) -> Void)?
     
     init(onResortSelected: ((SkiResort) -> Void)? = nil) {
@@ -19,6 +20,7 @@ struct Top3SkiResortsCard: View {
         case snowfall
         case totalSlopes
         case maxElevation
+        case hotelRating
         
         var title: String {
             switch self {
@@ -28,6 +30,8 @@ struct Top3SkiResortsCard: View {
                 return "top3_slope_kilometers".localized
             case .maxElevation:
                 return "top3_max_elevation".localized
+            case .hotelRating:
+                return "top3_hotel_rating".localized
             }
         }
         
@@ -39,6 +43,8 @@ struct Top3SkiResortsCard: View {
                 return "mountain.2.fill"
             case .maxElevation:
                 return "arrow.up.to.line"
+            case .hotelRating:
+                return "star.fill"
             }
         }
         
@@ -50,6 +56,8 @@ struct Top3SkiResortsCard: View {
                 return .green
             case .maxElevation:
                 return .purple
+            case .hotelRating:
+                return .orange
             }
         }
     }
@@ -89,7 +97,7 @@ struct Top3SkiResortsCard: View {
             
             // Top 3 List
             VStack(spacing: DesignSystem.Spacing.sm) {
-                ForEach(Array(getTop3Resorts().enumerated()), id: \.offset) { index, resort in
+                ForEach(Array(topResorts.enumerated()), id: \.offset) { index, resort in
                     Top3ResortRow(
                         resort: resort,
                         rank: index + 1,
@@ -119,9 +127,12 @@ struct Top3SkiResortsCard: View {
                 )
         )
         .animation(DesignSystem.Animation.medium, value: selectedCategory)
+        .task(id: selectedCategory) {
+            topResorts = await getTop3Resorts()
+        }
     }
     
-    private func getTop3Resorts() -> [SkiResort] {
+    private func getTop3Resorts() async -> [SkiResort] {
         let allResorts = SkiResortDatabase.shared.allSkiResorts
         
         print("🏔️ [DEBUG] Total resorts available: \(allResorts.count)")
@@ -145,6 +156,8 @@ struct Top3SkiResortsCard: View {
                 .sorted { $0.maxElevation > $1.maxElevation }
             print("🏔️ [DEBUG] Top elevation resorts: \(sortedResorts.prefix(5).map { "\($0.name): \($0.maxElevation)m" })")
             result = Array(sortedResorts.prefix(3))
+        case .hotelRating:
+            result = await getTop3ByHotelRating(resorts: allResorts)
         }
         
         print("🏔️ [DEBUG] Result count for \(selectedCategory): \(result.count)")
@@ -172,6 +185,55 @@ struct Top3SkiResortsCard: View {
             }
             .prefix(3)
             .compactMap { $0 }
+    }
+    
+    private func getTop3ByHotelRating(resorts: [SkiResort]) async -> [SkiResort] {
+        print("🏨 [DEBUG] Getting top 3 resorts by hotel rating...")
+        
+        // Get all accommodations with ratings from the database
+        var resortRatings: [(resort: SkiResort, avgRating: Double, accommodationCount: Int)] = []
+        
+        for resort in resorts {
+            let accommodations = accommodationDB.getAccommodations(for: resort)
+            var ratedAccommodations: [CachedAccommodation] = []
+            for cachedAccommodation in accommodations {
+                let accommodation = await cachedAccommodation.toAccommodation(resort: resort)
+                if accommodation.rating != nil {
+                    ratedAccommodations.append(cachedAccommodation)
+                }
+            }
+            
+            guard !ratedAccommodations.isEmpty else { continue }
+            
+            var totalRating: Double = 0
+            for cachedAccommodation in ratedAccommodations {
+                let accommodation = await cachedAccommodation.toAccommodation(resort: resort)
+                if let rating = accommodation.rating {
+                    totalRating += rating
+                }
+            }
+            
+            let avgRating = totalRating / Double(ratedAccommodations.count)
+            resortRatings.append((resort: resort, avgRating: avgRating, accommodationCount: ratedAccommodations.count))
+            
+            print("🏨 [DEBUG] \(resort.name): \(String(format: "%.2f", avgRating)) ⭐ (\(ratedAccommodations.count) hotels)")
+            print("🔍 [DEBUG] Hotel Details für \(resort.name):")
+            for (index, cachedAccommodation) in ratedAccommodations.prefix(3).enumerated() {
+                let accommodation = await cachedAccommodation.toAccommodation(resort: resort)
+                print("🏨   \(index+1). \(accommodation.name): \(accommodation.rating?.description ?? "nil")")
+                print("📊     Distance: \(accommodation.distanceToLift)m, Spa: \(accommodation.hasSpaFeatures)")
+            }
+        }
+        
+        // Sort by average rating (descending) and minimum 3 accommodations
+        let sortedResorts = resortRatings
+            .filter { $0.accommodationCount >= 3 } // Mindestens 3 bewertete Hotels
+            .sorted { $0.avgRating > $1.avgRating }
+            .prefix(3)
+            .map { $0.resort }
+        
+        print("🏨 [DEBUG] Top 3 by hotel rating: \(sortedResorts.map { $0.name })")
+        return Array(sortedResorts)
     }
     
     private func isAlpineCountry(_ country: String) -> Bool {
@@ -223,6 +285,8 @@ struct Top3ResortRow: View {
     let isEnabled: Bool
     let onTap: () -> Void
     @ObservedObject private var localization = LocalizationService.shared
+    @ObservedObject private var accommodationDB = AccommodationDatabase.shared
+    @State private var hotelRating: String = "0.0"
     
     var body: some View {
         Button(action: onTap) {
@@ -287,6 +351,11 @@ struct Top3ResortRow: View {
             )
         }
         .disabled(!isEnabled)
+        .task(id: category) {
+            if category == .hotelRating {
+                await calculateHotelRating()
+            }
+        }
     }
     
     private var rankColor: Color {
@@ -307,6 +376,8 @@ struct Top3ResortRow: View {
             return "\(resort.totalSlopes)"
         case .maxElevation:
             return "\(resort.maxElevation)"
+        case .hotelRating:
+            return hotelRating
         }
     }
     
@@ -318,7 +389,75 @@ struct Top3ResortRow: View {
             return "km"
         case .maxElevation:
             return "m"
+        case .hotelRating:
+            return "" // No unit for hotel rating
         }
+    }
+    
+    @MainActor
+    private func calculateHotelRating() async {
+        let accommodations = accommodationDB.getAccommodations(for: resort)
+        
+        print("🔍 [DEBUG] calculateHotelRating for \(resort.name): \(accommodations.count) accommodations found")
+        
+        // Falls keine Accommodations in der Datenbank vorhanden sind, verwende eine geschätzte Bewertung
+        guard !accommodations.isEmpty else {
+            // Verwende eine grobe Schätzung basierend auf Resort-Qualität als Fallback
+            let resortScore = calculateResortBasedRating()
+            hotelRating = String(format: "%.1f", resortScore)
+            print("🏔️ [DEBUG] Using resort-based rating for \(resort.name): \(hotelRating)")
+            return
+        }
+        
+        var ratedAccommodations: [CachedAccommodation] = []
+        
+        for cachedAccommodation in accommodations {
+            let accommodation = await cachedAccommodation.toAccommodation(resort: resort)
+            if accommodation.rating != nil {
+                ratedAccommodations.append(cachedAccommodation)
+            }
+        }
+        
+        guard !ratedAccommodations.isEmpty else {
+            // Fallback wenn keine Bewertungen vorhanden
+            let resortScore = calculateResortBasedRating()
+            hotelRating = String(format: "%.1f", resortScore)
+            print("🏔️ [DEBUG] No rated accommodations, using resort-based rating for \(resort.name): \(hotelRating)")
+            return
+        }
+        
+        var totalRating: Double = 0
+        for cachedAccommodation in ratedAccommodations {
+            let accommodation = await cachedAccommodation.toAccommodation(resort: resort)
+            if let rating = accommodation.rating {
+                totalRating += rating
+            }
+        }
+        
+        let avgRating = totalRating / Double(ratedAccommodations.count)
+        hotelRating = String(format: "%.1f", avgRating)
+        print("⭐ [DEBUG] Calculated hotel rating for \(resort.name): \(hotelRating) from \(ratedAccommodations.count) hotels")
+    }
+    
+    private func calculateResortBasedRating() -> Double {
+        // Grobe Schätzung basierend auf Resort-Eigenschaften
+        var score: Double = 3.0 // Basis-Score
+        
+        // Bonus für große Skigebiete
+        if resort.totalSlopes > 200 { score += 0.5 }
+        else if resort.totalSlopes > 100 { score += 0.3 }
+        
+        // Bonus für hohe Lagen
+        if resort.maxElevation > 2500 { score += 0.5 }
+        else if resort.maxElevation > 2000 { score += 0.3 }
+        
+        // Bekannte Premium-Destinationen
+        let premiumResorts = ["St. Moritz", "Verbier", "Zermatt", "Courchevel", "Val d'Isère", "Kitzbühel"]
+        if premiumResorts.contains(where: { resort.name.contains($0) }) {
+            score += 0.8
+        }
+        
+        return min(score, 5.0)
     }
     
 }

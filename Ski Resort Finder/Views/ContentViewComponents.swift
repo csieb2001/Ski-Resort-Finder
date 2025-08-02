@@ -303,6 +303,99 @@ struct CounterView: View {
     }
 }
 
+// MARK: - Search Radius Selector
+struct SearchRadiusSelector: View {
+    @ObservedObject private var searchSettings = SearchSettings.shared
+    @ObservedObject private var localization = LocalizationService.shared
+    @State private var showingRadiusOptions = false
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: DesignSystem.Spacing.xs) {
+            HStack {
+                Text("search_radius".localized)
+                    .font(DesignSystem.Typography.caption1)
+                    .fontWeight(.medium)
+                    .foregroundColor(DesignSystem.Colors.primaryText)
+                
+                Spacer()
+                
+                Button(action: { showingRadiusOptions.toggle() }) {
+                    HStack(spacing: DesignSystem.Spacing.xs) {
+                        Text(searchSettings.radiusDisplayText)
+                            .font(DesignSystem.Typography.caption1)
+                            .fontWeight(.medium)
+                        
+                        Image(systemName: showingRadiusOptions ? "chevron.up" : "chevron.down")
+                            .font(.caption2)
+                    }
+                    .foregroundColor(DesignSystem.Colors.accent)
+                    .padding(.horizontal, DesignSystem.Spacing.xs)
+                    .padding(.vertical, 4)
+                    .background(DesignSystem.Colors.accent.opacity(0.1))
+                    .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.xs))
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            
+            if showingRadiusOptions {
+                VStack(spacing: DesignSystem.Spacing.xs) {
+                    ForEach(SearchSettings.availableRadii, id: \.self) { radius in
+                        RadiusOptionRow(
+                            radius: radius,
+                            isSelected: searchSettings.searchRadius == radius
+                        ) {
+                            withAnimation(DesignSystem.Animation.medium) {
+                                searchSettings.searchRadius = radius
+                                showingRadiusOptions = false
+                            }
+                        }
+                    }
+                }
+                .padding(.top, DesignSystem.Spacing.xs)
+            }
+        }
+        .padding(.horizontal, DesignSystem.Layout.screenPadding)
+        .padding(.vertical, DesignSystem.Spacing.xs)
+        .background(DesignSystem.Colors.secondaryBackground)
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.md))
+        .animation(DesignSystem.Animation.medium, value: showingRadiusOptions)
+    }
+}
+
+struct RadiusOptionRow: View {
+    let radius: Double
+    let isSelected: Bool
+    let onTap: () -> Void
+    @ObservedObject private var localization = LocalizationService.shared
+    
+    var body: some View {
+        Button(action: onTap) {
+            HStack {
+                Text(radius == 1.0 ? "search_radius_1km".localized : String(format: "search_radius_km".localized, Int(radius)))
+                    .font(DesignSystem.Typography.footnote)
+                    .foregroundColor(isSelected ? DesignSystem.Colors.accent : DesignSystem.Colors.primaryText)
+                
+                Spacer()
+                
+                if isSelected {
+                    Image(systemName: "checkmark")
+                        .font(.caption)
+                        .foregroundColor(DesignSystem.Colors.accent)
+                }
+            }
+            .padding(.horizontal, DesignSystem.Spacing.sm)
+            .padding(.vertical, DesignSystem.Spacing.sm)
+        }
+        .buttonStyle(PlainButtonStyle())
+        .background(
+            isSelected ? 
+            DesignSystem.Colors.accent.opacity(0.1) : 
+            Color.clear
+        )
+        .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.sm))
+    }
+}
+
 // MARK: - Search Button Card
 struct SearchButtonCard: View {
     let isEnabled: Bool

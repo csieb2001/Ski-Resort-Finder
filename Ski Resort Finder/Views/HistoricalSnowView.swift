@@ -38,7 +38,7 @@ struct HistoricalSnowView: View {
                             // Success View
                             // Zusammenfassung
                             VStack(alignment: .leading, spacing: DesignSystem.Spacing.md) {
-                                Text("snow_statistics_5y".localized)
+                                Text("snow_statistics_10y".localized)
                                     .font(DesignSystem.Typography.headline)
                                     .fontWeight(.bold)
                                     .foregroundColor(DesignSystem.Colors.primaryText)
@@ -336,10 +336,55 @@ struct SnowComparisonChart: View {
                 peakSnowfall: 22,
                 seasonStart: Calendar.current.date(from: DateComponents(year: 2020, month: 12, day: 22)),
                 seasonEnd: Calendar.current.date(from: DateComponents(year: 2021, month: 3, day: 28))
+            ),
+            YearlySnowData(
+                year: 2019,
+                totalSnowfall: 465,
+                averageSnowDepth: 88,
+                snowDays: 98,
+                peakSnowfall: 48,
+                seasonStart: Calendar.current.date(from: DateComponents(year: 2019, month: 12, day: 5)),
+                seasonEnd: Calendar.current.date(from: DateComponents(year: 2020, month: 4, day: 8))
+            ),
+            YearlySnowData(
+                year: 2018,
+                totalSnowfall: 385,
+                averageSnowDepth: 72,
+                snowDays: 89,
+                peakSnowfall: 38,
+                seasonStart: Calendar.current.date(from: DateComponents(year: 2018, month: 12, day: 12)),
+                seasonEnd: Calendar.current.date(from: DateComponents(year: 2019, month: 3, day: 28))
+            ),
+            YearlySnowData(
+                year: 2017,
+                totalSnowfall: 320,
+                averageSnowDepth: 58,
+                snowDays: 76,
+                peakSnowfall: 32,
+                seasonStart: Calendar.current.date(from: DateComponents(year: 2017, month: 12, day: 20)),
+                seasonEnd: Calendar.current.date(from: DateComponents(year: 2018, month: 3, day: 18))
+            ),
+            YearlySnowData(
+                year: 2016,
+                totalSnowfall: 410,
+                averageSnowDepth: 78,
+                snowDays: 94,
+                peakSnowfall: 45,
+                seasonStart: Calendar.current.date(from: DateComponents(year: 2016, month: 12, day: 10)),
+                seasonEnd: Calendar.current.date(from: DateComponents(year: 2017, month: 3, day: 30))
+            ),
+            YearlySnowData(
+                year: 2015,
+                totalSnowfall: 275,
+                averageSnowDepth: 48,
+                snowDays: 62,
+                peakSnowfall: 28,
+                seasonStart: Calendar.current.date(from: DateComponents(year: 2015, month: 12, day: 25)),
+                seasonEnd: Calendar.current.date(from: DateComponents(year: 2016, month: 3, day: 12))
             )
         ],
-        averageSnowfall: 437,
-        averageSnowDays: 95
+        averageSnowfall: 378,
+        averageSnowDays: 84
     )
     
     HistoricalSnowView(historicalData: sampleData)

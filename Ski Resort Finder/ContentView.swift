@@ -16,7 +16,6 @@ struct ContentView: View {
     @State private var showingResortPicker = false
     @State private var showingAccommodations = false
     @State private var showingAbout = false
-    @State private var showingWeatherDetail = false
     @State private var showingResortDetail = false
     
     var body: some View {
@@ -69,21 +68,15 @@ struct ContentView: View {
                             isEnabled: true,
                             onSearch: {
                                 HapticFeedback.impact(.medium)
-                                viewModel.searchAccommodations()
-                                showingAccommodations = true
+                                Task {
+                                    await viewModel.searchAccommodations()
+                                    showingAccommodations = true
+                                }
                             }
                         )
                         
-                        if let weather = viewModel.weatherData {
-                            WeatherCard(
-                                weather: weather,
-                                openMeteoData: viewModel.openMeteoData,
-                                onTap: {
-                                    HapticFeedback.impact(.light)
-                                    showingWeatherDetail = true
-                                }
-                            )
-                        }
+                        // Search Radius Selector (moved below search button)
+                        SearchRadiusSelector()
                         
                     }
                     
@@ -117,14 +110,6 @@ struct ContentView: View {
             }
             .sheet(isPresented: $showingAbout) {
                 AboutView()
-            }
-            .sheet(isPresented: $showingWeatherDetail) {
-                if let weather = viewModel.weatherData {
-                    WeatherDetailView(
-                        weather: weather,
-                        openMeteoData: viewModel.openMeteoData
-                    )
-                }
             }
             .sheet(isPresented: $showingResortDetail) {
                 if let resort = viewModel.selectedResort {

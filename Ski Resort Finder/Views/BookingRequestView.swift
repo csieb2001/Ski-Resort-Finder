@@ -30,11 +30,12 @@ struct BookingRequestView: View {
     @State private var alertMessage = ""
     @State private var showingMailComposer = false
     @State private var showingContactOptions = false
+    @State private var currentEmailAddress: String = ""
     
     var body: some View {
         NavigationView {
             Form {
-                Section("contact_data".localized) {
+                Section("your_contact_data".localized) {
                     TextField("name".localized, text: $name)
                     TextField("email".localized, text: $email)
                         .keyboardType(.emailAddress)
@@ -213,9 +214,9 @@ struct BookingRequestView: View {
                 Text("Wie möchten Sie \(accommodation.name) kontaktieren?")
             }
             .sheet(isPresented: $showingMailComposer) {
-                if let emailAddress = accommodation.email, MFMailComposeViewController.canSendMail() {
+                if MFMailComposeViewController.canSendMail() && !currentEmailAddress.isEmpty {
                     MailComposeView(
-                        toRecipients: [emailAddress],
+                        toRecipients: [currentEmailAddress],
                         subject: "Buchungsanfrage für \(accommodation.name)",
                         body: generateEmailBody()
                     )
@@ -264,32 +265,31 @@ struct BookingRequestView: View {
     private func sendBookingRequest() {
         saveContactData()
         
-        // Priority: Use found email if available
-        if let scrapedEmail = availableEmail {
-            sendEmailRequest(to: scrapedEmail)
-        } else if let originalEmail = accommodation.email {
-            sendEmailRequest(to: originalEmail)
-        } else if let phone = accommodation.phone {
-            makePhoneCall(to: phone)
-        } else if let website = accommodation.website {
-            openWebsite(website)
-        } else {
-            alertTitle = "Keine Kontaktdaten verfügbar"
-            alertMessage = "Für diese Unterkunft stehen keine Kontaktdaten zur Verfügung."
-            showingAlert = true
+        Task {
+            // Priority: Use found email if available
+            if let scrapedEmail = availableEmail {
+                await sendEmailRequest(to: scrapedEmail)
+            } else if let originalEmail = accommodation.email {
+                await sendEmailRequest(to: originalEmail)
+            } else if let phone = accommodation.phone {
+                makePhoneCall(to: phone)
+            } else if let website = accommodation.website {
+                openWebsite(website)
+            } else {
+                await MainActor.run {
+                    alertTitle = "Keine Kontaktdaten verfügbar"
+                    alertMessage = "Für diese Unterkunft stehen keine Kontaktdaten zur Verfügung."
+                    showingAlert = true
+                }
+            }
         }
     }
     
-    private func sendEmailRequest(to emailAddress: String) {
+    private func sendEmailRequest(to emailAddress: String) async {
         if MFMailComposeViewController.canSendMail() {
-            // Use built-in mail composer
-            if let controller = createMailComposer(emailAddress: emailAddress) {
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let window = windowScene.windows.first,
-                   let rootViewController = window.rootViewController {
-                    rootViewController.present(controller, animated: true)
-                }
-            }
+            // Use SwiftUI sheet for mail composer
+            currentEmailAddress = emailAddress
+            showingMailComposer = true
         } else {
             // Fallback: Open mail app
             let subject = "Buchungsanfrage für \(accommodation.name)"
@@ -298,25 +298,28 @@ struct BookingRequestView: View {
             let urlString = "mailto:\(emailAddress)?subject=\(subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")&body=\(body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
             
             if let mailURL = URL(string: urlString), UIApplication.shared.canOpenURL(mailURL) {
-                UIApplication.shared.open(mailURL)
-                alertTitle = "E-Mail geöffnet"
-                alertMessage = "Die E-Mail-App wurde geöffnet. Bitte senden Sie Ihre Anfrage von dort aus."
-                showingAlert = true
+                await UIApplication.shared.open(mailURL)
+                await showSuccessAlert("E-Mail geöffnet", "Die E-Mail-App wurde geöffnet. Bitte senden Sie Ihre Anfrage von dort aus.")
             } else {
-                alertTitle = "E-Mail nicht möglich"
-                alertMessage = "E-Mail konnte nicht geöffnet werden."
-                showingAlert = true
+                await showErrorAlert("E-Mail nicht möglich", "E-Mail konnte nicht geöffnet werden.")
             }
         }
     }
     
-    private func createMailComposer(emailAddress: String) -> MFMailComposeViewController? {
-        let mailComposer = MFMailComposeViewController()
-        mailComposer.setToRecipients([emailAddress])
-        mailComposer.setSubject("Buchungsanfrage für \(accommodation.name)")
-        mailComposer.setMessageBody(generateEmailBody(), isHTML: false)
-        return mailComposer
+    @MainActor
+    private func showErrorAlert(_ title: String, _ message: String) {
+        self.alertTitle = title
+        self.alertMessage = message
+        self.showingAlert = true
     }
+    
+    @MainActor
+    private func showSuccessAlert(_ title: String, _ message: String) {
+        self.alertTitle = title
+        self.alertMessage = message
+        self.showingAlert = true
+    }
+    
     
     private func makePhoneCall(to phoneNumber: String) {
         let cleanedPhone = phoneNumber.replacingOccurrences(of: " ", with: "").replacingOccurrences(of: "-", with: "")
@@ -359,48 +362,52 @@ struct BookingRequestView: View {
     }
     
     private func loadOwnerContactInfo() {
-        let store = CNContactStore()
-        
-        // Berechtigung prüfen und anfordern falls nötig
-        let authStatus = CNContactStore.authorizationStatus(for: .contacts)
-        
-        switch authStatus {
-        case .authorized:
-            fetchOwnerContact(from: store)
-        case .notDetermined:
-            store.requestAccess(for: .contacts) { [self] granted, error in
-                DispatchQueue.main.async {
+        Task {
+            let store = CNContactStore()
+            
+            // Berechtigung prüfen und anfordern falls nötig
+            let authStatus = CNContactStore.authorizationStatus(for: .contacts)
+            
+            switch authStatus {
+            case .authorized:
+                await fetchOwnerContact(from: store)
+            case .notDetermined:
+                do {
+                    let granted = try await store.requestAccess(for: .contacts)
                     if granted {
-                        self.fetchOwnerContact(from: store)
+                        await fetchOwnerContact(from: store)
                     }
+                } catch {
+                    print("Error requesting contacts access: \(error.localizedDescription)")
                 }
+            case .denied, .restricted, .limited:
+                // Keine Berechtigung - verwende leere Felder oder gespeicherte Daten
+                print("Contacts access denied - using saved data only")
+            @unknown default:
+                break
             }
-        case .denied, .restricted:
-            // Keine Berechtigung - verwende leere Felder oder gespeicherte Daten
-            print("Contacts access denied - using saved data only")
-        @unknown default:
-            break
         }
     }
     
-    private func fetchOwnerContact(from store: CNContactStore) {
-        // Versuche den "Mich"-Kontakt zu finden (Owner des iPhones)
+    private func fetchOwnerContact(from store: CNContactStore) async {
+        // Direkt den "Mich"-Kontakt (iPhone Owner) abfragen
         do {
             let keysToFetch = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactEmailAddressesKey, CNContactPhoneNumbersKey] as [CNKeyDescriptor]
             
-            // Alle Kontakte durchsuchen und den ersten mit vollständigen Informationen nehmen
-            // Dies ist ein Fallback-Ansatz, da der "Me"-Kontakt nicht immer verfügbar ist
-            let request = CNContactFetchRequest(keysToFetch: keysToFetch)
+            // Versuche die "Me" Karte des iPhone Besitzers zu finden
+            let predicate = CNContact.predicateForContacts(matchingName: "")
+            let contacts = try store.unifiedContacts(matching: predicate, keysToFetch: keysToFetch)
             
-            try store.enumerateContacts(with: request) { contact, stop in
-                // Prüfe ob der Kontakt vollständige Informationen hat
+            // Suche nach dem ersten Kontakt mit vollständigen Informationen
+            // Da iOS keine direkte "Me" Contact API hat, nehmen wir den ersten brauchbaren
+            for contact in contacts.prefix(3) { // Nur die ersten 3 prüfen für Performance
                 let hasName = !contact.givenName.isEmpty || !contact.familyName.isEmpty
                 let hasEmail = !contact.emailAddresses.isEmpty
                 let hasPhone = !contact.phoneNumbers.isEmpty
                 
                 if hasName && (hasEmail || hasPhone) {
-                    DispatchQueue.main.async {
-                        // Nur setzen wenn die Felder noch leer sind
+                    await MainActor.run {
+                        // Nur setzen wenn die Felder noch leer sind (Benutzer kann überschreiben)
                         if self.name.isEmpty {
                             let fullName = "\(contact.givenName) \(contact.familyName)".trimmingCharacters(in: .whitespacesAndNewlines)
                             if !fullName.isEmpty {
@@ -416,12 +423,16 @@ struct BookingRequestView: View {
                             let phoneNumber = contact.phoneNumbers.first?.value.stringValue ?? ""
                             self.phone = phoneNumber
                         }
+                        
+                        print("✅ Owner contact info loaded: \(self.name), \(self.email), \(self.phone)")
                     }
-                    stop.pointee = true // Stoppe nach dem ersten brauchbaren Kontakt
+                    return // Stoppe nach dem ersten brauchbaren Kontakt
                 }
             }
+            
+            print("ℹ️ No suitable contact found - user can enter manually")
         } catch {
-            print("Error fetching contacts: \(error.localizedDescription)")
+            print("❌ Error fetching contacts: \(error.localizedDescription)")
         }
     }
     
@@ -627,32 +638,54 @@ struct BookingRequestView: View {
         let startDateString = dateFormatter.string(from: startDate)
         let endDateString = dateFormatter.string(from: endDate)
         
+        // Safely get resort information
+        let resort = accommodation.resort
+        let resortName = resort.name
+        
+        // Safely get country name with fallback
+        let countryName = resort.country
+        
+        let regionName = resort.region
+        
+        // Safely get accommodation properties
+        let accommodationName = accommodation.name.isEmpty ? "Unbekannt" : accommodation.name
+        let distanceToLift = accommodation.distanceToLift
+        let priceCategory = accommodation.priceCategory.rawValue
+        
+        // Safely get user input
+        let userName = name.isEmpty ? "Nicht angegeben" : name
+        let userEmail = email.isEmpty ? "Nicht angegeben" : email
+        let userPhone = phone.isEmpty ? "Nicht angegeben" : phone
+        let userMessage = message.isEmpty ? "Keine zusätzlichen Informationen" : message
+        let finalName = name.isEmpty ? "Ski Resort Finder Nutzer" : name
+        
+        // Build email body safely
         return """
         Sehr geehrte Damen und Herren,
         
-        ich interessiere mich für eine Buchung in Ihrem Hotel \(accommodation.name) für den Zeitraum vom \(startDateString) bis \(endDateString).
+        ich interessiere mich für eine Buchung in Ihrem Hotel \(accommodationName) für den Zeitraum vom \(startDateString) bis \(endDateString).
         
         Buchungsdetails:
         - Anzahl Gäste: \(numberOfGuests)
         - Anzahl Zimmer: \(numberOfRooms)
         
         Meine Kontaktdaten:
-        Name: \(name)
-        E-Mail: \(email)
-        Mobiltelefon: \(phone)
+        Name: \(userName)
+        E-Mail: \(userEmail)  
+        Mobiltelefon: \(userPhone)
         
         Nachricht:
-        \(message)
+        \(userMessage)
         
         Hoteldetails:
-        - Entfernung zur Liftstation: \(accommodation.distanceToLift) Meter
-        - Preiskategorie: \(accommodation.priceCategory.rawValue)
-        - Skigebiet: \(accommodation.resort.name), \(accommodation.resort.country.localizedCountryName())
+        - Entfernung zur Liftstation: \(distanceToLift) Meter
+        - Preiskategorie: \(priceCategory)
+        - Skigebiet: \(resortName), \(countryName), \(regionName)
         
         Ich freue mich auf Ihre Antwort.
         
         Mit freundlichen Grüßen
-        \(name)
+        \(finalName)
         """
     }
 }

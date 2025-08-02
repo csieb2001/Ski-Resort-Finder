@@ -12,7 +12,7 @@ class AccommodationDatabase: ObservableObject {
     private let overpassService = OverpassService.shared
     private let screenshotService = WebsiteScreenshotService.shared
     // Using SimpleEmailService for basic email functionality
-    private let updateInterval: TimeInterval = 24 * 60 * 60 // 24 hours
+    private let updateInterval: TimeInterval = 30 * 24 * 60 * 60 // 30 days (1 month)
     private let userDefaults = UserDefaults.standard
     private let accommodationsKey = "cached_accommodations"
     private let lastUpdateKey = "accommodations_last_update"
@@ -31,6 +31,9 @@ class AccommodationDatabase: ObservableObject {
         
         // Bereinige eventuelle Duplikate aus früheren Versionen
         removeDuplicatesFromExistingData()
+        
+        // Bereinige Duplikate zwischen verschiedenen Resort-IDs (nach UUID-Fix)
+        consolidateDuplicateResorts()
         
         startBackgroundUpdates()
     }
@@ -148,7 +151,7 @@ class AccommodationDatabase: ObservableObject {
             }
             
             // Konvertiere zu Accommodation für E-Mail-Suche
-            let regularAccommodation = cachedAccommodation.toAccommodation(resort: resort)
+            let regularAccommodation = await cachedAccommodation.toAccommodation(resort: resort)
             
             // Überspringe, wenn bereits eine E-Mail verfügbar ist
             if let existingEmail = regularAccommodation.email, !existingEmail.isEmpty {
@@ -232,7 +235,7 @@ class AccommodationDatabase: ObservableObject {
     ) async -> CachedAccommodation {
         let priceCategory = osmPlace.determinePriceCategory()
         let estimatedPrice = estimatePrice(from: priceCategory)
-        let estimatedRating = estimateRating(from: osmPlace)
+        // Rating will be calculated objectively in toAccommodation() method
         
         // No automatic image generation - will generate screenshot on-demand when user clicks
         let imageUrl = ""
@@ -250,7 +253,7 @@ class AccommodationDatabase: ObservableObject {
             hasSpa: false,
             hasSauna: false,
             pricePerNight: estimatedPrice,
-            rating: estimatedRating,
+            rating: 0.0, // Will be calculated objectively later
             imageUrl: imageUrl, // Website screenshot or placeholder
             imageUrls: imageUrls, // Website screenshot or placeholder
             resortId: resort.id,
@@ -276,24 +279,24 @@ class AccommodationDatabase: ObservableObject {
     }
     
     /// Schätzt Rating basierend auf OSM-Daten
-    private func estimateRating(from osmPlace: OverpassAccommodation) -> Double {
-        if let stars = osmPlace.stars {
-            return Double(stars)
+    // REMOVED: estimateRating() - violates NO FAKE DATA policy
+    // Rating is now calculated objectively by ObjectiveRatingCalculator
+    
+    /// Stellt sicher, dass alle gespeicherten Accommodations für ein Resort geladen sind
+    private func ensureAccommodationsLoaded(for resortId: String) async {
+        // Wenn bereits Accommodations für dieses Resort im Speicher sind, nichts tun
+        if let existingAccommodations = accommodations[resortId], !existingAccommodations.isEmpty {
+            print("🔄 Resort \(resortId) already has \(existingAccommodations.count) accommodations loaded")
+            return
         }
         
-        // Schätze basierend auf Typ
-        switch osmPlace.tourismType {
-        case "hotel":
-            return Double.random(in: 3.5...4.5)
-        case "resort":
-            return Double.random(in: 4.0...5.0)
-        case "guest_house":
-            return Double.random(in: 3.0...4.0)
-        case "hostel":
-            return Double.random(in: 2.5...3.5)
-        default:
-            return Double.random(in: 3.0...4.0)
+        // Wenn die Datenbank noch nicht vom Disk geladen wurde, lade sie jetzt
+        if accommodations.isEmpty {
+            print("📥 Loading accommodations from disk for duplicate check...")
+            loadFromDisk()
         }
+        
+        print("🔄 Ensured accommodations loaded: \(accommodations[resortId]?.count ?? 0) existing accommodations for resort \(resortId)")
     }
     
     /// Prüft ob eine Unterkunft mit der gleichen PlaceID bereits existiert
@@ -537,14 +540,16 @@ class AccommodationDatabase: ObservableObject {
                 }
             } else {
                 // Lade Unterkünfte von OpenStreetMap für echte Skigebiete
-                print("🌍 Searching OpenStreetMap around \(resort.name) at coordinate \(resort.coordinate.latitude), \(resort.coordinate.longitude) with 5km radius...")
+                let searchRadius = SearchSettings.shared.searchRadiusInMeters
+                print("🌍 Searching OpenStreetMap around \(resort.name) at coordinate \(resort.coordinate.latitude), \(resort.coordinate.longitude) with \(SearchSettings.shared.searchRadius)km radius...")
                 let osmAccommodations = try await overpassService.searchAccommodations(
                     around: resort.coordinate,
-                    radius: 5000 // 5km Radius
+                    radius: searchRadius
                 )
                 print("🏨 OpenStreetMap returned \(osmAccommodations.count) accommodations for \(resort.name)")
             
-                // Hole bereits existierende Unterkünfte für dieses Resort
+                // Hole bereits existierende Unterkünfte für dieses Resort (auch von Disk)
+                await ensureAccommodationsLoaded(for: resort.id.uuidString)
                 let existingAccommodations = accommodations[resort.id.uuidString] ?? []
                 
                 // UI Update: Zeige Anzahl gefundener Unterkünfte
@@ -560,8 +565,10 @@ class AccommodationDatabase: ObservableObject {
                     
                     // WICHTIG: Prüfe zuerst ob diese PlaceID bereits existiert
                     if accommodationExists(osmPlace.id, in: existingAccommodations) {
-                        print("⏭️ Skipping existing accommodation with ID: \(osmPlace.id)")
+                        print("⏭️ Skipping existing accommodation: \(osmPlace.name) (ID: \(osmPlace.id)) - already in database")
                         continue
+                    } else {
+                        print("✅ Adding new accommodation: \(osmPlace.name) (ID: \(osmPlace.id))")
                     }
                     
                     // Konvertiere OverpassAccommodation zu CachedAccommodation
@@ -753,6 +760,86 @@ class AccommodationDatabase: ObservableObject {
         }
     }
     
+    /// Consolidates duplicate accommodations that might exist under different resort UUIDs
+    /// This addresses the issue where resorts had unstable UUIDs in earlier versions
+    func consolidateDuplicateResorts() {
+        print("🔄 Starting resort consolidation to fix UUID-based duplicates...")
+        
+        // Group accommodations by placeId to identify true duplicates
+        var placeIdGroups: [String: [String]] = [:] // placeId -> [uuidStrings where this placeId exists]
+        
+        for (uuidString, accommodationList) in accommodations {
+            for accommodation in accommodationList {
+                let placeId = accommodation.placeId
+                
+                if placeIdGroups[placeId] == nil {
+                    placeIdGroups[placeId] = []
+                }
+                if !placeIdGroups[placeId]!.contains(uuidString) {
+                    placeIdGroups[placeId]!.append(uuidString)
+                }
+            }
+        }
+        
+        var hasChanges = false
+        var accommodationsToRemove: [(String, String)] = [] // (uuidString, placeId)
+        
+        // For each accommodation that appears under multiple resort UUIDs, keep only the most recent
+        for (placeId, uuidStrings) in placeIdGroups {
+            if uuidStrings.count > 1 {
+                print("🔍 Found accommodation \(placeId) in \(uuidStrings.count) different resort UUID entries")
+                
+                // Find the accommodation with the most recent lastUpdated date
+                var mostRecentUUID: String?
+                var mostRecentDate: Date?
+                
+                for uuidString in uuidStrings {
+                    if let accommodationList = accommodations[uuidString] {
+                        for accommodation in accommodationList where accommodation.placeId == placeId {
+                            if mostRecentDate == nil || accommodation.lastUpdated > mostRecentDate! {
+                                mostRecentDate = accommodation.lastUpdated
+                                mostRecentUUID = uuidString
+                            }
+                        }
+                    }
+                }
+                
+                // Mark duplicates for removal (keep only the most recent)
+                for uuidString in uuidStrings {
+                    if uuidString != mostRecentUUID {
+                        accommodationsToRemove.append((uuidString, placeId))
+                        hasChanges = true
+                    }
+                }
+            }
+        }
+        
+        // Remove the marked duplicates
+        for (uuidString, placeId) in accommodationsToRemove {
+            if var accommodationList = accommodations[uuidString] {
+                accommodationList.removeAll { $0.placeId == placeId }
+                
+                if accommodationList.isEmpty {
+                    // Remove the entire UUID entry if no accommodations left
+                    accommodations.removeValue(forKey: uuidString)
+                    lastUpdateDates.removeValue(forKey: uuidString)
+                    print("🗑️ Removed empty resort UUID entry: \(uuidString)")
+                } else {
+                    // Update the list with remaining accommodations
+                    accommodations[uuidString] = accommodationList
+                }
+            }
+        }
+        
+        if hasChanges {
+            calculateStatistics()
+            saveToDisk()
+            print("✅ Resort consolidation completed and saved")
+        } else {
+            print("✅ No resort consolidation needed")
+        }
+    }
+    
     // MARK: - Test Data Methods
     
     /// Erstellt ein Test-Hotel für das Test-Skigebiet
@@ -884,7 +971,37 @@ struct CachedAccommodation: Identifiable, Codable {
     }
     
     /// Konvertiert zurück zu legacy Accommodation für UI-Kompatibilität
-    func toAccommodation(resort: SkiResort) -> Accommodation {
+    func toAccommodation(resort: SkiResort) async -> Accommodation {
+        // Berechne objektive Bewertung wenn möglich
+        let spaFeatures = SpaFeatureSet(
+            hasPool: hasPool,
+            hasJacuzzi: hasJacuzzi,
+            hasSpa: hasSpa,
+            hasSauna: hasSauna
+        )
+        
+        // Erstelle OSM-ähnliche Daten aus verfügbaren Informationen
+        let osmData = OSMHotelData(
+            stars: nil, // Cached data usually doesn't have OSM stars
+            capacity: nil, // Not available in cached data
+            hasEmail: (scrapedEmail ?? email) != nil,
+            hasPhone: phone != nil,
+            hasWebsite: website != nil,
+            hasCompleteAddress: true // Assume complete for cached data
+        )
+        
+        // Lade historische Schneedaten für die Bewertung
+        let snowData = await SnowDataCache.shared.getHistoricalSnowData(for: resort.coordinate)
+        
+        let objectiveRating = ObjectiveRatingCalculator.shared.calculateRating(
+            distanceToLift: distanceToLift,
+            spaFeatures: spaFeatures,
+            resort: resort,
+            osmData: osmData,
+            snowData: snowData, // Jetzt mit echten Schneedaten!
+            hotelName: name // Hotel Name für Debug
+        )
+        
         return Accommodation(
             name: name,
             distanceToLift: distanceToLift,
@@ -893,12 +1010,12 @@ struct CachedAccommodation: Identifiable, Codable {
             hasSpa: hasSpa,
             hasSauna: hasSauna,
             pricePerNight: pricePerNight,
-            rating: rating,
+            rating: objectiveRating, // Objektive Bewertung statt gespeicherte
             imageUrl: imageUrl,
-            imageUrls: imageUrls, // Mehrere Bilder von Google Places
+            imageUrls: imageUrls,
             resort: resort,
             isRealData: isRealData,
-            email: scrapedEmail ?? email, // Bevorzuge gescrapte Email
+            email: scrapedEmail ?? email,
             phone: phone,
             website: website,
             coordinate: coordinate

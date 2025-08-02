@@ -398,7 +398,15 @@ struct AccommodationListView: View {
         case .priceDescending:
             return viewModel.accommodations.sorted { $0.pricePerNight > $1.pricePerNight }
         case .rating:
-            return viewModel.accommodations.sorted { $0.rating > $1.rating }
+            return viewModel.accommodations.sorted { 
+                // Sort by rating, but put accommodations without rating at the end
+                let rating1 = $0.rating ?? 0.0
+                let rating2 = $1.rating ?? 0.0
+                if $0.rating == nil && $1.rating == nil { return false }
+                if $0.rating == nil { return false } // Put nil ratings at end
+                if $1.rating == nil { return true }  // Put nil ratings at end
+                return rating1 > rating2
+            }
         case .spaFeatures:
             return viewModel.accommodations.sorted { accommodation1, accommodation2 in
                 let spa1Count = [accommodation1.hasPool, accommodation1.hasJacuzzi, accommodation1.hasSpa, accommodation1.hasSauna].filter { $0 }.count

@@ -5,6 +5,8 @@ struct ResortDetailView: View {
     let resort: SkiResort
     @Environment(\.dismiss) var dismiss
     @ObservedObject private var localization = LocalizationService.shared
+    @StateObject private var viewModel = SkiResortViewModel()
+    @State private var showingWeatherDetail = false
     
     var body: some View {
         NavigationView {
@@ -13,6 +15,18 @@ struct ResortDetailView: View {
                     
                     // Resort Header
                     ResortHeaderCard(resort: resort)
+                    
+                    // Current Weather
+                    if let weather = viewModel.weatherData {
+                        WeatherCard(
+                            weather: weather,
+                            openMeteoData: viewModel.openMeteoData,
+                            onTap: {
+                                HapticFeedback.impact(.light)
+                                showingWeatherDetail = true
+                            }
+                        )
+                    }
                     
                     // Lift Information - Only show if data available
                     if resort.liftCount != nil {
@@ -36,6 +50,20 @@ struct ResortDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("close".localized) { dismiss() }
+                }
+            }
+            .sheet(isPresented: $showingWeatherDetail) {
+                if let weather = viewModel.weatherData {
+                    WeatherDetailView(
+                        weather: weather,
+                        openMeteoData: viewModel.openMeteoData
+                    )
+                }
+            }
+            .onAppear {
+                viewModel.selectedResort = resort
+                Task {
+                    await viewModel.fetchWeatherData()
                 }
             }
         }
@@ -280,7 +308,7 @@ struct ResortMapsCard: View {
                 
                 // Fullscreen button
                 Button(action: { showingFullScreenMap = true }) {
-                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                    Image(systemName: "plus.magnifyingglass")
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .padding(8)
@@ -417,7 +445,7 @@ struct ResortMapViewInteractive: View {
                             Button(action: {
                                 onFullscreenTap?()
                             }) {
-                                Image(systemName: "arrow.up.left.and.arrow.down.right")
+                                Image(systemName: "plus.magnifyingglass")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(DesignSystem.Colors.primaryText)
                                     .frame(width: 44, height: 44)

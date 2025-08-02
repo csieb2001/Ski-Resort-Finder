@@ -17,7 +17,7 @@ struct DebugView: View {
                 Section("system_info".localized) {
                     DebugRow(title: "ios_version".localized, value: UIDevice.current.systemVersion)
                     DebugRow(title: "device".localized, value: UIDevice.current.model)
-                    DebugRow(title: "app_version".localized, value: "1.0")
+                    DebugRow(title: "app_version".localized, value: AppVersion.currentVersion)
                     DebugRow(title: "ski_resorts_loaded".localized, value: "\(SkiResortDatabase.shared.allSkiResorts.count)")
                     DebugRow(title: "favorites".localized, value: "\(FavoritesManager.shared.favoriteResortIDs.count)")
                 }

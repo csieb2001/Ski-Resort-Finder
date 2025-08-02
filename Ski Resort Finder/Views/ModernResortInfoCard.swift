@@ -94,19 +94,19 @@ struct ModernResortInfoCard: View {
                     HStack(spacing: DesignSystem.Spacing.sm) {
                         Image(systemName: "chart.bar.fill")
                             .font(DesignSystem.Typography.callout)
-                            .foregroundColor(DesignSystem.Colors.accent)
+                            .foregroundColor(DesignSystem.Colors.tertiaryText)
                         
                         Text("detailed_snow_statistics".localized)
                             .font(DesignSystem.Typography.callout)
                             .fontWeight(.medium)
-                            .foregroundColor(DesignSystem.Colors.accent)
+                            .foregroundColor(DesignSystem.Colors.tertiaryText)
                         
                         Spacer()
                         
                         Image(systemName: "chevron.right")
                             .font(DesignSystem.Typography.caption1)
                             .fontWeight(.medium)
-                            .foregroundColor(DesignSystem.Colors.accent)
+                            .foregroundColor(DesignSystem.Colors.tertiaryText)
                     }
                     .padding(DesignSystem.Spacing.md)
                     .background(DesignSystem.Colors.accent.opacity(0.08))
@@ -149,6 +149,9 @@ struct ModernResortInfoCard: View {
                 await MainActor.run {
                     self.historicalSnowData = snowData
                 }
+                
+                // Preload snow data für hotel ratings
+                SnowDataCache.shared.preloadSnowData(for: resort.coordinate)
             } catch {
                 print("Error loading historical snow data: \(error)")
             }

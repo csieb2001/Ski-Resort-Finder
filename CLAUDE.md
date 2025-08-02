@@ -15,6 +15,8 @@ Eine iOS-App für Ski-Enthusiasten zum Finden von Unterkünften mit speziellen K
 - Im gesamten Projekt werden ausschließlich echte Daten aus APIs verwendet
 - Keine generierten, fake oder simulierten Kontaktdaten (E-Mail, Telefon, Website)
 - Keine fake Skipass-Preise, Liftanzahlen oder andere Gebietsdaten verwenden
+- **KEINE fake Schneedaten**: Ohne gültigen ERA5 API-Schlüssel werden KEINE Schneedaten generiert
+- Hotel-Bewertungen funktionieren ohne Schnee-Komponente (22% Gewichtung entfällt)
 - Wenn keine echten Daten verfügbar sind, wird dies transparent angezeigt ("Nicht verfügbar")
 - Benutzer werden klar informiert, wenn Daten nicht verfügbar sind
 - Alle Datenquellen müssen authentisch und verifizierbar sein

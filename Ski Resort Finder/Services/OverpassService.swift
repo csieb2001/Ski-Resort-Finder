@@ -756,10 +756,23 @@ struct OverpassAccommodation {
     let hasSpa: Bool
     let hasSauna: Bool
     
-    func toAccommodation(resort: SkiResort) -> Accommodation {
+    func toAccommodation(resort: SkiResort) async -> Accommodation {
         let distance = calculateDistance(to: resort.coordinate)
         let priceCategory = determinePriceCategory()
         let estimatedPrice = estimatePrice(from: priceCategory)
+        
+        // Lade historische Schneedaten für die Bewertung
+        let snowData = await SnowDataCache.shared.getHistoricalSnowData(for: resort.coordinate)
+        
+        // Berechne objektive Bewertung basierend auf echten Daten
+        let objectiveRating = ObjectiveRatingCalculator.shared.calculateRating(
+            distanceToLift: Int(distance),
+            spaFeatures: toSpaFeatureSet(),
+            resort: resort,
+            osmData: toOSMHotelData(),
+            snowData: snowData, // Jetzt mit echten Schneedaten!
+            hotelName: name
+        )
         
         return Accommodation(
             name: name,
@@ -769,7 +782,7 @@ struct OverpassAccommodation {
             hasSpa: hasSpa,
             hasSauna: hasSauna,
             pricePerNight: estimatedPrice,
-            rating: estimateRating(),
+            rating: objectiveRating, // Nur objektive Bewertung oder nil
             imageUrl: "", // OSM doesn't provide photos
             resort: resort,
             email: email,
@@ -792,25 +805,8 @@ struct OverpassAccommodation {
         }
     }
     
-    private func estimateRating() -> Double {
-        if let stars = stars {
-            return Double(stars)
-        }
-        
-        // Estimate based on accommodation type
-        switch tourismType {
-        case "hotel":
-            return Double.random(in: 3.5...4.5)
-        case "resort":
-            return Double.random(in: 4.0...5.0)
-        case "guest_house":
-            return Double.random(in: 3.0...4.0)
-        case "hostel":
-            return Double.random(in: 2.5...3.5)
-        default:
-            return Double.random(in: 3.0...4.0)
-        }
-    }
+    // REMOVED: estimateRating() - violates NO FAKE DATA policy
+    // Rating is now calculated objectively by ObjectiveRatingCalculator
     
     private func calculateDistance(to coordinate: CLLocationCoordinate2D) -> Double {
         let accommodationLocation = CLLocation(latitude: self.coordinate.latitude, longitude: self.coordinate.longitude)
@@ -861,5 +857,36 @@ enum OverpassError: Error {
         case .noDataFound:
             return "No accommodation data found"
         }
+    }
+}
+
+// MARK: - OverpassAccommodation Extension for Objective Rating
+
+extension OverpassAccommodation {
+    /// Erstellt OSMHotelData für objektive Bewertung
+    func toOSMHotelData() -> OSMHotelData {
+        return OSMHotelData(
+            stars: stars,  // Already parsed in OverpassAccommodation
+            capacity: capacity,  // Already parsed in OverpassAccommodation
+            hasEmail: email != nil && !email!.isEmpty,
+            hasPhone: phone != nil && !phone!.isEmpty,
+            hasWebsite: website != nil && !website!.isEmpty,
+            hasCompleteAddress: hasCompleteAddress()
+        )
+    }
+    
+    private func hasCompleteAddress() -> Bool {
+        // Consider address complete if we have a non-empty address string
+        return !address.isEmpty && address.contains(",")
+    }
+    
+    /// Erstellt SpaFeatureSet für objektive Bewertung
+    func toSpaFeatureSet() -> SpaFeatureSet {
+        return SpaFeatureSet(
+            hasPool: hasPool,
+            hasJacuzzi: hasJacuzzi,
+            hasSpa: hasSpa,
+            hasSauna: hasSauna
+        )
     }
 }

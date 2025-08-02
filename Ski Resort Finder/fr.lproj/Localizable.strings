@@ -33,6 +33,7 @@
 /* Demande de Réservation */
 "booking_request" = "Demande de Réservation";
 "contact_data" = "Informations de Contact";
+"your_contact_data" = "Vos Informations de Contact";
 "name" = "Nom";
 "email" = "E-mail";
 "mobile_phone" = "Téléphone Mobile";
@@ -50,6 +51,7 @@
 "request_sent_message" = "Votre demande a été envoyée avec succès à %@. Vous recevrez une réponse par e-mail sous peu.";
 
 /* Scan de Contenu */
+"content_scanning" = "Scan de Contenu";
 "content_scanning_in_progress" = "Scan de Contenu en Cours";
 "content_scanning_completed" = "Scan de Contenu Terminé";
 "content_scanning_error" = "Erreur de Scan de Contenu";
@@ -61,6 +63,8 @@
 "scanned" = "scanné";
 "progress_percentage" = "%d%% terminé";
 "tap_to_stop" = "Appuyez pour arrêter";
+"search_all_emails" = "Rechercher les e-mails et spa pour tous dans cette station";
+"email_search_description" = "Trouver les coordonnées pour les demandes de réservation";
 
 /* Base de Données d'Hébergements */
 "accommodation_database" = "Base de Données d'Hébergements";
@@ -138,6 +142,7 @@
 /* Données Historiques de Neige */
 "snow_statistics_3y" = "Statistiques de Neige (3 Ans)";
 "snow_statistics_5y" = "Statistiques de Neige (5 Ans)";
+"snow_statistics_10y" = "Statistiques de Neige (10 Ans)";
 "avg_snowfall" = "⌀ Chute de Neige";
 "avg_snow_days" = "⌀ Jours de Neige";
 "days" = "Jours";
@@ -164,7 +169,7 @@
 "loading" = "Chargement...";
 
 /* Favoris */
-"favorites_star" = "⭐ Favoris";
+"favorites_star" = "Favoris";
 
 /* Top 3 Stations */
 "top3_ski_resorts" = "Top 3 Stations de Ski";
@@ -177,15 +182,14 @@
 "celsius_unit" = "°C";
 "percent_unit" = "%";
 
-/* Scan de Contenu */
-"search_all_emails" = "Rechercher les e-mails pour tous les hébergements";
-"search_email" = "Rechercher E-mail";
+/* Scan de Contenu - Doublons supprimés (les clés sont maintenant dans la section principale) */
 
 /* Graphique de Neige */
 "snowfall_trend" = "Tendance des Chutes de Neige";
 "snow_days_trend" = "Tendance des Jours de Neige";
 "3_years" = "3 Ans";
 "5_years" = "5 Ans";
+"10_years" = "10 Ans";
 "range" = "Plage";
 "increasing_trend" = "Tendance Croissante";
 "decreasing_trend" = "Tendance Décroissante";
@@ -253,3 +257,46 @@
 /* Maps */
 "trail_map" = "Carte des Pistes";
 "slopes_and_trails" = "Pistes et tracés";
+
+/* Objective Rating */
+"objective_rating_system" = "Système de Notation Objective";
+"objective_rating_explanation" = "Les notes d'hôtels sont basées exclusivement sur des critères mesurables, transparents et objectifs - sans opinions subjectives ou faux avis.";
+"lift_distance_criteria" = "Distance aux Remontées";
+"lift_distance_explanation" = "Plus proche de la station de remontée, meilleure est la note";
+"snow_history_criteria" = "Historique de Neige";
+"snow_history_explanation" = "Moyenne sur 5 ans de la quantité de neige et de la consistance";
+"resort_quality_criteria" = "Qualité de la Station";
+"resort_quality_explanation" = "Distance des pistes, différence d'altitude et taille de la station";
+"spa_features_criteria" = "Caractéristiques Bien-être";
+"spa_features_explanation" = "Disponibilité de piscine, spa, sauna et jacuzzi";
+"hotel_quality_criteria" = "Qualité de l'Hôtel";
+"hotel_quality_explanation" = "Classification étoilée et caractéristiques des installations";
+"elevation_criteria" = "Altitude";
+"elevation_explanation" = "Altitude moyenne de la station de ski";
+"rating_calculation_note" = "Au moins 3 critères doivent être disponibles pour une note valide. La notation est sur une échelle de 1 à 5 étoiles.";
+
+/* About Screen Features */
+"features" = "Fonctionnalités";
+"multiple_booking_requests" = "Demandes de Réservation Multiples";
+"send_multiple_requests" = "Envoyer des demandes à plusieurs hébergements simultanément";
+"direct_contact" = "Contact Direct";
+"automated_accommodation_contact" = "Contact automatisé d'hébergement sans sites de réservation";
+"worldwide_resorts" = "140+ Stations de Ski";
+"worldwide_countries" = "Dans le monde entier dans 36 pays";
+"accommodations_worldwide" = "Hébergements dans le Monde Entier";
+"overpass_api_accommodations" = "Données d'hébergement gratuites via OpenStreetMap";
+"osr_objective_rating" = "Notation Objective OSR";
+"osr_rating_description" = "Évaluations d'hôtels mesurables et transparentes sans faux avis";
+"detailed_resort_info" = "Informations Détaillées de la Station";
+"lifts_slopes_info" = "Nombre de remontées et répartition des pistes";
+"live_weather" = "Météo en Direct";
+"openweathermap_integration" = "Intégration OpenWeatherMap";
+"favorites" = "Favoris";
+"quick_access_resorts" = "Accès rapide aux stations de ski populaires";
+"map_view" = "Vue Carte";
+"hotels_lifts_visualized" = "Hôtels et remontées visualisés";
+"developed_by" = "Développé par";
+"created_for_ski_enthusiasts" = "Créé pour les passionnés de ski du monde entier";
+"data_sources" = "Sources de Données";
+"debug_system_info" = "Informations de Debug et Système";
+"about_app" = "À Propos de l'App";

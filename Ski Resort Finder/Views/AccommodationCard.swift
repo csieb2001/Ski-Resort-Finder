@@ -60,13 +60,16 @@ struct AccommodationCard: View {
                                     .font(DesignSystem.Typography.caption1)
                                     .foregroundColor(DesignSystem.Colors.primary)
                                 
-                                HStack(spacing: 2) {
-                                    Image(systemName: "star.fill")
-                                        .font(.caption2)
-                                        .foregroundColor(DesignSystem.Colors.accent)
-                                    Text(String(format: "%.1f", accommodation.rating))
-                                        .font(DesignSystem.Typography.caption1)
-                                        .foregroundColor(DesignSystem.Colors.secondaryText)
+                                // Only show rating if calculable (NO FAKE DATA policy)
+                                if let rating = accommodation.rating {
+                                    HStack(spacing: 2) {
+                                        Image(systemName: "star.fill")
+                                            .font(.caption2)
+                                            .foregroundColor(DesignSystem.Colors.accent)
+                                        Text(String(format: "%.1f", rating))
+                                            .font(DesignSystem.Typography.caption1)
+                                            .foregroundColor(DesignSystem.Colors.secondaryText)
+                                    }
                                 }
                             }
                         }

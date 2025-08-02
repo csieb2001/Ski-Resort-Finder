@@ -18,9 +18,9 @@ class ERA5SnowService: ObservableObject {
         
         // Prüfe API Konfiguration vor den Anfragen
         guard ERA5Config.isConfigured && ERA5Config.isValidFormat else {
-            print("ERA5 Service: API nicht konfiguriert oder ungültiges Format - verwende lokale Berechnung")
-            // Fallback: Verwende realistische lokale Berechnung ohne API
-            return generateRealisticLocalSnowData(for: coordinate, years: years)
+            print("ERA5 Service: ❌ API nicht konfiguriert oder ungültiges Format")
+            print("KEINE FAKE-DATEN POLICY: Keine Schneedaten ohne gültige API")
+            throw ERA5Error.missingAPIKey // Fehler werfen statt fake Daten
         }
         
         // Für jedes Jahr echte ERA5 Daten abrufen
@@ -31,9 +31,8 @@ class ERA5SnowService: ObservableObject {
                 print("ERA5 Service: Jahr \(year) erfolgreich geladen")
             } catch {
                 print("ERA5 Service: Fehler für Jahr \(year): \(error)")
-                // Bei Fehlern einzelner Jahre: Verwende lokale Berechnung für dieses Jahr
-                let localData = generateRealisticYearData(for: coordinate, year: year)
-                yearlyData.append(localData)
+                print("❌ KEINE FAKE-DATEN POLICY: Überspringe Jahr \(year) - nur echte API-Daten")
+                // KEINE lokale Berechnung - nur echte Daten verwenden!
             }
         }
         
@@ -82,8 +81,9 @@ class ERA5SnowService: ObservableObject {
             throw ERA5Error.invalidAPIKeyFormat
         }
         
-        guard let url = URL(string: "\(ERA5Config.baseURL)/resources/\(request.dataset)") else {
-            print("ERA5 Debug: Ungültige URL: \(ERA5Config.baseURL)/resources/\(request.dataset)")
+        // CDS API v2 verwendet /tasks endpoint für Anfragen
+        guard let url = URL(string: "\(ERA5Config.baseURL)/tasks") else {
+            print("ERA5 Debug: Ungültige URL: \(ERA5Config.baseURL)/tasks")
             throw ERA5Error.invalidURL
         }
         

@@ -18,7 +18,7 @@ struct AboutView: View {
                             .font(.largeTitle)
                             .fontWeight(.bold)
                         
-                        Text("version".localized)
+                        Text("Version \(AppVersion.currentVersion)")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -36,12 +36,79 @@ struct AboutView: View {
                         FeatureRow(icon: "envelope.fill", title: "direct_contact".localized, description: "automated_accommodation_contact".localized)
                         FeatureRow(icon: "mountain.2.fill", title: "worldwide_resorts".localized, description: "worldwide_countries".localized)
                         FeatureRow(icon: "building.2.fill", title: "accommodations_worldwide".localized, description: "overpass_api_accommodations".localized)
+                        FeatureRow(icon: "star.circle.fill", title: "osr_objective_rating".localized, description: "osr_rating_description".localized)
                         FeatureRow(icon: "info.circle.fill", title: "detailed_resort_info".localized, description: "lifts_slopes_info".localized)
                         FeatureRow(icon: "cloud.snow.fill", title: "live_weather".localized, description: "openweathermap_integration".localized)
                         FeatureRow(icon: "chart.line.uptrend.xyaxis", title: "detailed_snow_statistics".localized, description: "era5_historical_data".localized)
                         FeatureRow(icon: "globe", title: "multi_language_support".localized, description: "localized_8_languages".localized)
                         FeatureRow(icon: "star.fill", title: "favorites".localized, description: "quick_access_resorts".localized)
                         FeatureRow(icon: "map.fill", title: "map_view".localized, description: "hotels_lifts_visualized".localized)
+                    }
+                    .padding()
+                    
+                    Divider()
+                    
+                    // Objektive Bewertung
+                    VStack(alignment: .leading, spacing: 15) {
+                        HStack {
+                            Image(systemName: "star.fill")
+                                .foregroundColor(.orange)
+                            Text("\("objective_rating_system".localized) (OSR)")
+                                .font(.headline)
+                        }
+                        
+                        Text("objective_rating_explanation".localized)
+                            .font(.body)
+                            .foregroundColor(.primary)
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            RatingCriteriaRow(
+                                icon: "figure.skiing.downhill", 
+                                title: "lift_distance_criteria".localized, 
+                                weight: "20%", 
+                                description: "lift_distance_explanation".localized
+                            )
+                            
+                            RatingCriteriaRow(
+                                icon: "snow", 
+                                title: "snow_history_criteria".localized, 
+                                weight: "22%", 
+                                description: "snow_history_explanation".localized
+                            )
+                            
+                            RatingCriteriaRow(
+                                icon: "mountain.2.fill", 
+                                title: "resort_quality_criteria".localized, 
+                                weight: "20%", 
+                                description: "resort_quality_explanation".localized
+                            )
+                            
+                            RatingCriteriaRow(
+                                icon: "leaf.fill", 
+                                title: "spa_features_criteria".localized, 
+                                weight: "18%", 
+                                description: "spa_features_explanation".localized
+                            )
+                            
+                            RatingCriteriaRow(
+                                icon: "building.2.fill", 
+                                title: "hotel_quality_criteria".localized, 
+                                weight: "10%", 
+                                description: "hotel_quality_explanation".localized
+                            )
+                            
+                            RatingCriteriaRow(
+                                icon: "arrow.up.to.line", 
+                                title: "elevation_criteria".localized, 
+                                weight: "10%", 
+                                description: "elevation_explanation".localized
+                            )
+                        }
+                        
+                        Text("rating_calculation_note".localized)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.top, 10)
                     }
                     .padding()
                     
@@ -142,5 +209,43 @@ struct FeatureRow: View {
             
             Spacer()
         }
+    }
+}
+
+struct RatingCriteriaRow: View {
+    let icon: String
+    let title: String
+    let weight: String
+    let description: String
+    
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: icon)
+                .font(.title3)
+                .foregroundColor(.orange)
+                .frame(width: 25)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(title)
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                    Spacer()
+                    Text(weight)
+                        .font(.caption)
+                        .fontWeight(.medium)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 2)
+                        .background(Color.orange.opacity(0.2))
+                        .cornerRadius(4)
+                }
+                
+                Text(description)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(nil)
+            }
+        }
+        .padding(.vertical, 4)
     }
 }

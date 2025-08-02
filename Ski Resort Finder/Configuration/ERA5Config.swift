@@ -11,11 +11,11 @@ struct ERA5Config {
     
     // MARK: - API Configuration
     
-    /// ERA5 API Base URL
+    /// ERA5 API Base URL - CDS API v2
     static let baseURL = "https://cds.climate.copernicus.eu/api/v2"
     
     /// Ihr ERA5 API-Schlüssel hier eintragen
-    /// Format: "12345:abcd-1234-efgh-5678-ijkl"
+    /// Format: "uuid:uuid" (beide Teile sind UUIDs mit Bindestrichen)
     /// 
     /// ⚠️ WICHTIG: Für Production-Apps sollten Sie dies nicht hart kodieren!
     /// Verwenden Sie stattdessen:
@@ -23,8 +23,8 @@ struct ERA5Config {
     /// - Keychain Services  
     /// - Remote Configuration
     /// 
-    /// BEISPIEL: private static let hardcodedAPIKey: String? = "12345:abcd-1234-efgh-5678"
-    private static let hardcodedAPIKey: String? = "d4ece7aa-d2f6-459a-a3e5-474fbae0d75d:4a80f277-2faa-476e-b3ed-e139da4da6e4" // <- IHREN ECHTEN ERA5 API-SCHLÜSSEL HIER EINTRAGEN (Format: "12345:abcd-1234-efgh-5678")
+    /// BEISPIEL: private static let hardcodedAPIKey: String? = "uuid:uuid"
+    private static let hardcodedAPIKey: String? = "d4ece7aa-d2f6-459a-a3e5-474fbae0d75d:4a80f277-2faa-476e-b3ed-e139da4da6e4" // <- IHREN ECHTEN ERA5 API-SCHLÜSSEL HIER EINTRAGEN (Format: "uuid:uuid")
     
     // MARK: - API Key Retrieval
     
@@ -110,8 +110,8 @@ struct ERA5Config {
     static var isValidFormat: Bool {
         guard let key = apiKey else { return false }
         
-        // ERA5 API Keys haben das Format: "12345:abcd-1234-efgh-5678"
-        let pattern = #"^\d+:[a-f0-9\-]+$"#
+        // ERA5 API Keys haben das Format: "uuid:uuid" (beide Teile sind UUIDs)
+        let pattern = #"^[a-f0-9\-]+:[a-f0-9\-]+$"#
         let regex = try? NSRegularExpression(pattern: pattern)
         let range = NSRange(location: 0, length: key.count)
         return regex?.firstMatch(in: key, options: [], range: range) != nil

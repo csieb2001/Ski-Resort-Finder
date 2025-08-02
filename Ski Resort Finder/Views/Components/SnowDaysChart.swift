@@ -30,7 +30,7 @@ struct SnowDaysChart: View {
                 
                 Spacer()
                 
-                Text("5_years".localized)
+                Text("10_years".localized)
                     .font(DesignSystem.Typography.caption1)
                     .foregroundColor(DesignSystem.Colors.secondaryText)
                     .padding(.horizontal, DesignSystem.Spacing.sm)

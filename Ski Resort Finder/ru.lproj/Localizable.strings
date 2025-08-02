@@ -33,6 +33,7 @@
 /* Запрос на бронирование */
 "booking_request" = "Запрос на бронирование";
 "contact_data" = "Контактная информация";
+"your_contact_data" = "Ваша контактная информация";
 "name" = "Имя";
 "email" = "Электронная почта";
 "mobile_phone" = "Мобильный телефон";
@@ -50,6 +51,7 @@
 "request_sent_message" = "Ваш запрос был успешно отправлен в %@. Вы получите ответ по электронной почте в ближайшее время.";
 
 /* Сканирование контента */
+"content_scanning" = "Сканирование контента";
 "content_scanning_in_progress" = "Сканирование контента в процессе";
 "content_scanning_completed" = "Сканирование контента завершено";
 "content_scanning_error" = "Ошибка сканирования контента";
@@ -61,6 +63,8 @@
 "scanned" = "отсканировано";
 "progress_percentage" = "%d%% завершено";
 "tap_to_stop" = "Нажмите для остановки";
+"search_all_emails" = "Найти email и спа для всех в этом курорте";
+"email_search_description" = "Найти контактные данные для запросов на бронирование";
 
 /* База данных размещений */
 "accommodation_database" = "База данных размещений";
@@ -138,6 +142,7 @@
 /* Исторические данные о снеге */
 "snow_statistics_3y" = "Статистика снега (3 года)";
 "snow_statistics_5y" = "Статистика снега (5 лет)";
+"snow_statistics_10y" = "Статистика снега (10 лет)";
 "avg_snowfall" = "⌀ Снегопад";
 "avg_snow_days" = "⌀ Снежные дни";
 "days" = "Дни";
@@ -164,7 +169,7 @@
 "loading" = "Загрузка...";
 
 /* Избранное */
-"favorites_star" = "⭐ Избранное";
+"favorites_star" = "Избранное";
 
 /* Топ 3 курорта */
 "top3_ski_resorts" = "Топ 3 горнолыжных курорта";
@@ -177,15 +182,14 @@
 "celsius_unit" = "°C";
 "percent_unit" = "%";
 
-/* Сканирование контента */
-"search_all_emails" = "Найти email для всех размещений";
-"search_email" = "Найти email";
+/* Сканирование контента - Дубликаты удалены (ключи теперь в основной секции) */
 
 /* График Снега */
 "snowfall_trend" = "Тренд Снегопада";
 "snow_days_trend" = "Тренд Снежных Дней";
 "3_years" = "3 Года";
 "5_years" = "5 Лет";
+"10_years" = "10 Лет";
 "range" = "Диапазон";
 "increasing_trend" = "Растущий Тренд";
 "decreasing_trend" = "Убывающий Тренд";
@@ -263,3 +267,46 @@
 "trail_map" = "Карта Трасс";
 "slopes_and_trails" = "Трассы и склоны";
 "piste_label" = "Трасса";
+
+/* Objective Rating */
+"objective_rating_system" = "Объективная Система Рейтинга";
+"objective_rating_explanation" = "Рейтинги отелей основаны исключительно на измеримых, прозрачных и объективных критериях - без субъективных мнений или поддельных отзывов.";
+"lift_distance_criteria" = "Расстояние до Подъемников";
+"lift_distance_explanation" = "Чем ближе к станции подъемника, тем выше рейтинг";
+"snow_history_criteria" = "История Снега";
+"snow_history_explanation" = "5-летнее среднее количества снега и постоянства";
+"resort_quality_criteria" = "Качество Курорта";
+"resort_quality_explanation" = "Расстояние склонов, разность высот и размер курорта";
+"spa_features_criteria" = "Wellness-Особенности";
+"spa_features_explanation" = "Доступность бассейна, спа, сауны и джакузи";
+"hotel_quality_criteria" = "Качество Отеля";
+"hotel_quality_explanation" = "Звездная классификация и особенности удобств";
+"elevation_criteria" = "Высота";
+"elevation_explanation" = "Средняя высота горнолыжного курорта";
+"rating_calculation_note" = "Как минимум 3 критерия должны быть доступны для действительного рейтинга. Рейтинг по шкале от 1 до 5 звезд.";
+
+/* About Screen Features */
+"features" = "Возможности";
+"multiple_booking_requests" = "Множественные Запросы на Бронирование";
+"send_multiple_requests" = "Отправлять запросы в несколько размещений одновременно";
+"direct_contact" = "Прямой Контакт";
+"automated_accommodation_contact" = "Автоматизированный контакт с размещениями без сайтов бронирования";
+"worldwide_resorts" = "140+ Горнолыжных Курортов";
+"worldwide_countries" = "По всему миру в 36 странах";
+"accommodations_worldwide" = "Размещения по Всему Миру";
+"overpass_api_accommodations" = "Бесплатные данные размещений через OpenStreetMap";
+"osr_objective_rating" = "Объективный Рейтинг OSR";
+"osr_rating_description" = "Измеримые и прозрачные рейтинги отелей без поддельных отзывов";
+"detailed_resort_info" = "Подробная Информация о Курорте";
+"lifts_slopes_info" = "Количество подъемников и разбивка склонов";
+"live_weather" = "Живая Погода";
+"openweathermap_integration" = "Интеграция OpenWeatherMap";
+"favorites" = "Избранное";
+"quick_access_resorts" = "Быстрый доступ к популярным горнолыжным курортам";
+"map_view" = "Вид Карты";
+"hotels_lifts_visualized" = "Отели и подъемники визуализированы";
+"developed_by" = "Разработано";
+"created_for_ski_enthusiasts" = "Создано для лыжных энтузиастов по всему миру";
+"data_sources" = "Источники Данных";
+"debug_system_info" = "Отладка и Системная Информация";
+"about_app" = "О Приложении";

@@ -133,13 +133,18 @@ struct MapView: View {
                 loadSkiLifts()
             }
         }) {
-            Image(systemName: showLifts ? "cable.car.fill" : "cable.car")
+            Image(systemName: showLifts ? "tram.fill" : "tram")
                 .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(showLifts ? DesignSystem.Colors.primary : DesignSystem.Colors.secondaryText)
+                .foregroundColor(showLifts ? DesignSystem.Colors.accent : DesignSystem.Colors.secondaryText)
                 .frame(width: 44, height: 44)
+                .background(showLifts ? DesignSystem.Colors.accent.opacity(0.1) : Color.clear)
                 .background(.regularMaterial)
                 .clipShape(Circle())
                 .shadow(color: DesignSystem.Shadow.medium.color, radius: DesignSystem.Shadow.medium.radius)
+                .overlay(
+                    Circle()
+                        .stroke(showLifts ? DesignSystem.Colors.accent : Color.clear, lineWidth: 2)
+                )
         }
     }
     
@@ -223,7 +228,7 @@ struct MapView: View {
                 refreshMapOverlays()
             }
         }) {
-            Image(systemName: showPisteNames ? "textformat" : "textformat.alt")
+            Image(systemName: showPisteNames ? "text.bubble.fill" : "text.bubble")
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(showPisteNames ? DesignSystem.Colors.accent : DesignSystem.Colors.secondaryText)
                 .frame(width: 44, height: 44)
@@ -899,13 +904,16 @@ struct AccommodationMapCard: View {
                         
                         Spacer()
                         
-                        HStack(spacing: 2) {
-                            Image(systemName: "star.fill")
-                                .font(.caption)
-                                .foregroundColor(.yellow)
-                            Text(String(format: "%.1f", accommodation.rating))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                        // Only show rating if available (NO FAKE DATA policy)
+                        if let rating = accommodation.rating {
+                            HStack(spacing: 2) {
+                                Image(systemName: "star.fill")
+                                    .font(.caption)
+                                    .foregroundColor(.yellow)
+                                Text(String(format: "%.1f", rating))
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
                         }
                     }
                 }

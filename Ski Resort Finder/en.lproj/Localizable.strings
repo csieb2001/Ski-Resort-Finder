@@ -8,6 +8,13 @@
 "to" = "To";
 "search_accommodations" = "Search Accommodations";
 "search_again" = "Search Again";
+"search_radius" = "Search Radius";
+"search_radius_1km" = "1 km";
+"search_radius_km" = "%d km";
+"radius_description_close" = "Very close - only directly at the ski resort";
+"radius_description_moderate" = "Moderate - in the valley and nearby area";  
+"radius_description_wide" = "Extended - larger area including neighboring places";
+"radius_description_very_wide" = "Very wide - entire region";
 "selected_resort" = "Selected Ski Resort";
 
 /* Resort Selection */
@@ -33,6 +40,7 @@
 /* Booking Request */
 "booking_request" = "Booking Request";
 "contact_data" = "Contact Information";
+"your_contact_data" = "Your Contact Information";
 "name" = "Name";
 "email" = "Email";
 "mobile_phone" = "Mobile Phone";
@@ -213,6 +221,8 @@
 "worldwide_countries" = "Worldwide in 36 Countries";
 "accommodations_worldwide" = "Accommodations Worldwide";
 "openstreetmap_api" = "Via API";
+"osr_objective_rating" = "OSR Objective Rating";
+"osr_rating_description" = "Measurable and transparent hotel ratings without fake reviews";
 "detailed_resort_info" = "Detailed Resort Information";
 "lifts_slopes_info" = "Lift counts and slope breakdown";
 "live_weather" = "Live Weather";
@@ -223,6 +233,24 @@
 "hotels_lifts_visualized" = "Hotels and lifts visualized";
 "developed_by" = "Developed by";
 "created_for_ski_enthusiasts" = "Created for ski enthusiasts worldwide";
+
+/* Objective Rating */
+"objective_rating_system" = "Objective Rating System";
+"objective_rating_explanation" = "Hotel ratings are based exclusively on measurable, transparent, objective criteria - no subjective opinions or fake reviews.";
+"lift_distance_criteria" = "Lift Distance";
+"lift_distance_explanation" = "The closer to the lift station, the better the rating";
+"snow_history_criteria" = "Snow History";
+"snow_history_explanation" = "5-year average of snowfall amount and consistency";
+"resort_quality_criteria" = "Resort Quality";
+"resort_quality_explanation" = "Slope distance, elevation difference, and resort size";
+"spa_features_criteria" = "Wellness Features";
+"spa_features_explanation" = "Pool, spa, sauna, and jacuzzi availability";
+"hotel_quality_criteria" = "Hotel Quality";
+"hotel_quality_explanation" = "Star classification and facility features";
+"elevation_criteria" = "Elevation";
+"elevation_explanation" = "Average elevation of the ski resort";
+"rating_calculation_note" = "At least 3 criteria must be available for a valid rating. Rating is on a scale of 1-5 stars.";
+
 "data_sources" = "Data Sources";
 "debug_system_info" = "Debug & System Info";
 "about_app" = "About the App";
@@ -249,6 +277,7 @@
 /* Historical Snow */
 "snow_statistics_3y" = "Snow Statistics (3 Years)";
 "snow_statistics_5y" = "Snow Statistics (5 Years)";
+"snow_statistics_10y" = "Snow Statistics (10 Years)";
 "avg_snowfall" = "⌀ Snowfall";
 "avg_snow_days" = "⌀ Snow Days";
 "days" = "Days";
@@ -302,7 +331,7 @@
 "request_to_count" = "Request to %d";
 
 /* Favorites */
-"favorites_star" = "⭐ Favorites";
+"favorites_star" = "Favorites";
 
 /* Top 3 Ski Resorts */
 "top3_ski_resorts" = "Top 3 Ski Resorts";
@@ -310,6 +339,7 @@
 "top3_slope_kilometers" = "Slope Area";
 "top3_slope_count" = "Slope Count";
 "top3_max_elevation" = "Max Height";
+"top3_hotel_rating" = "Hotel Rating";
 "pisten_count" = "Slopes";
 
 /* Sorting Extended */
@@ -499,6 +529,7 @@
 "snow_days_trend" = "Snow Days Trend";
 "3_years" = "3 Years";
 "5_years" = "5 Years";
+"10_years" = "10 Years";
 "range" = "Range";
 "increasing_trend" = "Increasing Trend";
 "decreasing_trend" = "Decreasing Trend";
@@ -506,8 +537,9 @@
 "no_chart_data" = "No chart data available";
 
 /* Content Scanning */
-"search_all_emails" = "Search emails for all accommodations";
+"search_all_emails" = "Search emails & spa for all in this resort";
 "search_email" = "Search Email";
+"email_search_description" = "Find contact details for booking requests";
 "loading_wellness_features" = "Loading wellness features...";
 
 /* Countries */
