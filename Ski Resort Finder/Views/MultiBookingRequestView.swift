@@ -1,7 +1,7 @@
 import SwiftUI
 import Foundation
 import MapKit
-import Contacts
+@preconcurrency import Contacts
 
 struct MultiBookingRequestView: View {
     let accommodations: [Accommodation]

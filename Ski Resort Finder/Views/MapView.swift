@@ -34,6 +34,24 @@ struct MapView: View {
         self._skiPistes = State(initialValue: [])
     }
     
+    // NEUE: Resort-only Initializer (ohne Unterkünfte)
+    init(resort: SkiResort) {
+        self.resort = resort
+        self.accommodations = [] // Leeres Array für Resort-only Modus
+        
+        // Kleinere Kartenregion für Resort Details (mehr Fokus)
+        self._region = State(initialValue: MKCoordinateRegion(
+            center: resort.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+        ))
+        
+        // Lifts und Pistes sofort aktivieren für Resort-Fokus
+        self._showLifts = State(initialValue: true)
+        self._showPistes = State(initialValue: true)
+        self._skiLifts = State(initialValue: [])
+        self._skiPistes = State(initialValue: [])
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
@@ -66,9 +84,9 @@ struct MapView: View {
                 Text("choose_map_style".localized)
             }
             .onAppear {
-                print("🚡 MapView appeared, loading real lift data from OpenStreetMap")
+                print("MapView appeared, loading real lift data from OpenStreetMap")
                 loadSkiLifts()
-                print("🎿 MapView appeared, loading real piste data from OpenStreetMap")
+                print("MapView appeared, loading real piste data from OpenStreetMap")
                 loadSkiPistes()
             }
         }
@@ -304,7 +322,7 @@ struct MapView: View {
     var mapAnnotations: [MapAnnotationItem] {
         var annotations: [MapAnnotationItem] = []
         
-        print("🚡 Creating annotations - showLifts: \(showLifts), skiLifts count: \(skiLifts.count)")
+        print("Creating annotations - showLifts: \(showLifts), skiLifts count: \(skiLifts.count)")
         
         // Skigebiet-Marker
         annotations.append(MapAnnotationItem(
@@ -326,14 +344,14 @@ struct MapView: View {
                     title: accommodation.name,
                     accommodation: accommodation
                 ))
-                print("✅ Using real coordinates for \(accommodation.name): \(realCoordinate.latitude), \(realCoordinate.longitude)")
+                print("[OK] Using real coordinates for \(accommodation.name): \(realCoordinate.latitude), \(realCoordinate.longitude)")
             } else {
-                print("❌ No real coordinates available for \(accommodation.name) - skipping marker (NO FAKE DATA policy)")
+                print("[ERROR] No real coordinates available for \(accommodation.name) - skipping marker (NO FAKE DATA policy)")
             }
         }
         
         // ECHTE LIFT-MARKER - nur wenn verfügbar und showLifts aktiv
-        print("🚡 Adding REAL lift markers - showLifts: \(showLifts), lifts available: \(skiLifts.count)")
+        print("Adding REAL lift markers - showLifts: \(showLifts), lifts available: \(skiLifts.count)")
         
         if showLifts {
             for lift in skiLifts {
@@ -345,13 +363,13 @@ struct MapView: View {
                     title: lift.name,
                     accommodation: nil
                 ))
-                print("🚡 Added REAL lift marker: \(lift.name) at \(lift.bottomStation.latitude), \(lift.bottomStation.longitude)")
+                print("Added REAL lift marker: \(lift.name) at \(lift.bottomStation.latitude), \(lift.bottomStation.longitude)")
             }
         } else {
-            print("🚡 Lifts disabled - no lift markers added")
+            print("Lifts disabled - no lift markers added")
         }
         
-        print("🚡 Total annotations: \(annotations.count), lift annotations: \(annotations.filter { $0.type == .lift }.count)")
+        print("Total annotations: \(annotations.count), lift annotations: \(annotations.filter { $0.type == .lift }.count)")
         
         return annotations
     }
@@ -371,18 +389,18 @@ struct MapView: View {
                     self.skiLifts = lifts
                     self.isLoadingLifts = false
                     if lifts.isEmpty {
-                        print("🚡 No real lifts found in OpenStreetMap for \(resort.name) - no lift markers will be shown")
+                        print("No real lifts found in OpenStreetMap for \(resort.name) - no lift markers will be shown")
                     } else {
-                        print("🚡 Loaded \(lifts.count) REAL ski lifts from OpenStreetMap")
+                        print("Loaded \(lifts.count) REAL ski lifts from OpenStreetMap")
                     }
                 }
             } catch {
-                print("🚡 Error loading ski lifts: \(error)")
+                print("Error loading ski lifts: \(error)")
                 await MainActor.run {
                     self.isLoadingLifts = false
                     // NO FAKE DATA - wenn OpenStreetMap fehlschlägt, keine Lift-Marker anzeigen
                     self.skiLifts = []
-                    print("🚡 OpenStreetMap API failed - no lift markers will be shown (NO FAKE DATA policy)")
+                    print("OpenStreetMap API failed - no lift markers will be shown (NO FAKE DATA policy)")
                 }
             }
         }
@@ -402,13 +420,13 @@ struct MapView: View {
                     self.skiPistes = pistes
                     self.isLoadingPistes = false
                     if pistes.isEmpty {
-                        print("🎿 No ski pistes found in OpenStreetMap for \(resort.name)")
+                        print("No ski pistes found in OpenStreetMap for \(resort.name)")
                     } else {
-                        print("🎿 Loaded \(pistes.count) ski pistes from OpenStreetMap")
+                        print("Loaded \(pistes.count) ski pistes from OpenStreetMap")
                     }
                 }
             } catch {
-                print("🎿 Error loading ski pistes: \(error)")
+                print("Error loading ski pistes: \(error)")
                 await MainActor.run {
                     self.isLoadingPistes = false
                 }
@@ -488,7 +506,7 @@ struct SkiLift: Identifiable, Codable {
     let coordinates: [CLLocationCoordinate2D]
 }
 
-extension CLLocationCoordinate2D: Codable {
+extension CLLocationCoordinate2D: @retroactive Encodable, @retroactive Decodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(latitude, forKey: .latitude)
@@ -542,8 +560,8 @@ struct CustomMapView: UIViewRepresentable {
         mapView.removeAnnotations(mapView.annotations)
         
         let newAnnotations = annotations.map { MapPointAnnotation(mapAnnotationItem: $0) }
-        print("🚡 Adding \(newAnnotations.count) total annotations to map")
-        print("🚡 Lift annotations: \(newAnnotations.filter { $0.item.type == .lift }.count)")
+        print("Adding \(newAnnotations.count) total annotations to map")
+        print("Lift annotations: \(newAnnotations.filter { $0.item.type == .lift }.count)")
         
         mapView.addAnnotations(newAnnotations)
     }
@@ -632,8 +650,8 @@ struct CustomMapView: UIViewRepresentable {
                         // Draw the white icon directly
                         whiteIcon.draw(in: iconRect)
                     } else {
-                        // Fallback: draw lift emoji
-                        let text = "🚡"
+                        // Fallback: draw lift text
+                        let text = "L"
                         let attributes: [NSAttributedString.Key: Any] = [
                             .font: UIFont.systemFont(ofSize: 16, weight: .bold),
                             .foregroundColor: UIColor.white
@@ -739,7 +757,7 @@ extension MKCoordinateRegion {
 
 class PistePolylineRenderer: MKPolylineRenderer {
     
-    static var showPisteNames: Bool = true
+    nonisolated(unsafe) static var showPisteNames: Bool = true
     
     override func draw(_ mapRect: MKMapRect, zoomScale: MKZoomScale, in context: CGContext) {
         // Draw the polyline first
@@ -747,8 +765,7 @@ class PistePolylineRenderer: MKPolylineRenderer {
         
         // Draw the piste name along the line if available and enabled
         guard PistePolylineRenderer.showPisteNames,
-              let polyline = self.polyline as? MKPolyline,
-              let pisteName = polyline.title,
+              let pisteName = self.polyline.title,
               !pisteName.isEmpty,
               zoomScale > 0.5 else { // Only show labels at sufficient zoom level
             return
@@ -885,6 +902,68 @@ enum AnnotationType: String {
 }
 
 
+// MARK: - Resort Preview Map (für Resort Details)
+
+struct MapView_ResortPreview: View {
+    let resort: SkiResort
+    @State private var region: MKCoordinateRegion
+    @State private var skiPistes: [SkiPiste] = []
+    @State private var isLoadingPistes: Bool = false
+    
+    init(resort: SkiResort) {
+        self.resort = resort
+        // Kleinere Region für Preview
+        self._region = State(initialValue: MKCoordinateRegion(
+            center: resort.coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+        ))
+    }
+    
+    var body: some View {
+        CustomMapViewWithPistes(
+            region: .constant(region), // Preview sollte nicht interaktiv sein
+            mapType: .satellite, // Zeige Satellite für besseren Resort-Überblick
+            annotations: [
+                // Nur Resort-Marker
+                MapAnnotationItem(
+                    id: "resort",
+                    coordinate: resort.coordinate,
+                    type: .resort,
+                    title: resort.name,
+                    accommodation: nil
+                )
+            ],
+            skiPistes: skiPistes,
+            onAnnotationTap: { _ in } // Keine Aktion im Preview
+        )
+        .onAppear {
+            loadSkiPistesForPreview()
+        }
+    }
+    
+    private func loadSkiPistesForPreview() {
+        guard !isLoadingPistes else { return }
+        isLoadingPistes = true
+        
+        Task {
+            do {
+                let pistes = try await OverpassService.shared.searchSkiPistes(
+                    around: resort.coordinate,
+                    radius: 5000 // Kleinerer Radius für Preview
+                )
+                await MainActor.run {
+                    self.skiPistes = Array(pistes.prefix(10)) // Limitiere für Performance
+                    self.isLoadingPistes = false
+                }
+            } catch {
+                await MainActor.run {
+                    self.isLoadingPistes = false
+                }
+            }
+        }
+    }
+}
+
 struct AccommodationMapCard: View {
     let accommodation: Accommodation
     let onClose: () -> Void
@@ -1019,13 +1098,13 @@ struct CustomMapViewWithPistes: UIViewRepresentable {
         mapView.removeOverlays(mapView.overlays)
         
         let newAnnotations = annotations.map { MapPointAnnotation(mapAnnotationItem: $0) }
-        print("🚡 Adding \(newAnnotations.count) total annotations to map")
-        print("🚡 Lift annotations: \(newAnnotations.filter { $0.item.type == .lift }.count)")
+        print("Adding \(newAnnotations.count) total annotations to map")
+        print("Lift annotations: \(newAnnotations.filter { $0.item.type == .lift }.count)")
         
         mapView.addAnnotations(newAnnotations)
         
         // Add piste overlays
-        print("🎿 Adding \(skiPistes.count) piste overlays to map")
+        print("Adding \(skiPistes.count) piste overlays to map")
         for piste in skiPistes {
             let coordinates = piste.coordinates
             if coordinates.count >= 2 {

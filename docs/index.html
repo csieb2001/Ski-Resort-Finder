@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ski Resort Finder - Find your perfect ski resort with real weather data, snow analysis, and accommodation filters. Available on the App Store.">
+    <meta name="author" content="Christopher Siebert">
+    <meta name="theme-color" content="#0A0F1E">
+    <meta property="og:title" content="Ski Resort Finder - Your Perfect Ski Trip Starts Here">
+    <meta property="og:description" content="30+ resorts, real weather data, objective snow analysis, and smart accommodation filters. Privacy-first. Available in 8 languages.">
+    <meta property="og:type" content="website">
+    <title>Ski Resort Finder - Your Perfect Ski Trip Starts Here</title>
+    <style>
+        /* ========================================
+           RESET & BASE
+           ======================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --navy: #0A0F1E;
+            --navy-light: #111827;
+            --navy-card: #1a2236;
+            --ski-blue: #4A90E2;
+            --ski-blue-light: #6AADE8;
+            --warm-orange: #F59E0B;
+            --warm-orange-light: #FBBF24;
+            --text-primary: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-hover: rgba(255, 255, 255, 0.08);
+            --section-gap: 6rem;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--navy);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========================================
+           ANIMATIONS
+           ======================================== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes snowfall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========================================
+           NAVIGATION
+           ======================================== */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 2rem;
+            transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+            background-color: rgba(10, 15, 30, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-brand svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            letter-spacing: 0.01em;
+        }
+
+        .nav-links a:hover {
+            color: var(--ski-blue-light);
+        }
+
+        .nav-hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 5px;
+            background: none;
+            border: none;
+        }
+
+        .nav-hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        /* ========================================
+           HERO SECTION
+           ======================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(74, 144, 226, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
+        }
+
+        .snowflake {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: snowfall linear infinite;
+            pointer-events: none;
+        }
+
+        .snowflake:nth-child(1) { left: 5%; animation-duration: 12s; animation-delay: 0s; width: 4px; height: 4px; }
+        .snowflake:nth-child(2) { left: 15%; animation-duration: 15s; animation-delay: 2s; width: 5px; height: 5px; }
+        .snowflake:nth-child(3) { left: 30%; animation-duration: 10s; animation-delay: 4s; }
+        .snowflake:nth-child(4) { left: 45%; animation-duration: 14s; animation-delay: 1s; width: 3px; height: 3px; }
+        .snowflake:nth-child(5) { left: 60%; animation-duration: 11s; animation-delay: 3s; width: 5px; height: 5px; }
+        .snowflake:nth-child(6) { left: 75%; animation-duration: 13s; animation-delay: 5s; width: 4px; height: 4px; }
+        .snowflake:nth-child(7) { left: 88%; animation-duration: 16s; animation-delay: 2s; }
+        .snowflake:nth-child(8) { left: 95%; animation-duration: 9s; animation-delay: 6s; width: 3px; height: 3px; }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(74, 144, 226, 0.15);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--ski-blue-light);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, var(--ski-blue) 0%, var(--warm-orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .app-store-badge {
+            display: inline-block;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        .app-store-badge:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        .app-store-badge svg {
+            height: 52px;
+            width: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .hero-stat {
+            text-align: left;
+        }
+
+        .hero-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1.2s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .app-icon-wrapper {
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .app-icon {
+            width: 280px;
+            height: 280px;
+            border-radius: 56px;
+            background: linear-gradient(145deg, #1a2a4a 0%, #0d1b3a 50%, #0a1025 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(74, 144, 226, 0.25),
+                        0 10px 30px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .app-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.2) 0%, transparent 50%, rgba(245, 158, 11, 0.1) 100%);
+            border-radius: inherit;
+        }
+
+        .app-icon-mountain {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .app-icon-text {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .app-icon-glow {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.2) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+        }
+
+        /* ========================================
+           SECTION SHARED
+           ======================================== */
+        section {
+            padding: var(--section-gap) 2rem;
+            position: relative;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--ski-blue);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ========================================
+           FEATURES SECTION
+           ======================================== */
+        #features {
+            background: linear-gradient(180deg, var(--navy) 0%, var(--navy-light) 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            background-color: var(--glass-hover);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-icon.blue { background: rgba(74, 144, 226, 0.15); color: var(--ski-blue-light); }
+        .feature-icon.orange { background: rgba(245, 158, 11, 0.15); color: var(--warm-orange-light); }
+        .feature-icon.green { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+        .feature-icon.purple { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+        .feature-icon.cyan { background: rgba(34, 211, 238, 0.15); color: #67e8f9; }
+        .feature-icon.rose { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+        .feature-icon.teal { background: rgba(20, 184, 166, 0.15); color: #5eead4; }
+
+        .feature-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+
+        .feature-card p {
+            font-size: 0.92rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ========================================
+           PRIVACY SECTION
+           ======================================== */
+        #privacy {
+            background: var(--navy-light);
+        }
+
+        .legal-content {
+            max-width: 820px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .legal-content h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .legal-content h3:first-child {
+            margin-top: 0;
+        }
+
+        .legal-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 1.8rem;
+            margin-bottom: 0.7rem;
+            color: var(--text-primary);
+        }
+
+        .legal-content p,
+        .legal-content li {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .legal-content ul {
+            padding-left: 1.5rem;
+            margin: 0.8rem 0;
+        }
+
+        .legal-content li {
+            margin-bottom: 0.4rem;
+        }
+
+        .legal-content a {
+            color: var(--ski-blue-light);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .legal-content a:hover {
+            color: var(--warm-orange-light);
+        }
+
+        .legal-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--glass-border);
+            margin: 3rem 0;
+            border: none;
+        }
+
+        .legal-lang-label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-de {
+            background: rgba(74, 144, 226, 0.15);
+            color: var(--ski-blue-light);
+        }
+
+        .lang-en {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warm-orange-light);
+        }
+
+        .legal-effective-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ========================================
+           IMPRESSUM SECTION
+           ======================================== */
+        #impressum {
+            background: var(--navy);
+        }
+
+        /* ========================================
+           SUPPORT SECTION
+           ======================================== */
+        #support {
+            background: var(--navy-light);
+        }
+
+        .support-card {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .support-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(74, 144, 226, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        .support-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .support-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .support-email-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, var(--ski-blue) 0%, #3a7bd5 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .support-email-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.4);
+        }
+
+        /* ========================================
+           FOOTER
+           ======================================== */
+        footer {
+            background: var(--navy);
+            border-top: 1px solid var(--glass-border);
+            padding: 2.5rem 2rem;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copy {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--ski-blue-light);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-actions {
+                justify-content: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .app-icon {
+                width: 200px;
+                height: 200px;
+                border-radius: 44px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .legal-content {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            :root {
+                --section-gap: 4rem;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: rgba(10, 15, 30, 0.97);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                padding: 1.5rem 2rem;
+                gap: 1.2rem;
+                border-bottom: 1px solid var(--glass-border);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .nav-hamburger {
+                display: flex;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+                min-height: auto;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-stat {
+                text-align: center;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            section {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+
+            .legal-content {
+                padding: 1.5rem 1.2rem;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+         NAVIGATION
+         ========================================== -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">
+                <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="28" height="28" rx="6" fill="#4A90E2" fill-opacity="0.2"/>
+                    <path d="M14 4L22 20H6L14 4Z" fill="#4A90E2" opacity="0.7"/>
+                    <path d="M9 8L17 24H1L9 8Z" fill="#6AADE8" opacity="0.5"/>
+                    <circle cx="20" cy="8" r="2.5" fill="#F59E0B" opacity="0.8"/>
+                </svg>
+                Ski Resort Finder
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#features" onclick="closeNav()">Features</a></li>
+                <li><a href="#privacy" onclick="closeNav()">Privacy</a></li>
+                <li><a href="#impressum" onclick="closeNav()">Impressum</a></li>
+                <li><a href="#support" onclick="closeNav()">Support</a></li>
+            </ul>
+            <button class="nav-hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         HERO SECTION
+         ========================================== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg">
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+            <div class="snowflake"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 0L8.76 5.24L14 7L8.76 8.76L7 14L5.24 8.76L0 7L5.24 5.24L7 0Z" fill="#F59E0B"/></svg>
+                    Available on the App Store
+                </div>
+                <h1 class="hero-title">
+                    Your Perfect<br>
+                    <span class="gradient-text">Ski Trip</span><br>
+                    Starts Here.
+                </h1>
+                <p class="hero-subtitle">
+                    Find the best ski resorts across Europe with real weather data, historical snow analysis, and smart accommodation filters. Data-driven. Privacy-first.
+                </p>
+                <div class="hero-actions">
+                    <a href="https://apps.apple.com/app/ski-resort-finder/id6744227498" class="app-store-badge" aria-label="Download on the App Store">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 60" width="180" height="60">
+                            <rect width="180" height="60" rx="10" fill="#000"/>
+                            <rect x="0.5" y="0.5" width="179" height="59" rx="9.5" stroke="#A6A6A6" stroke-width="1" fill="none"/>
+                            <text x="62" y="18" fill="#fff" font-family="-apple-system, Helvetica, Arial" font-size="9" font-weight="400">Download on the</text>
+                            <text x="62" y="38" fill="#fff" font-family="-apple-system, Helvetica, Arial" font-size="21" font-weight="600">App Store</text>
+                            <g transform="translate(15, 8)">
+                                <path d="M31.7 22.102c-.03-3.384 2.766-5.012 2.893-5.09-1.576-2.304-4.03-2.62-4.903-2.656-2.085-.213-4.078 1.233-5.138 1.233-1.06 0-2.7-1.204-4.44-1.17-2.285.034-4.393 1.332-5.57 3.384-2.376 4.123-.607 10.23 1.708 13.574 1.132 1.64 2.482 3.48 4.254 3.414 1.707-.068 2.352-1.105 4.416-1.105 2.064 0 2.644 1.105 4.45 1.07 1.838-.03 3.002-1.672 4.127-3.316 1.3-1.902 1.838-3.743 1.87-3.838-.04-.017-3.588-1.378-3.623-5.47l-.044-.03z" fill="#fff"/>
+                                <path d="M28.3 12.21c.94-1.14 1.575-2.72 1.4-4.3-1.354.055-2.996.903-3.966 2.04-.87 1.005-1.63 2.612-1.425 4.154 1.51.117 3.05-.768 3.99-1.893z" fill="#fff"/>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">30+</div>
+                        <div class="hero-stat-label">Ski Resorts</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">8</div>
+                        <div class="hero-stat-label">Languages</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">0</div>
+                        <div class="hero-stat-label">Data Collected</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="app-icon-wrapper">
+                    <div class="app-icon-glow"></div>
+                    <div class="app-icon">
+                        <svg class="app-icon-mountain" width="120" height="90" viewBox="0 0 120 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 5L95 75H25L60 5Z" fill="url(#mountain1)" opacity="0.9"/>
+                            <path d="M40 30L70 75H10L40 30Z" fill="url(#mountain2)" opacity="0.6"/>
+                            <path d="M80 25L110 75H50L80 25Z" fill="url(#mountain3)" opacity="0.5"/>
+                            <path d="M50 5L60 20L55 18L65 30L58 27L68 42L45 42Z" fill="#fff" opacity="0.35"/>
+                            <circle cx="100" cy="15" r="8" fill="#F59E0B" opacity="0.7"/>
+                            <circle cx="100" cy="15" r="12" fill="#F59E0B" opacity="0.15"/>
+                            <defs>
+                                <linearGradient id="mountain1" x1="60" y1="5" x2="60" y2="75" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#4A90E2"/>
+                                    <stop offset="1" stop-color="#2563EB" stop-opacity="0.6"/>
+                                </linearGradient>
+                                <linearGradient id="mountain2" x1="40" y1="30" x2="40" y2="75" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#6AADE8"/>
+                                    <stop offset="1" stop-color="#4A90E2" stop-opacity="0.5"/>
+                                </linearGradient>
+                                <linearGradient id="mountain3" x1="80" y1="25" x2="80" y2="75" gradientUnits="userSpaceOnUse">
+                                    <stop stop-color="#3B82F6"/>
+                                    <stop offset="1" stop-color="#1D4ED8" stop-opacity="0.4"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="app-icon-text">Ski Resort Finder</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FEATURES SECTION
+         ========================================== -->
+    <section id="features">
+        <div class="section-container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-label">Features</div>
+                <h2 class="section-title">Everything You Need<br>for the Perfect Ski Trip</h2>
+                <p class="section-subtitle">Real data, smart analysis, and privacy-first design. No fluff, no fake numbers.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon blue">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/><path d="M8 12l4-6 4 6"/></svg>
+                    </div>
+                    <h3>30+ Ski Resorts</h3>
+                    <p>Curated selection of the best ski resorts across the Alps and Europe, with detailed information on slopes, elevation, and more.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon orange">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+                    </div>
+                    <h3>Real Weather Data</h3>
+                    <p>Live weather conditions powered by Open-Meteo. Current temperature, snowfall, wind speed, and forecasts for every resort.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon cyan">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <h3>Historical Snow Analysis</h3>
+                    <p>10-year snowfall history with charts and trends. Know exactly how reliable the snow conditions are before you book.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon green">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <h3>Objective Ratings</h3>
+                    <p>Data-driven resort ratings based on real metrics: snow reliability, elevation, slope variety, and accommodation quality. No paid placements.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon purple">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+                    </div>
+                    <h3>Smart Accommodation Filters</h3>
+                    <p>Filter by distance to lifts, wellness amenities (pool, spa, jacuzzi), ratings, and price. Find your perfect stay in seconds.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon teal">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+                    </div>
+                    <h3>8 Languages</h3>
+                    <p>Available in German, English, French, Spanish, Italian, Portuguese, Russian, and Ukrainian. The Alps speak your language.</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon rose">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>Zero personal data collection. No tracking. No analytics. No third-party data sharing. All data stays on your device. Period.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         PRIVACY POLICY SECTION
+         ========================================== -->
+    <section id="privacy">
+        <div class="section-container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-label">Privacy Policy / Datenschutzerkl&auml;rung</div>
+                <h2 class="section-title">Your Data, Your Device</h2>
+                <p class="section-subtitle">We believe in radical transparency. Here is exactly what happens with your data: nothing leaves your device.</p>
+            </div>
+            <div class="legal-content animate-on-scroll">
+
+                <!-- GERMAN VERSION -->
+                <div class="legal-lang-label lang-de">Deutsch</div>
+                <p class="legal-effective-date">Stand: 18. M&auml;rz 2026</p>
+
+                <h3>1. Verantwortlicher</h3>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg, Deutschland<br>
+                    E-Mail: <a href="mailto:csieb@me.com">csieb@me.com</a>
+                </p>
+
+                <h3>2. &Uuml;bersicht</h3>
+                <p>Ski Resort Finder (nachfolgend &bdquo;die App&ldquo;) nimmt den Schutz Ihrer pers&ouml;nlichen Daten sehr ernst. Diese Datenschutzerkl&auml;rung informiert Sie dar&uuml;ber, welche Daten bei der Nutzung der App verarbeitet werden.</p>
+
+                <h3>3. Erhobene Daten</h3>
+                <h4>3.1 Keine personenbezogenen Daten</h4>
+                <p>Die App erhebt, speichert oder verarbeitet <strong>keine personenbezogenen Daten</strong>. Es werden weder Name, E-Mail-Adresse, Standortdaten noch sonstige pers&ouml;nliche Informationen erfasst.</p>
+
+                <h4>3.2 Lokal gespeicherte Daten</h4>
+                <p>Die App speichert ausschlie&szlig;lich folgende Daten <strong>lokal auf Ihrem Ger&auml;t</strong>:</p>
+                <ul>
+                    <li><strong>Favoritenliste:</strong> Von Ihnen markierte Skigebiete (UserDefaults)</li>
+                    <li><strong>Wetter- und Schneedaten-Cache:</strong> Zwischengespeicherte Wetter- und Schneedaten zur Leistungsoptimierung (Dateisystem-Cache im Documents-Verzeichnis)</li>
+                    <li><strong>App-Einstellungen:</strong> Ihre gew&auml;hlte Sprache und Darstellungspr&auml;ferenzen (UserDefaults)</li>
+                </ul>
+                <p>Diese Daten verlassen zu keinem Zeitpunkt Ihr Ger&auml;t und werden nicht an Dritte &uuml;bermittelt.</p>
+
+                <h4>3.3 Kein Tracking und keine Analyse</h4>
+                <p>Die App verwendet <strong>keine Tracking-Dienste, Analyse-Tools oder Werbungs-Frameworks</strong>. Es werden keine Nutzungsstatistiken, Crash-Reports oder Verhaltensprofile erstellt oder an Dritte weitergegeben.</p>
+
+                <h3>4. Verwendete Schnittstellen (APIs)</h3>
+                <p>Die App nutzt folgende &ouml;ffentliche Schnittstellen, um Ihnen aktuelle Informationen bereitzustellen:</p>
+                <ul>
+                    <li><strong>Open-Meteo API</strong> (<a href="https://open-meteo.com" target="_blank" rel="noopener">open-meteo.com</a>): Abruf von Wetter- und historischen Schneedaten. Es werden ausschlie&szlig;lich geografische Koordinaten der Skigebiete &uuml;bermittelt &ndash; <strong>keine Nutzerdaten</strong>.</li>
+                    <li><strong>OpenStreetMap / Overpass API</strong> (<a href="https://www.openstreetmap.org" target="_blank" rel="noopener">openstreetmap.org</a>): Abruf von Unterkunftsinformationen in der N&auml;he der Skigebiete. Es werden ausschlie&szlig;lich geografische Koordinaten &uuml;bermittelt &ndash; <strong>keine Nutzerdaten</strong>.</li>
+                </ul>
+                <p>Bei keiner dieser Anfragen werden pers&ouml;nliche Daten, Ger&auml;tekennungen oder sonstige identifizierende Informationen &uuml;bertragen.</p>
+
+                <h3>5. Datenweitergabe an Dritte</h3>
+                <p>Es findet <strong>keine Weitergabe von Daten an Dritte</strong> statt. Die App enth&auml;lt keine Werbenetzwerke, Social-Media-Plugins oder sonstige Drittanbieter-Dienste, die Zugriff auf Ihre Daten erhalten.</p>
+
+                <h3>6. Datensicherheit</h3>
+                <p>Alle Daten werden ausschlie&szlig;lich lokal auf Ihrem Ger&auml;t im gesch&uuml;tzten App-Sandboxing von iOS gespeichert. Die Sicherheit Ihrer Daten unterliegt den Schutzmechanismen des iOS-Betriebssystems.</p>
+
+                <h3>7. Ihre Rechte (DSGVO)</h3>
+                <p>Da keine personenbezogenen Daten erhoben werden, sind die meisten Betroffenenrechte nach der DSGVO gegenstandslos. Dennoch m&ouml;chten wir Sie auf folgende Rechte hinweisen:</p>
+                <ul>
+                    <li><strong>Recht auf Auskunft (Art. 15 DSGVO):</strong> Sie k&ouml;nnen jederzeit anfragen, welche Daten gespeichert werden. Die Antwort: keine personenbezogenen Daten.</li>
+                    <li><strong>Recht auf L&ouml;schung (Art. 17 DSGVO):</strong> Sie k&ouml;nnen alle lokal gespeicherten Daten jederzeit l&ouml;schen, indem Sie die App unter iOS-Einstellungen &gt; Allgemein &gt; iPhone-Speicher &gt; Ski Resort Finder entfernen oder die App-Daten zur&uuml;cksetzen.</li>
+                    <li><strong>Beschwerderecht:</strong> Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbeh&ouml;rde zu beschweren.</li>
+                </ul>
+
+                <h3>8. &Auml;nderungen dieser Datenschutzerkl&auml;rung</h3>
+                <p>Wir behalten uns vor, diese Datenschutzerkl&auml;rung bei Bedarf anzupassen. Die aktuelle Version ist stets auf dieser Seite abrufbar.</p>
+
+                <h3>9. Kontakt</h3>
+                <p>Bei Fragen zum Datenschutz kontaktieren Sie uns bitte unter: <a href="mailto:csieb@me.com">csieb@me.com</a></p>
+
+                <hr class="legal-divider">
+
+                <!-- ENGLISH VERSION -->
+                <div class="legal-lang-label lang-en">English</div>
+                <p class="legal-effective-date">Effective date: March 18, 2026</p>
+
+                <h3>1. Data Controller</h3>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg, Germany<br>
+                    Email: <a href="mailto:csieb@me.com">csieb@me.com</a>
+                </p>
+
+                <h3>2. Overview</h3>
+                <p>Ski Resort Finder (hereinafter &ldquo;the App&rdquo;) takes the protection of your personal data very seriously. This privacy policy informs you about what data is processed when using the App.</p>
+
+                <h3>3. Data Collected</h3>
+                <h4>3.1 No Personal Data</h4>
+                <p>The App does <strong>not collect, store, or process any personal data</strong>. No name, email address, location data, or any other personal information is captured.</p>
+
+                <h4>3.2 Locally Stored Data</h4>
+                <p>The App stores the following data <strong>exclusively on your device</strong>:</p>
+                <ul>
+                    <li><strong>Favorites list:</strong> Ski resorts you have marked as favorites (UserDefaults)</li>
+                    <li><strong>Weather and snow data cache:</strong> Cached weather and snow data for performance optimization (file system cache in the Documents directory)</li>
+                    <li><strong>App settings:</strong> Your chosen language and display preferences (UserDefaults)</li>
+                </ul>
+                <p>This data never leaves your device and is not transmitted to any third party.</p>
+
+                <h4>3.3 No Tracking or Analytics</h4>
+                <p>The App uses <strong>no tracking services, analytics tools, or advertising frameworks</strong>. No usage statistics, crash reports, or behavioral profiles are created or shared with third parties.</p>
+
+                <h3>4. APIs Used</h3>
+                <p>The App uses the following public APIs to provide you with up-to-date information:</p>
+                <ul>
+                    <li><strong>Open-Meteo API</strong> (<a href="https://open-meteo.com" target="_blank" rel="noopener">open-meteo.com</a>): Retrieval of weather and historical snow data. Only geographic coordinates of ski resorts are transmitted &ndash; <strong>no user data</strong>.</li>
+                    <li><strong>OpenStreetMap / Overpass API</strong> (<a href="https://www.openstreetmap.org" target="_blank" rel="noopener">openstreetmap.org</a>): Retrieval of accommodation information near ski resorts. Only geographic coordinates are transmitted &ndash; <strong>no user data</strong>.</li>
+                </ul>
+                <p>None of these requests transmit personal data, device identifiers, or any other identifying information.</p>
+
+                <h3>5. Data Sharing with Third Parties</h3>
+                <p>There is <strong>no sharing of data with third parties</strong>. The App contains no advertising networks, social media plugins, or other third-party services that would have access to your data.</p>
+
+                <h3>6. Data Security</h3>
+                <p>All data is stored exclusively on your device within the protected iOS app sandboxing environment. The security of your data is governed by the protection mechanisms of the iOS operating system.</p>
+
+                <h3>7. Your Rights (GDPR)</h3>
+                <p>Since no personal data is collected, most data subject rights under the GDPR are not applicable. Nevertheless, we would like to inform you of the following rights:</p>
+                <ul>
+                    <li><strong>Right of access (Art. 15 GDPR):</strong> You may request at any time what data is stored. The answer: no personal data.</li>
+                    <li><strong>Right to deletion (Art. 17 GDPR):</strong> You can delete all locally stored data at any time by removing the app under iOS Settings &gt; General &gt; iPhone Storage &gt; Ski Resort Finder, or by resetting app data.</li>
+                    <li><strong>Right to lodge a complaint:</strong> You have the right to lodge a complaint with a data protection supervisory authority.</li>
+                </ul>
+
+                <h3>8. Changes to This Privacy Policy</h3>
+                <p>We reserve the right to update this privacy policy as needed. The current version is always available on this page.</p>
+
+                <h3>9. Contact</h3>
+                <p>For questions regarding data protection, please contact us at: <a href="mailto:csieb@me.com">csieb@me.com</a></p>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         IMPRESSUM SECTION
+         ========================================== -->
+    <section id="impressum">
+        <div class="section-container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-label">Legal Notice / Impressum</div>
+                <h2 class="section-title">Impressum</h2>
+                <p class="section-subtitle">Angaben gem&auml;&szlig; &sect; 5 TMG / Information pursuant to &sect; 5 TMG</p>
+            </div>
+            <div class="legal-content animate-on-scroll">
+
+                <!-- GERMAN VERSION -->
+                <div class="legal-lang-label lang-de">Deutsch</div>
+
+                <h3>Angaben gem&auml;&szlig; &sect; 5 TMG</h3>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg<br>
+                    Deutschland
+                </p>
+
+                <h4>Kontakt</h4>
+                <p>E-Mail: <a href="mailto:csieb@me.com">csieb@me.com</a></p>
+
+                <h4>Verantwortlich f&uuml;r den Inhalt nach &sect; 18 Abs. 2 MStV</h4>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg
+                </p>
+
+                <h3>Haftungsausschluss (Disclaimer)</h3>
+
+                <h4>Haftung f&uuml;r Inhalte</h4>
+                <p>Die Inhalte dieser Seite und der App wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen. Als Diensteanbieter sind wir gem&auml;&szlig; &sect; 7 Abs. 1 TMG f&uuml;r eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach &sect;&sect; 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, &uuml;bermittelte oder gespeicherte fremde Informationen zu &uuml;berwachen.</p>
+
+                <h4>Haftung f&uuml;r Links</h4>
+                <p>Die App und diese Webseite k&ouml;nnen Links zu externen Webseiten Dritter enthalten, auf deren Inhalte wir keinen Einfluss haben. F&uuml;r die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar.</p>
+
+                <h4>Urheberrecht</h4>
+                <p>Die durch den Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielf&auml;ltigung, Bearbeitung, Verbreitung und jede Art der Verwertung au&szlig;erhalb der Grenzen des Urheberrechtes bed&uuml;rfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.</p>
+
+                <h4>Streitschlichtung</h4>
+                <p>Die Europ&auml;ische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a>. Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.</p>
+
+                <hr class="legal-divider">
+
+                <!-- ENGLISH VERSION -->
+                <div class="legal-lang-label lang-en">English</div>
+
+                <h3>Information pursuant to &sect; 5 TMG (German Telemedia Act)</h3>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg<br>
+                    Germany
+                </p>
+
+                <h4>Contact</h4>
+                <p>Email: <a href="mailto:csieb@me.com">csieb@me.com</a></p>
+
+                <h4>Responsible for content pursuant to &sect; 18 (2) MStV</h4>
+                <p>
+                    Christopher Siebert<br>
+                    Conventstrasse 8-10<br>
+                    22089 Hamburg
+                </p>
+
+                <h3>Disclaimer</h3>
+
+                <h4>Liability for Content</h4>
+                <p>The contents of this page and the App have been created with the utmost care. However, we cannot guarantee the accuracy, completeness, or timeliness of the content. As a service provider, we are responsible for our own content on these pages in accordance with general laws pursuant to &sect; 7 (1) TMG. According to &sect;&sect; 8 to 10 TMG, however, we are not obligated to monitor transmitted or stored third-party information.</p>
+
+                <h4>Liability for Links</h4>
+                <p>The App and this website may contain links to external third-party websites over whose content we have no influence. The respective provider or operator of the linked pages is always responsible for their content. Permanent monitoring of the content of linked pages is not reasonable without concrete evidence of a legal violation.</p>
+
+                <h4>Copyright</h4>
+                <p>The content and works created by the site operator on these pages are subject to German copyright law. Reproduction, editing, distribution, and any form of use beyond the limits of copyright law require the written consent of the respective author or creator.</p>
+
+                <h4>Dispute Resolution</h4>
+                <p>The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a>. We are neither willing nor obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         SUPPORT SECTION
+         ========================================== -->
+    <section id="support">
+        <div class="section-container">
+            <div class="section-header animate-on-scroll">
+                <div class="section-label">Support</div>
+                <h2 class="section-title">Need Help?</h2>
+                <p class="section-subtitle">We are here to help. Reach out and we will get back to you as soon as possible.</p>
+            </div>
+            <div class="support-card animate-on-scroll">
+                <div class="support-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#4A90E2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </div>
+                <h3>Contact Support</h3>
+                <p>Have a question, found a bug, or want to suggest a feature? Send us an email and we will be happy to assist you.</p>
+                <a href="mailto:csieb@me.com?subject=Ski%20Resort%20Finder%20-%20Support" class="support-email-link">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    csieb@me.com
+                </a>
+                <p style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                    We typically respond within 24&ndash;48 hours.<br>
+                    Available in German and English.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER
+         ========================================== -->
+    <footer>
+        <div class="footer-inner">
+            <p class="footer-copy">&copy; 2025&ndash;2026 Christopher Siebert. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="#privacy">Privacy Policy</a></li>
+                <li><a href="#impressum">Impressum</a></li>
+                <li><a href="#support">Support</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         SCRIPTS (minimal, no external dependencies)
+         ========================================== -->
+    <script>
+        // Navigation scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', function () {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile navigation toggle
+        function toggleNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+        }
+        function closeNav() {
+            document.getElementById('navLinks').classList.remove('open');
+        }
+
+        // Scroll animation observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>

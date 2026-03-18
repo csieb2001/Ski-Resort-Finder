@@ -1,0 +1,56 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/BookingRequestView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Kontaktmethode wählen",
+        "location": {
+          "startingColumn": 33,
+          "startingLine": 206
+        }
+      },
+      {
+        "comment": "",
+        "key": "E-Mail",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 100
+        }
+      },
+      {
+        "comment": "",
+        "key": "OpenStreetMap / Google Places",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 121
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 198
+        }
+      },
+      {
+        "comment": "",
+        "key": "Abbrechen",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 212
+        }
+      },
+      {
+        "comment": "",
+        "key": "Wie möchten Sie %@ kontaktieren?",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 214
+        }
+      }
+    ]
+  },
+  "version": 1
+}

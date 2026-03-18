@@ -18,7 +18,7 @@ class ERA5SnowService: ObservableObject {
         
         // Prüfe API Konfiguration vor den Anfragen
         guard ERA5Config.isConfigured && ERA5Config.isValidFormat else {
-            print("ERA5 Service: ❌ API nicht konfiguriert oder ungültiges Format")
+            print("ERA5 Service: [ERROR] API nicht konfiguriert oder ungültiges Format")
             print("KEINE FAKE-DATEN POLICY: Keine Schneedaten ohne gültige API")
             throw ERA5Error.missingAPIKey // Fehler werfen statt fake Daten
         }
@@ -31,7 +31,7 @@ class ERA5SnowService: ObservableObject {
                 print("ERA5 Service: Jahr \(year) erfolgreich geladen")
             } catch {
                 print("ERA5 Service: Fehler für Jahr \(year): \(error)")
-                print("❌ KEINE FAKE-DATEN POLICY: Überspringe Jahr \(year) - nur echte API-Daten")
+                print("[ERROR] KEINE FAKE-DATEN POLICY: Überspringe Jahr \(year) - nur echte API-Daten")
                 // KEINE lokale Berechnung - nur echte Daten verwenden!
             }
         }

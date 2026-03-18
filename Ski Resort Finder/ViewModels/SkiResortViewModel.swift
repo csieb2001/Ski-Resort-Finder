@@ -1,7 +1,8 @@
 import Foundation
 import MapKit
+import SwiftUI
 
-class SkiResortViewModel: ObservableObject {
+@MainActor class SkiResortViewModel: ObservableObject {
     @Published var searchText = ""
     @Published var selectedResort: SkiResort?
     @Published var startDate = Date() {
@@ -19,8 +20,6 @@ class SkiResortViewModel: ObservableObject {
     @Published var openMeteoData: OpenMeteoWeatherData?
     @Published var errorMessage: String?
     
-    private let apiService = APIService()
-    private let googlePlacesService = GooglePlacesService()
     private let weatherService = OpenMeteoService()
     private let database = SkiResortDatabase.shared
     // Using SimpleEmailService for basic email functionality
@@ -33,17 +32,17 @@ class SkiResortViewModel: ObservableObject {
     @MainActor
     func searchAccommodations() async {
         guard let resort = selectedResort else { 
-            print("❌ No resort selected")
+            print("[ERROR] No resort selected")
             return 
         }
         
-        print("🔍 Starting search for accommodations in \(resort.name)")
+        print("Starting search for accommodations in \(resort.name)")
         isLoading = true
         errorMessage = nil
         
         // Verwende AccommodationDatabase anstatt direkte API-Calls
         let cachedAccommodations = AccommodationDatabase.shared.getAccommodations(for: resort)
-        print("📦 Found \(cachedAccommodations.count) cached accommodations for \(resort.name)")
+        print("Found \(cachedAccommodations.count) cached accommodations for \(resort.name)")
         
         if !cachedAccommodations.isEmpty {
             // Verwende gecachte Daten
@@ -60,69 +59,60 @@ class SkiResortViewModel: ObservableObject {
                 return results
             }
             self.isLoading = false
-            print("✅ Loaded \(cachedAccommodations.count) cached accommodations for \(resort.name)")
+            print("[OK] Loaded \(cachedAccommodations.count) cached accommodations for \(resort.name)")
             return
         }
         
-        // Falls keine gecachten Daten, lade von API mit UI-Progress
-        print("🔄 Loading accommodations for \(resort.name) from database...")
-        AccommodationDatabase.shared.loadAccommodationsForSingleResort(
-            resort,
-            progressCallback: { [weak self] cachedAccommodations in
-                Task { @MainActor in
-                    guard let self = self else { return }
-                    // Update UI with the live accommodations from callback
-                    let newAccommodations = await withTaskGroup(of: Accommodation.self, returning: [Accommodation].self) { group in
-                        for cachedAccommodation in cachedAccommodations {
-                            group.addTask {
-                                await cachedAccommodation.toAccommodation(resort: resort)
+        // Falls keine gecachten Daten, lade von API und warte auf Ergebnis
+        print("Loading accommodations for \(resort.name) from database...")
+
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            AccommodationDatabase.shared.loadAccommodationsForSingleResort(
+                resort,
+                progressCallback: { [weak self] cachedAccommodations in
+                    Task { @MainActor in
+                        guard let self = self else { return }
+                        let newAccommodations = await withTaskGroup(of: Accommodation.self, returning: [Accommodation].self) { group in
+                            for cachedAccommodation in cachedAccommodations {
+                                group.addTask {
+                                    await cachedAccommodation.toAccommodation(resort: resort)
+                                }
                             }
+                            var results: [Accommodation] = []
+                            for await accommodation in group {
+                                results.append(accommodation)
+                            }
+                            return results
                         }
-                        var results: [Accommodation] = []
-                        for await accommodation in group {
-                            results.append(accommodation)
-                        }
-                        return results
+                        self.accommodations = newAccommodations
+                        print("Live update: \(self.accommodations.count) accommodations")
                     }
-                    self.accommodations = newAccommodations
-                    print("📊 Live update: UI now shows \(self.accommodations.count) accommodations")
-                    print("📊 First accommodation has spa: \(newAccommodations.first?.hasSpaFeatures ?? false)")
                 }
-            }
-        ) {
-            // Completion callback - wird ausgeführt wenn das Laden abgeschlossen ist
-            print("📞 Completion callback called for \(resort.name)")
-            Task { @MainActor in
-                let updatedCachedAccommodations = AccommodationDatabase.shared.getAccommodations(for: resort)
-                print("🔍 After loading: Found \(updatedCachedAccommodations.count) accommodations for \(resort.name)")
-                
-                if !updatedCachedAccommodations.isEmpty {
-                    self.accommodations = await withTaskGroup(of: Accommodation.self, returning: [Accommodation].self) { group in
-                        for cachedAccommodation in updatedCachedAccommodations {
-                            group.addTask {
-                                await cachedAccommodation.toAccommodation(resort: resort)
-                            }
-                        }
-                        var results: [Accommodation] = []
-                        for await accommodation in group {
-                            results.append(accommodation)
-                        }
-                        return results
+            ) {
+                // Completion - jetzt die finalen Daten laden
+                Task { @MainActor [weak self] in
+                    guard let self = self else {
+                        continuation.resume()
+                        return
                     }
-                    print("✅ UI Updated: Loaded \(updatedCachedAccommodations.count) fresh accommodations for \(resort.name) from database")
-                } else {
-                    print("⚠️ No accommodations found for \(resort.name) after loading")
-                    
-                    // Fallback: Create some test accommodations for "Test Skigebiet"
-                    if resort.name == "Test Skigebiet" {
-                        print("🧪 Creating fallback test accommodations")
-                        self.accommodations = self.createTestAccommodations(for: resort)
-                        print("✅ Created \(self.accommodations.count) fallback test accommodations")
+
+                    let final = AccommodationDatabase.shared.getAccommodations(for: resort)
+                    if !final.isEmpty {
+                        self.accommodations = await withTaskGroup(of: Accommodation.self, returning: [Accommodation].self) { group in
+                            for cached in final {
+                                group.addTask { await cached.toAccommodation(resort: resort) }
+                            }
+                            var results: [Accommodation] = []
+                            for await a in group { results.append(a) }
+                            return results
+                        }
+                        print("[OK] Loaded \(final.count) accommodations for \(resort.name)")
                     } else {
-                        self.errorMessage = "Keine Unterkünfte für \(resort.name) gefunden"
+                        self.errorMessage = "no_accommodations_found".localized
                     }
+                    self.isLoading = false
+                    continuation.resume()
                 }
-                self.isLoading = false
             }
         }
     }
@@ -131,7 +121,7 @@ class SkiResortViewModel: ObservableObject {
     private func loadFromAPIDirectly(resort: SkiResort) {
         // Implementierung als Fallback falls AccommodationDatabase komplett fehlschlägt
         self.errorMessage = "Keine Unterkünfte in der Datenbank verfügbar. Datenbank wird aktualisiert..."
-        print("⚠️ No accommodations found in database for \(resort.name) - triggering background update")
+        print("[WARN] No accommodations found in database for \(resort.name) - triggering background update")
     }
     
     // REMOVED: Old fallback methods - using AccommodationDatabase now
@@ -151,10 +141,10 @@ class SkiResortViewModel: ObservableObject {
             // Erstelle auch kompatible WeatherData für bestehende UI
             self.weatherData = WeatherData(from: openMeteoData)
             
-            print("✅ Wetterdaten erfolgreich geladen für \(resort.name)")
+            print("[OK] Wetterdaten erfolgreich geladen für \(resort.name)")
             
         } catch {
-            print("❌ Fehler beim Laden der Wetterdaten: \(error)")
+            print("[ERROR] Fehler beim Laden der Wetterdaten: \(error)")
             self.weatherData = nil
             self.openMeteoData = nil
         }
@@ -285,21 +275,21 @@ class SkiResortViewModel: ObservableObject {
     
     // MARK: - Accommodation Updates
     func updateAccommodation(_ updatedAccommodation: Accommodation) {
-        print("🔄 SkiResortViewModel: Updating accommodation \(updatedAccommodation.name)")
-        print("🔄 Updated accommodation ID: \(updatedAccommodation.id)")
-        print("🔄 Updated spa features: Pool=\(updatedAccommodation.hasPool), Jacuzzi=\(updatedAccommodation.hasJacuzzi), Spa=\(updatedAccommodation.hasSpa), Sauna=\(updatedAccommodation.hasSauna)")
-        
+        print("SkiResortViewModel: Updating accommodation \(updatedAccommodation.name)")
+        print("Updated accommodation ID: \(updatedAccommodation.id)")
+        print("Updated spa features: Pool=\(updatedAccommodation.hasPool), Jacuzzi=\(updatedAccommodation.hasJacuzzi), Spa=\(updatedAccommodation.hasSpa), Sauna=\(updatedAccommodation.hasSauna)")
+
         // Find the accommodation by ID first (now stable), fallback to name/resort matching
         if let index = accommodations.firstIndex(where: { $0.id == updatedAccommodation.id }) {
-            print("✅ Found accommodation by ID at index \(index)")
+            print("[OK] Found accommodation by ID at index \(index)")
             accommodations[index] = updatedAccommodation
         } else if let index = accommodations.firstIndex(where: { $0.name == updatedAccommodation.name && $0.resort.id == updatedAccommodation.resort.id }) {
-            print("✅ Found accommodation by name/resort at index \(index)")
+            print("[OK] Found accommodation by name/resort at index \(index)")
             accommodations[index] = updatedAccommodation
         } else {
-            print("❌ Could not find accommodation to update")
-            print("❌ Available accommodation IDs: \(accommodations.map { $0.id })")
-            print("❌ Available accommodation names: \(accommodations.map { $0.name })")
+            print("[ERROR] Could not find accommodation to update")
+            print("[ERROR] Available accommodation IDs: \(accommodations.map { $0.id })")
+            print("[ERROR] Available accommodation names: \(accommodations.map { $0.name })")
         }
     }
 }

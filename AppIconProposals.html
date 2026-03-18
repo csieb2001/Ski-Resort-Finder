@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ski Resort Finder — App Icon Proposals</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0f;
+    color: #f5f5f7;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    padding: 40px 20px 80px;
+    min-height: 100vh;
+  }
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #4A90E2, #8BB8F0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 17px;
+    color: #86868b;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .proposals {
+    display: flex;
+    gap: 48px;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto 60px;
+  }
+  .proposal {
+    flex: 0 1 320px;
+    text-align: center;
+  }
+  .proposal h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #f5f5f7;
+  }
+  .proposal .subtitle {
+    font-size: 14px;
+    color: #86868b;
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+  .icon-wrapper {
+    width: 256px;
+    height: 256px;
+    margin: 0 auto 20px;
+    border-radius: 56px;
+    overflow: hidden;
+    box-shadow:
+      0 8px 40px rgba(74,144,226,0.15),
+      0 2px 12px rgba(0,0,0,0.4);
+    transition: transform 0.3s cubic-bezier(0.25,0.1,0.25,1), box-shadow 0.3s ease;
+    cursor: pointer;
+  }
+  .icon-wrapper:hover {
+    transform: scale(1.04) translateY(-4px);
+    box-shadow:
+      0 16px 60px rgba(74,144,226,0.25),
+      0 4px 20px rgba(0,0,0,0.5);
+  }
+  .icon-wrapper svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .sizes-section {
+    margin-top: 60px;
+    text-align: center;
+  }
+  .sizes-section h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .sizes-section p {
+    color: #86868b;
+    margin-bottom: 30px;
+    font-size: 15px;
+  }
+  .size-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    margin-bottom: 40px;
+  }
+  .size-item {
+    text-align: center;
+  }
+  .size-item .size-preview {
+    border-radius: 22%;
+    overflow: hidden;
+    margin: 0 auto 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    background: #1d1d1f;
+  }
+  .size-item span {
+    font-size: 11px;
+    color: #86868b;
+  }
+  .download-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 32px;
+  }
+  .download-btn {
+    background: #4A90E2;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 980px;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  .download-btn:hover {
+    filter: brightness(1.15);
+    transform: scale(1.03);
+  }
+  .current-icon {
+    text-align: center;
+    margin-bottom: 50px;
+    padding: 30px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.06);
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .current-icon h3 {
+    font-size: 16px;
+    color: #86868b;
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+  .current-icon img {
+    width: 128px;
+    height: 128px;
+    border-radius: 28px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .badge-1 { background: rgba(74,144,226,0.2); color: #4A90E2; }
+  .badge-2 { background: rgba(139,92,246,0.2); color: #8B5CF6; }
+  .badge-3 { background: rgba(245,158,11,0.2); color: #F59E0B; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Ski Resort Finder</h1>
+  <p>Three refined app icon proposals — each building on the mountain + location pin concept with more depth, premium materials, and stronger silhouette.</p>
+</div>
+
+<div class="proposals">
+
+  <!-- PROPOSAL 1: Alpine Beacon -->
+  <div class="proposal">
+    <span class="badge badge-1">Proposal 1</span>
+    <h2>Alpine Beacon</h2>
+    <p class="subtitle">Mountain peak merges with a glowing location pin. Deep navy gradient with luminous blue accent — the pin becomes a beacon guiding you to the summit.</p>
+    <div class="icon-wrapper" onclick="selectProposal(1)">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#0D1B3E"/>
+            <stop offset="50%" stop-color="#0A1128"/>
+            <stop offset="100%" stop-color="#0F1E42"/>
+          </linearGradient>
+          <linearGradient id="mountain1a" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#2A4A7A"/>
+            <stop offset="100%" stop-color="#1A2F55"/>
+          </linearGradient>
+          <linearGradient id="mountain1b" x1="0.3" y1="0" x2="0.7" y2="1">
+            <stop offset="0%" stop-color="#1E3660"/>
+            <stop offset="100%" stop-color="#142545"/>
+          </linearGradient>
+          <linearGradient id="pin1" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#D8E8F8"/>
+          </linearGradient>
+          <radialGradient id="glow1" cx="0.5" cy="0.38" r="0.25">
+            <stop offset="0%" stop-color="#4A90E2" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#4A90E2" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="pindot1" cx="0.5" cy="0.5" r="0.5">
+            <stop offset="0%" stop-color="#6AB0FF"/>
+            <stop offset="60%" stop-color="#4A90E2"/>
+            <stop offset="100%" stop-color="#3570B8"/>
+          </radialGradient>
+          <filter id="pinShadow1">
+            <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+          </filter>
+          <clipPath id="squircle1">
+            <rect width="1024" height="1024" rx="224" ry="224"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#squircle1)">
+          <!-- Background -->
+          <rect width="1024" height="1024" fill="url(#bg1)"/>
+          <!-- Stars -->
+          <circle cx="180" cy="120" r="2" fill="white" opacity="0.4"/>
+          <circle cx="820" cy="180" r="1.5" fill="white" opacity="0.3"/>
+          <circle cx="340" cy="200" r="1.5" fill="white" opacity="0.25"/>
+          <circle cx="700" cy="100" r="2" fill="white" opacity="0.35"/>
+          <circle cx="560" cy="160" r="1" fill="white" opacity="0.3"/>
+          <circle cx="140" cy="280" r="1.5" fill="white" opacity="0.2"/>
+          <circle cx="880" cy="300" r="1" fill="white" opacity="0.25"/>
+          <!-- Back mountain range -->
+          <path d="M0 680 L200 450 L350 540 L500 360 L650 500 L800 400 L1024 580 L1024 1024 L0 1024Z" fill="url(#mountain1b)" opacity="0.7"/>
+          <!-- Main mountain -->
+          <path d="M0 750 L300 420 L420 500 L512 310 L604 500 L724 420 L1024 750 L1024 1024 L0 1024Z" fill="url(#mountain1a)"/>
+          <!-- Snow caps -->
+          <path d="M512 310 L475 370 L500 355 L512 368 L524 355 L549 370Z" fill="white" opacity="0.9"/>
+          <path d="M300 420 L278 465 L295 455 L310 465 L322 455Z" fill="white" opacity="0.7"/>
+          <path d="M724 420 L702 465 L719 455 L734 465 L746 455Z" fill="white" opacity="0.7"/>
+          <!-- Snow ground -->
+          <path d="M0 800 Q256 770 512 785 Q768 800 1024 775 L1024 1024 L0 1024Z" fill="#E8F0FA" opacity="0.12"/>
+          <!-- Glow behind pin -->
+          <rect x="256" y="130" width="512" height="512" fill="url(#glow1)"/>
+          <!-- Location Pin -->
+          <g filter="url(#pinShadow1)">
+            <path d="M512 620 L420 430 Q380 355 380 320 Q380 248 512 200 Q644 248 644 320 Q644 355 604 430Z" fill="url(#pin1)"/>
+            <circle cx="512" cy="312" r="68" fill="url(#pindot1)"/>
+            <!-- Pin inner ring -->
+            <circle cx="512" cy="312" r="48" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PROPOSAL 2: Crystal Peak -->
+  <div class="proposal">
+    <span class="badge badge-2">Proposal 2</span>
+    <h2>Crystal Peak</h2>
+    <p class="subtitle">Abstract geometric mountain with a faceted diamond pin. Purple-to-blue gradient suggests premium, modern exploration — like viewing peaks through crystal glass.</p>
+    <div class="icon-wrapper" onclick="selectProposal(2)">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg2" x1="0" y1="0" x2="0.8" y2="1">
+            <stop offset="0%" stop-color="#0E0E2C"/>
+            <stop offset="50%" stop-color="#121236"/>
+            <stop offset="100%" stop-color="#0A0A20"/>
+          </linearGradient>
+          <linearGradient id="peak2l" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#3A5BA0"/>
+            <stop offset="100%" stop-color="#2A4080"/>
+          </linearGradient>
+          <linearGradient id="peak2r" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5B78C0"/>
+            <stop offset="100%" stop-color="#3A5BA0"/>
+          </linearGradient>
+          <linearGradient id="peak2s" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stop-color="#1E2F5C"/>
+            <stop offset="100%" stop-color="#2A4080"/>
+          </linearGradient>
+          <linearGradient id="pin2" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#C8D8F0"/>
+          </linearGradient>
+          <radialGradient id="glow2" cx="0.5" cy="0.3" r="0.3">
+            <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#8B5CF6" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="pindot2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#A78BFA"/>
+            <stop offset="50%" stop-color="#8B5CF6"/>
+            <stop offset="100%" stop-color="#6D28D9"/>
+          </linearGradient>
+          <filter id="pinShadow2">
+            <feDropShadow dx="0" dy="8" stdDeviation="14" flood-color="#8B5CF6" flood-opacity="0.25"/>
+          </filter>
+          <clipPath id="squircle2">
+            <rect width="1024" height="1024" rx="224" ry="224"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#squircle2)">
+          <!-- Background -->
+          <rect width="1024" height="1024" fill="url(#bg2)"/>
+          <!-- Subtle grid lines for geometric feel -->
+          <line x1="0" y1="512" x2="1024" y2="512" stroke="white" stroke-width="0.5" opacity="0.03"/>
+          <line x1="512" y1="0" x2="512" y2="1024" stroke="white" stroke-width="0.5" opacity="0.03"/>
+          <!-- Background peak (left) -->
+          <polygon points="120,720 320,440 520,720" fill="#1A2550" opacity="0.6"/>
+          <!-- Background peak (right) -->
+          <polygon points="560,750 750,470 940,750" fill="#1A2550" opacity="0.5"/>
+          <!-- Main mountain - left face -->
+          <polygon points="512,260 200,740 512,740" fill="url(#peak2l)"/>
+          <!-- Main mountain - right face -->
+          <polygon points="512,260 824,740 512,740" fill="url(#peak2r)"/>
+          <!-- Mountain ridge highlight -->
+          <line x1="512" y1="260" x2="512" y2="740" stroke="white" stroke-width="1.5" opacity="0.15"/>
+          <!-- Snow cap - geometric -->
+          <polygon points="512,260 470,340 512,320 554,340" fill="white" opacity="0.92"/>
+          <polygon points="470,340 430,400 512,370" fill="white" opacity="0.5"/>
+          <polygon points="554,340 594,400 512,370" fill="white" opacity="0.65"/>
+          <!-- Shadow base -->
+          <polygon points="200,740 824,740 870,780 154,780" fill="url(#peak2s)" opacity="0.5"/>
+          <!-- Snow ground plane -->
+          <rect x="0" y="740" width="1024" height="284" fill="#0C0C22" opacity="0.6"/>
+          <ellipse cx="512" cy="740" rx="420" ry="20" fill="white" opacity="0.04"/>
+          <!-- Glow -->
+          <rect x="200" y="50" width="624" height="624" fill="url(#glow2)"/>
+          <!-- Location Pin - floating above -->
+          <g filter="url(#pinShadow2)" transform="translate(0, -20)">
+            <path d="M512 580 L438 428 Q405 365 405 335 Q405 270 512 230 Q619 270 619 335 Q619 365 586 428Z" fill="url(#pin2)"/>
+            <!-- Faceted pin dot -->
+            <circle cx="512" cy="327" r="56" fill="url(#pindot2)"/>
+            <circle cx="512" cy="327" r="36" fill="none" stroke="white" stroke-width="2.5" opacity="0.6"/>
+            <!-- Diamond sparkle -->
+            <path d="M512 300 L518 321 L538 327 L518 333 L512 354 L506 333 L486 327 L506 321Z" fill="white" opacity="0.5"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PROPOSAL 3: Sunset Summit -->
+  <div class="proposal">
+    <span class="badge badge-3">Proposal 3</span>
+    <h2>Sunset Summit</h2>
+    <p class="subtitle">Warm golden hour on deep blue mountains. The accent orange creates a glowing horizon behind peaks — evoking the magic moment when you find your dream resort.</p>
+    <div class="icon-wrapper" onclick="selectProposal(3)">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bg3" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#0A1628"/>
+            <stop offset="45%" stop-color="#0F1E3A"/>
+            <stop offset="70%" stop-color="#1A2844"/>
+            <stop offset="100%" stop-color="#0D1526"/>
+          </linearGradient>
+          <radialGradient id="sunGlow3" cx="0.5" cy="0.52" r="0.35">
+            <stop offset="0%" stop-color="#F59E0B" stop-opacity="0.45"/>
+            <stop offset="40%" stop-color="#F59E0B" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="mtn3back" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#1E3660"/>
+            <stop offset="100%" stop-color="#152545"/>
+          </linearGradient>
+          <linearGradient id="mtn3main" x1="0.3" y1="0" x2="0.7" y2="1">
+            <stop offset="0%" stop-color="#2A4A7A"/>
+            <stop offset="100%" stop-color="#1A3058"/>
+          </linearGradient>
+          <linearGradient id="pin3" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#F0E0C8"/>
+          </linearGradient>
+          <radialGradient id="pindot3" cx="0.4" cy="0.4" r="0.6">
+            <stop offset="0%" stop-color="#FBBF24"/>
+            <stop offset="60%" stop-color="#F59E0B"/>
+            <stop offset="100%" stop-color="#D97706"/>
+          </radialGradient>
+          <filter id="pinShadow3">
+            <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#F59E0B" flood-opacity="0.2"/>
+            <feDropShadow dx="0" dy="6" stdDeviation="18" flood-color="#000" flood-opacity="0.3"/>
+          </filter>
+          <linearGradient id="horizon3" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#F59E0B" stop-opacity="0"/>
+            <stop offset="30%" stop-color="#F59E0B" stop-opacity="0.6"/>
+            <stop offset="50%" stop-color="#FBBF24" stop-opacity="0.8"/>
+            <stop offset="70%" stop-color="#F59E0B" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#F59E0B" stop-opacity="0"/>
+          </linearGradient>
+          <clipPath id="squircle3">
+            <rect width="1024" height="1024" rx="224" ry="224"/>
+          </clipPath>
+        </defs>
+        <g clip-path="url(#squircle3)">
+          <!-- Background -->
+          <rect width="1024" height="1024" fill="url(#bg3)"/>
+          <!-- Stars -->
+          <circle cx="200" cy="100" r="2" fill="white" opacity="0.35"/>
+          <circle cx="780" cy="140" r="1.5" fill="white" opacity="0.25"/>
+          <circle cx="400" cy="170" r="1" fill="white" opacity="0.2"/>
+          <circle cx="650" cy="90" r="1.5" fill="white" opacity="0.3"/>
+          <circle cx="130" cy="230" r="1" fill="white" opacity="0.2"/>
+          <!-- Sun glow behind mountains -->
+          <rect x="0" y="200" width="1024" height="500" fill="url(#sunGlow3)"/>
+          <!-- Horizon glow line -->
+          <rect x="0" y="540" width="1024" height="6" fill="url(#horizon3)" opacity="0.7"/>
+          <rect x="100" y="544" width="824" height="3" fill="url(#horizon3)" opacity="0.3"/>
+          <!-- Back mountains -->
+          <path d="M0 620 L180 440 L320 520 L480 380 L600 480 L780 390 L1024 560 L1024 1024 L0 1024Z" fill="url(#mtn3back)" opacity="0.65"/>
+          <!-- Main mountains -->
+          <path d="M0 700 L260 430 L380 510 L512 340 L644 510 L764 430 L1024 700 L1024 1024 L0 1024Z" fill="url(#mtn3main)"/>
+          <!-- Snow caps with warm tint -->
+          <path d="M512 340 L478 395 L500 382 L512 395 L524 382 L546 395Z" fill="white" opacity="0.9"/>
+          <path d="M260 430 L240 470 L255 462 L268 470 L280 462Z" fill="white" opacity="0.65"/>
+          <path d="M764 430 L744 470 L759 462 L772 470 L784 462Z" fill="white" opacity="0.65"/>
+          <!-- Snow ground reflection -->
+          <path d="M0 780 Q256 760 512 770 Q768 780 1024 762 L1024 1024 L0 1024Z" fill="white" opacity="0.06"/>
+          <!-- Location Pin -->
+          <g filter="url(#pinShadow3)">
+            <path d="M512 610 L426 436 Q390 370 390 338 Q390 268 512 222 Q634 268 634 338 Q634 370 598 436Z" fill="url(#pin3)"/>
+            <circle cx="512" cy="330" r="64" fill="url(#pindot3)"/>
+            <circle cx="512" cy="330" r="44" fill="none" stroke="white" stroke-width="2.5" opacity="0.6"/>
+            <!-- Warm glow ring -->
+            <circle cx="512" cy="330" r="80" fill="none" stroke="#F59E0B" stroke-width="1.5" opacity="0.15"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+</div>
+
+<!-- Size Preview Section -->
+<div class="sizes-section">
+  <h2>Size Preview</h2>
+  <p>Click a proposal above, then check how it reads at every iOS icon size</p>
+
+  <div id="sizePreview" class="size-grid">
+    <div class="size-item"><div class="size-preview" style="width:128px;height:128px" id="sz1024"></div><span>1024</span></div>
+    <div class="size-item"><div class="size-preview" style="width:90px;height:90px" id="sz180"></div><span>180</span></div>
+    <div class="size-item"><div class="size-preview" style="width:60px;height:60px" id="sz120"></div><span>120</span></div>
+    <div class="size-item"><div class="size-preview" style="width:44px;height:44px" id="sz87"></div><span>87</span></div>
+    <div class="size-item"><div class="size-preview" style="width:40px;height:40px" id="sz80"></div><span>80</span></div>
+    <div class="size-item"><div class="size-preview" style="width:30px;height:30px" id="sz60"></div><span>60</span></div>
+    <div class="size-item"><div class="size-preview" style="width:20px;height:20px" id="sz40"></div><span>40</span></div>
+    <div class="size-item"><div class="size-preview" style="width:14px;height:14px" id="sz29"></div><span>29</span></div>
+    <div class="size-item"><div class="size-preview" style="width:10px;height:10px" id="sz20"></div><span>20</span></div>
+  </div>
+
+  <div class="download-row">
+    <button class="download-btn" onclick="downloadIcon(1, 1024)">Download Proposal 1 (1024px)</button>
+    <button class="download-btn" onclick="downloadIcon(2, 1024)">Download Proposal 2 (1024px)</button>
+    <button class="download-btn" onclick="downloadIcon(3, 1024)">Download Proposal 3 (1024px)</button>
+  </div>
+  <div class="download-row" style="margin-top:12px">
+    <button class="download-btn" style="background:#333" onclick="downloadAllSizes()">Download All Sizes (Selected)</button>
+  </div>
+</div>
+
+<script>
+let selectedProposal = 1;
+
+function selectProposal(num) {
+  selectedProposal = num;
+  document.querySelectorAll('.icon-wrapper').forEach((el, i) => {
+    el.style.outline = (i + 1 === num) ? '3px solid #4A90E2' : 'none';
+    el.style.outlineOffset = '4px';
+  });
+  updateSizePreview(num);
+}
+
+function updateSizePreview(num) {
+  const svg = document.querySelectorAll('.icon-wrapper svg')[num - 1];
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const blob = new Blob([svgData], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+
+  const sizes = [
+    {id: 'sz1024', s: 128}, {id: 'sz180', s: 90}, {id: 'sz120', s: 60},
+    {id: 'sz87', s: 44}, {id: 'sz80', s: 40}, {id: 'sz60', s: 30},
+    {id: 'sz40', s: 20}, {id: 'sz29', s: 14}, {id: 'sz20', s: 10}
+  ];
+  sizes.forEach(({id, s}) => {
+    const el = document.getElementById(id);
+    el.innerHTML = `<img src="${url}" width="${s}" height="${s}" style="display:block;border-radius:22%">`;
+  });
+}
+
+function downloadIcon(num, size) {
+  const svg = document.querySelectorAll('.icon-wrapper svg')[num - 1];
+  const svgData = new XMLSerializer().serializeToString(svg);
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  const img = new Image();
+  img.onload = () => {
+    ctx.drawImage(img, 0, 0, size, size);
+    const link = document.createElement('a');
+    link.download = `ski-resort-finder-icon-proposal${num}-${size}x${size}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  };
+  img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
+}
+
+function downloadAllSizes() {
+  const sizes = [1024, 180, 167, 152, 120, 87, 80, 76, 60, 58, 40, 29, 20];
+  let delay = 0;
+  sizes.forEach(size => {
+    setTimeout(() => downloadIcon(selectedProposal, size), delay);
+    delay += 300;
+  });
+}
+
+// Auto-select proposal 1
+window.onload = () => selectProposal(1);
+</script>
+
+</body>
+</html>

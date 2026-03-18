@@ -1,0 +1,37 @@
+{
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/AboutView.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AboutView.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AboutView.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AboutView.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AboutView.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AboutView.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/AccommodationCard.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AccommodationCard.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AccommodationCard.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AccommodationCard.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AccommodationCard.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/AccommodationCard.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Components/SnowLineChart.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/SnowLineChart.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/SnowLineChart.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/SnowLineChart.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/SnowLineChart.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/SnowLineChart.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Settings/CacheManagementView.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/CacheManagementView.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/CacheManagementView.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/CacheManagementView.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/CacheManagementView.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/CacheManagementView.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Settings/PrivacySettingsView.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/PrivacySettingsView.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/PrivacySettingsView.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/PrivacySettingsView.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/PrivacySettingsView.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/PrivacySettingsView.swiftdeps"
+  }
+}

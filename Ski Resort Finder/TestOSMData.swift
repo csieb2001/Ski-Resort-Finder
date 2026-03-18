@@ -16,11 +16,11 @@ class OSMDataTester {
             ("Val d'Isère", CLLocationCoordinate2D(latitude: 45.4486, longitude: 6.9786))
         ]
         
-        print("🧪 Testing OSM Accommodation Data Quality")
+        print("Testing OSM Accommodation Data Quality")
         print("="*50)
         
         for (resortName, coordinate) in testResorts {
-            print("\n🏔️ Testing: \(resortName)")
+            print("\nTesting: \(resortName)")
             print("-" * 40)
             
             do {
@@ -29,10 +29,10 @@ class OSMDataTester {
                     radius: 5000 // 5km radius
                 )
                 
-                print("📊 Found \(accommodations.count) accommodations")
+                print("Found \(accommodations.count) accommodations")
                 
                 if accommodations.isEmpty {
-                    print("⚠️ No accommodations found!")
+                    print("[WARN] No accommodations found!")
                     continue
                 }
                 
@@ -46,7 +46,7 @@ class OSMDataTester {
                 var accommodationTypes: [String: Int] = [:]
                 
                 for accommodation in accommodations.prefix(10) { // Show first 10
-                    print("\n🏨 \(accommodation.name)")
+                print("\n\(accommodation.name)")
                     print("   Type: \(accommodation.tourismType ?? "unknown")")
                     print("   Address: \(accommodation.address.isEmpty ? "Not available" : accommodation.address)")
                     print("   Email: \(accommodation.email ?? "Not available")")
@@ -67,7 +67,7 @@ class OSMDataTester {
                 }
                 
                 // Print summary statistics
-                print("\n📈 Data Quality Summary:")
+                print("\nData Quality Summary:")
                 print("   Total found: \(accommodations.count)")
                 print("   With email: \(hasEmail)/\(min(10, accommodations.count)) (\(hasEmail * 100 / min(10, accommodations.count))%)")
                 print("   With phone: \(hasPhone)/\(min(10, accommodations.count)) (\(hasPhone * 100 / min(10, accommodations.count))%)")
@@ -75,18 +75,18 @@ class OSMDataTester {
                 print("   With stars: \(hasStars)/\(min(10, accommodations.count)) (\(hasStars * 100 / min(10, accommodations.count))%)")
                 print("   With address: \(hasAddress)/\(min(10, accommodations.count)) (\(hasAddress * 100 / min(10, accommodations.count))%)")
                 
-                print("\n🏷️ Accommodation Types:")
+                print("\nAccommodation Types:")
                 for (type, count) in accommodationTypes.sorted(by: { $0.value > $1.value }) {
                     print("   \(type): \(count)")
                 }
                 
             } catch {
-                print("❌ Error testing \(resortName): \(error)")
+                print("[ERROR] Error testing \(resortName): \(error)")
             }
         }
         
         print("\n" + "="*50)
-        print("🎯 Test completed!")
+        print("Test completed!")
     }
 }
 

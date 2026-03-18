@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import SwiftUI
 
-class AccommodationImageLoader: ObservableObject {
+class AccommodationImageLoader: ObservableObject, @unchecked Sendable {
     static let shared = AccommodationImageLoader()
     
     @Published var images: [String: UIImage] = [:]
@@ -66,7 +66,7 @@ class AccommodationImageLoader: ObservableObject {
             let (data, _) = try await URLSession.shared.data(from: url)
             return UIImage(data: data)
         } catch {
-            print("❌ Failed to load image from \(urlString): \(error)")
+            print("[ERROR] Failed to load image from \(urlString): \(error)")
             return nil
         }
     }

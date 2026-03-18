@@ -1,0 +1,72 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/AboutView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Version %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 22
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@ (ORS)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Christopher Siebert",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 124
+        }
+      },
+      {
+        "comment": "",
+        "key": "• OpenStreetMap (Overpass API - Hotels)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 144
+        }
+      },
+      {
+        "comment": "",
+        "key": "• Website-Screenshots für Hotelbilder",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 145
+        }
+      },
+      {
+        "comment": "",
+        "key": "• Open-Meteo Wetter API",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 146
+        }
+      },
+      {
+        "comment": "",
+        "key": "• ERA5 Climate Data Store (Historische Schneedaten)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 147
+        }
+      },
+      {
+        "comment": "",
+        "key": "• Skigebiet-Datenbank (100+ Gebiete)",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 148
+        }
+      }
+    ]
+  },
+  "version": 1
+}

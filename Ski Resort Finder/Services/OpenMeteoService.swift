@@ -2,66 +2,147 @@ import Foundation
 import CoreLocation
 import Combine
 
-class OpenMeteoService: ObservableObject {
+class OpenMeteoService: ObservableObject, @unchecked Sendable {
     
     private let baseURL = "https://api.open-meteo.com/v1"
     
+    // Rate limiting properties
+    private var requestCount = 0
+    private var lastRequestTime = Date()
+    private let maxRequestsPerMinute = 10 // Conservative limit
+    private let requestDelay: TimeInterval = 6.0 // 6 seconds between requests
+    
+    // MARK: - Rate Limiting Helper
+    private func applyRateLimit() async {
+        let timeSinceLastRequest = Date().timeIntervalSince(lastRequestTime)
+        if timeSinceLastRequest < requestDelay {
+            let waitTime = requestDelay - timeSinceLastRequest
+            print("Rate limiting: Waiting \(String(format: "%.1f", waitTime)) seconds...")
+            try? await Task.sleep(nanoseconds: UInt64(waitTime * 1_000_000_000))
+        }
+        lastRequestTime = Date()
+        requestCount += 1
+    }
+    
+    // MARK: - Retry Helper with Exponential Backoff
+    private func performRequestWithRetry<T>(
+        maxRetries: Int = 3,
+        operation: @escaping () async throws -> T
+    ) async throws -> T {
+        var lastError: Error?
+        
+        for attempt in 0..<maxRetries {
+            if attempt > 0 {
+                // Exponential backoff: 5s, 15s, 45s
+                let backoffTime = 5.0 * pow(3.0, Double(attempt - 1))
+                print("Retry attempt \(attempt + 1)/\(maxRetries), waiting \(String(format: "%.1f", backoffTime))s...")
+                try? await Task.sleep(nanoseconds: UInt64(backoffTime * 1_000_000_000))
+            }
+            
+            do {
+                await applyRateLimit()
+                return try await operation()
+            } catch let error as OpenMeteoError {
+                lastError = error
+                switch error {
+                case .networkError(let message) where message.contains("429"):
+                print("[ERROR] HTTP 429 Rate Limit hit, retrying with exponential backoff...")
+                    continue
+                default:
+                    if attempt == maxRetries - 1 {
+                        throw error
+                    }
+                    continue
+                }
+            } catch {
+                lastError = error
+                if attempt == maxRetries - 1 {
+                    throw error
+                }
+            }
+        }
+        
+        throw lastError ?? OpenMeteoError.networkError("Max retries exceeded")
+    }
+    
     // MARK: - Weather Forecast
     func fetchWeather(for coordinate: CLLocationCoordinate2D) async throws -> OpenMeteoWeatherData {
-        
-        var components = URLComponents(string: "\(baseURL)/forecast")!
-        components.queryItems = [
-            URLQueryItem(name: "latitude", value: String(coordinate.latitude)),
-            URLQueryItem(name: "longitude", value: String(coordinate.longitude)),
-            URLQueryItem(name: "current", value: "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m"),
-            URLQueryItem(name: "hourly", value: "temperature_2m,precipitation_probability,precipitation,snowfall,weather_code,wind_speed_10m"),
-            URLQueryItem(name: "daily", value: "temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,weather_code"),
-            URLQueryItem(name: "timezone", value: "auto"),
-            URLQueryItem(name: "forecast_days", value: "7")
-        ]
-        
-        guard let url = components.url else {
-            throw OpenMeteoError.invalidURL
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw OpenMeteoError.invalidResponse
-        }
-        
-        do {
-            let weatherData = try JSONDecoder().decode(OpenMeteoResponse.self, from: data)
-            return OpenMeteoWeatherData(from: weatherData, coordinate: coordinate)
-        } catch {
-            print("Open-Meteo Decoding Error: \(error)")
-            throw OpenMeteoError.decodingError
+        return try await performRequestWithRetry {
+            var components = URLComponents(string: "\(self.baseURL)/forecast")!
+            components.queryItems = [
+                URLQueryItem(name: "latitude", value: String(coordinate.latitude)),
+                URLQueryItem(name: "longitude", value: String(coordinate.longitude)),
+                URLQueryItem(name: "current", value: "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m"),
+                URLQueryItem(name: "hourly", value: "temperature_2m,precipitation_probability,precipitation,snowfall,weather_code,wind_speed_10m"),
+                URLQueryItem(name: "daily", value: "temperature_2m_max,temperature_2m_min,precipitation_sum,snowfall_sum,weather_code"),
+                URLQueryItem(name: "timezone", value: "auto"),
+                URLQueryItem(name: "forecast_days", value: "7")
+            ]
+            
+            guard let url = components.url else {
+                throw OpenMeteoError.invalidURL
+            }
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw OpenMeteoError.invalidResponse
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                throw OpenMeteoError.networkError("HTTP \(httpResponse.statusCode)")
+            }
+            
+            do {
+                let weatherData = try JSONDecoder().decode(OpenMeteoResponse.self, from: data)
+                return OpenMeteoWeatherData(from: weatherData, coordinate: coordinate)
+            } catch {
+                print("Open-Meteo Decoding Error: \(error)")
+                throw OpenMeteoError.decodingError
+            }
         }
     }
     
     // MARK: - Historical Snow Data (Will use ERA5 in future)
     func fetchHistoricalSnowData(for coordinate: CLLocationCoordinate2D) async throws -> HistoricalSnowData {
-        print("🌨️ OpenMeteo: Loading historical snow data for \(coordinate.latitude), \(coordinate.longitude)")
+        print("OpenMeteo: Loading historical snow data for \(coordinate.latitude), \(coordinate.longitude)")
         
         let currentYear = Calendar.current.component(.year, from: Date())
         let years = Array((currentYear-9)...currentYear) // Letzten 10 Jahre
         var yearlyData: [YearlySnowData] = []
+        var consecutiveFailures = 0
         
-        for year in years {
+        print("Processing \(years.count) years with rate limiting (6s delay between requests)")
+        
+        for (index, year) in years.enumerated() {
             do {
                 let snowData = try await fetchSnowDataForYear(coordinate: coordinate, year: year)
                 yearlyData.append(snowData)
-                print("✅ OpenMeteo: Jahr \(year) erfolgreich geladen - \(String(format: "%.1f", snowData.totalSnowfall))cm")
-            } catch {
-                print("❌ OpenMeteo: Fehler für Jahr \(year): \(error)")
+                consecutiveFailures = 0 // Reset on success
+                print("[OK] OpenMeteo: Jahr \(year) erfolgreich geladen - \(String(format: "%.1f", snowData.totalSnowfall))cm [\(index + 1)/\(years.count)]")
+            } catch let error as OpenMeteoError {
+                print("[ERROR] OpenMeteo: Fehler für Jahr \(year): \(error)")
+                consecutiveFailures += 1
+                
+                // If too many consecutive failures, assume we're rate limited badly
+                if consecutiveFailures >= 3 {
+                    print("Too many consecutive failures (\(consecutiveFailures)), implementing longer cooldown...")
+                    try? await Task.sleep(nanoseconds: UInt64(30 * 1_000_000_000)) // 30 second pause
+                    consecutiveFailures = 0
+                }
+                
                 // Bei der KEINE FAKE-DATEN POLICY: Jahr überspringen
+            } catch {
+                print("[ERROR] OpenMeteo: Unerwarteter Fehler für Jahr \(year): \(error)")
+                consecutiveFailures += 1
             }
         }
         
         guard !yearlyData.isEmpty else {
             throw OpenMeteoError.noDataAvailable("Keine historischen Schneedaten verfügbar")
         }
+        
+        print("Successfully loaded \(yearlyData.count)/\(years.count) years of snow data")
         
         return HistoricalSnowData(
             coordinate: coordinate,
@@ -72,76 +153,81 @@ class OpenMeteoService: ObservableObject {
     }
     
     private func fetchSnowDataForYear(coordinate: CLLocationCoordinate2D, year: Int) async throws -> YearlySnowData {
-        // OpenMeteo Archive API für historische Daten
-        var components = URLComponents(string: "https://archive-api.open-meteo.com/v1/archive")!
-        
-        // Zeitraum: Wintersaison (November bis April)
-        let startDate = "\(year-1)-11-01"
-        let endDate = "\(year)-04-30"
-        
-        components.queryItems = [
-            URLQueryItem(name: "latitude", value: String(coordinate.latitude)),
-            URLQueryItem(name: "longitude", value: String(coordinate.longitude)),
-            URLQueryItem(name: "start_date", value: startDate),
-            URLQueryItem(name: "end_date", value: endDate),
-            URLQueryItem(name: "daily", value: "snowfall_sum,temperature_2m_mean"),
-            URLQueryItem(name: "timezone", value: "auto")
-        ]
-        
-        guard let url = components.url else {
-            throw OpenMeteoError.invalidURL
-        }
-        
-        let (data, response) = try await URLSession.shared.data(from: url)
-        
-        guard let httpResponse = response as? HTTPURLResponse,
-              httpResponse.statusCode == 200 else {
-            throw OpenMeteoError.networkError("HTTP \((response as? HTTPURLResponse)?.statusCode ?? 0)")
-        }
-        
-        // Parse OpenMeteo Archive Response
-        let archiveResponse = try JSONDecoder().decode(OpenMeteoArchiveResponse.self, from: data)
-        
-        // Berechne Schnee-Statistiken
-        var totalSnowfall: Double = 0
-        var snowDays = 0
-        var peakSnowfall: Double = 0
-        var firstSnowDate: Date?
-        var lastSnowDate: Date?
-        
-        if let snowfallData = archiveResponse.daily.snowfall_sum {
-            let timeData = archiveResponse.daily.time
+        return try await performRequestWithRetry {
+            // OpenMeteo Archive API für historische Daten
+            var components = URLComponents(string: "https://archive-api.open-meteo.com/v1/archive")!
             
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
+            // Zeitraum: Wintersaison (November bis April)
+            let startDate = "\(year-1)-11-01"
+            let endDate = "\(year)-04-30"
             
-            for (index, snowfall) in snowfallData.enumerated() {
-                if let snow = snowfall, snow > 0.1 { // Mindestens 0.1mm als Schneetag
-                    totalSnowfall += snow
-                    snowDays += 1
-                    peakSnowfall = max(peakSnowfall, snow)
-                    
-                    // Datum bestimmen
-                    if index < timeData.count,
-                       let date = dateFormatter.date(from: timeData[index]) {
-                        if firstSnowDate == nil {
-                            firstSnowDate = date
+            components.queryItems = [
+                URLQueryItem(name: "latitude", value: String(coordinate.latitude)),
+                URLQueryItem(name: "longitude", value: String(coordinate.longitude)),
+                URLQueryItem(name: "start_date", value: startDate),
+                URLQueryItem(name: "end_date", value: endDate),
+                URLQueryItem(name: "daily", value: "snowfall_sum,temperature_2m_mean"),
+                URLQueryItem(name: "timezone", value: "auto")
+            ]
+            
+            guard let url = components.url else {
+                throw OpenMeteoError.invalidURL
+            }
+            
+            let (data, response) = try await URLSession.shared.data(from: url)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw OpenMeteoError.invalidResponse
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                throw OpenMeteoError.networkError("HTTP \(httpResponse.statusCode)")
+            }
+            
+            // Parse OpenMeteo Archive Response
+            let archiveResponse = try JSONDecoder().decode(OpenMeteoArchiveResponse.self, from: data)
+            
+            // Berechne Schnee-Statistiken
+            var totalSnowfall: Double = 0
+            var snowDays = 0
+            var peakSnowfall: Double = 0
+            var firstSnowDate: Date?
+            var lastSnowDate: Date?
+            
+            if let snowfallData = archiveResponse.daily.snowfall_sum {
+                let timeData = archiveResponse.daily.time
+                
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                
+                for (index, snowfall) in snowfallData.enumerated() {
+                    if let snow = snowfall, snow > 0.1 { // Mindestens 0.1mm als Schneetag
+                        totalSnowfall += snow
+                        snowDays += 1
+                        peakSnowfall = max(peakSnowfall, snow)
+                        
+                        // Datum bestimmen
+                        if index < timeData.count,
+                           let date = dateFormatter.date(from: timeData[index]) {
+                            if firstSnowDate == nil {
+                                firstSnowDate = date
+                            }
+                            lastSnowDate = date
                         }
-                        lastSnowDate = date
                     }
                 }
             }
+            
+            return YearlySnowData(
+                year: year,
+                totalSnowfall: totalSnowfall,
+                averageSnowDepth: 0, // OpenMeteo Archive hat keine Schnee-Tiefe
+                snowDays: snowDays,
+                peakSnowfall: peakSnowfall,
+                seasonStart: firstSnowDate,
+                seasonEnd: lastSnowDate
+            )
         }
-        
-        return YearlySnowData(
-            year: year,
-            totalSnowfall: totalSnowfall,
-            averageSnowDepth: 0, // OpenMeteo Archive hat keine Schnee-Tiefe
-            snowDays: snowDays,
-            peakSnowfall: peakSnowfall,
-            seasonStart: firstSnowDate,
-            seasonEnd: lastSnowDate
-        )
     }
     
     
@@ -318,40 +404,7 @@ struct OpenMeteoWeatherData {
 }
 
 
-// MARK: - Historical Data Models
-
-struct HistoricalSnowData {
-    let coordinate: CLLocationCoordinate2D
-    let yearlyData: [YearlySnowData]
-    let averageSnowfall: Double
-    let averageSnowDays: Int
-}
-
-struct YearlySnowData {
-    let year: Int
-    let totalSnowfall: Double // in cm
-    let averageSnowDepth: Double // in cm
-    let snowDays: Int // Tage mit Schneefall > 0.1cm
-    let peakSnowfall: Double // Höchster Schneefall an einem Tag
-    let seasonStart: Date?
-    let seasonEnd: Date?
-    
-    var seasonLength: Int? {
-        guard let start = seasonStart, let end = seasonEnd else { return nil }
-        return Calendar.current.dateComponents([.day], from: start, to: end).day
-    }
-    
-    var formattedSeason: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM"
-        
-        guard let start = seasonStart, let end = seasonEnd else {
-            return "Keine Daten"
-        }
-        
-        return "\(formatter.string(from: start)) - \(formatter.string(from: end))"
-    }
-}
+// Note: HistoricalSnowData and YearlySnowData models are now in WeatherData.swift
 
 struct OpenMeteoArchiveResponse: Codable {
     let latitude: Double

@@ -1,0 +1,40 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Components/SnowLineChart.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "'%@",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 89
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "cm",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 101
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld - %lld cm",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 129
+        }
+      }
+    ]
+  },
+  "version": 1
+}

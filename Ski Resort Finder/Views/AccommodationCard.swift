@@ -60,9 +60,16 @@ struct AccommodationCard: View {
                                     .font(DesignSystem.Typography.caption1)
                                     .foregroundColor(DesignSystem.Colors.primary)
                                 
-                                // Only show rating if calculable (NO FAKE DATA policy)
+                                // ORS Objective Rating - only show if calculable (NO FAKE DATA policy)
                                 if let rating = accommodation.rating {
                                     HStack(spacing: 2) {
+                                        Text("ORS")
+                                            .font(.system(size: 8, weight: .bold))
+                                            .foregroundColor(DesignSystem.Colors.accent)
+                                            .padding(.horizontal, 3)
+                                            .padding(.vertical, 1)
+                                            .background(DesignSystem.Colors.accent.opacity(0.15))
+                                            .clipShape(RoundedRectangle(cornerRadius: 3))
                                         Image(systemName: "star.fill")
                                             .font(.caption2)
                                             .foregroundColor(DesignSystem.Colors.accent)
@@ -128,17 +135,11 @@ struct AccommodationCard: View {
                                 )
                             }
                             
-                            // Show "spa pending" indicator if none are available
+                            // Kein Spa-Indikator wenn keine Features - sauberer Look
                             if !hasWellnessFeatures {
-                                HStack(spacing: DesignSystem.Spacing.xxs) {
-                                    Circle()
-                                        .fill(DesignSystem.Colors.secondaryText)
-                                        .frame(width: 6, height: 6)
-                                    
-                                    Text("spa_pending".localized)
-                                        .font(DesignSystem.Typography.caption2)
-                                        .foregroundColor(DesignSystem.Colors.secondaryText)
-                                }
+                                Text("no_spa_info".localized)
+                                    .font(DesignSystem.Typography.caption2)
+                                    .foregroundColor(DesignSystem.Colors.quaternaryText)
                             }
                         }
                         
@@ -181,14 +182,22 @@ struct AccommodationCard: View {
     private var emailStatusIndicator: some View {
         return HStack(spacing: DesignSystem.Spacing.xxs) {
             let hasEmail = accommodation.email != nil && !accommodation.email!.isEmpty
-            
-            Circle()
-                .fill(hasEmail ? DesignSystem.Colors.success : DesignSystem.Colors.secondaryText)
-                .frame(width: 6, height: 6)
-            
-            Text(hasEmail ? "email_found".localized : "email_pending".localized)
-                .font(DesignSystem.Typography.caption2)
-                .foregroundColor(hasEmail ? DesignSystem.Colors.success : DesignSystem.Colors.secondaryText)
+            let hasPhone = accommodation.phone != nil && !accommodation.phone!.isEmpty
+            let hasWebsite = accommodation.website != nil && !accommodation.website!.isEmpty
+            let hasAnyContact = hasEmail || hasPhone || hasWebsite
+
+            if hasAnyContact {
+                Circle()
+                    .fill(DesignSystem.Colors.success)
+                    .frame(width: 6, height: 6)
+                Text("contact_available".localized)
+                    .font(DesignSystem.Typography.caption2)
+                    .foregroundColor(DesignSystem.Colors.success)
+            } else {
+                Text("details_tap".localized)
+                    .font(DesignSystem.Typography.caption2)
+                    .foregroundColor(DesignSystem.Colors.primary)
+            }
         }
     }
     

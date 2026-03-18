@@ -8,22 +8,9 @@ struct HeaderView: View {
     var body: some View {
         HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: DesignSystem.Spacing.xxs) {
-                HStack(alignment: .top, spacing: DesignSystem.Spacing.sm) {
-                    Text("ski_resort_finder".localized)
-                        .font(DesignSystem.Typography.title1)
-                        .foregroundColor(DesignSystem.Colors.primaryText)
-                    
-                    // Beta Badge
-                    Text("beta".localized)
-                        .font(.caption2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(Color.secondary.opacity(0.6))
-                        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
-                        .offset(y: 2) // Slight vertical adjustment to align with title
-                }
+                Text("ski_resort_finder".localized)
+                    .font(DesignSystem.Typography.title1)
+                    .foregroundColor(DesignSystem.Colors.primaryText)
                 
                 Text("find_perfect_resort".localized)
                     .font(DesignSystem.Typography.subheadline)
@@ -401,34 +388,23 @@ struct SearchButtonCard: View {
     let isEnabled: Bool
     let onSearch: () -> Void
     @ObservedObject private var localization = LocalizationService.shared
-    
+
     var body: some View {
         Button(action: onSearch) {
             HStack(spacing: DesignSystem.Spacing.sm) {
                 Image(systemName: "building.2.fill")
                     .font(DesignSystem.Typography.callout)
-                
+
                 Text("search_accommodations".localized)
                     .font(DesignSystem.Typography.calloutEmphasized)
             }
             .frame(maxWidth: .infinity)
             .padding(DesignSystem.Spacing.md)
-            .background(
-                isEnabled ? 
-                DesignSystem.Colors.primary : 
-                DesignSystem.Colors.quaternaryText
-            )
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.md, style: DesignSystem.CornerRadius.continuous))
-            .shadow(
-                color: isEnabled ? DesignSystem.Shadow.medium.color : Color.clear,
-                radius: DesignSystem.Shadow.medium.radius,
-                x: DesignSystem.Shadow.medium.x,
-                y: DesignSystem.Shadow.medium.y
-            )
+            .foregroundColor(isEnabled ? DesignSystem.Colors.primary : DesignSystem.Colors.quaternaryText)
         }
+        .glassEffect(.regular.interactive(), in: .capsule)
+        .tint(isEnabled ? DesignSystem.Colors.primary : nil)
         .disabled(!isEnabled)
-        .buttonStyle(PlainButtonStyle())
         .animation(DesignSystem.Animation.medium, value: isEnabled)
     }
 }

@@ -17,14 +17,14 @@ struct ERA5Config {
     /// Ihr ERA5 API-Schlüssel hier eintragen
     /// Format: "uuid:uuid" (beide Teile sind UUIDs mit Bindestrichen)
     /// 
-    /// ⚠️ WICHTIG: Für Production-Apps sollten Sie dies nicht hart kodieren!
+    /// [WARN] WICHTIG: Für Production-Apps sollten Sie dies nicht hart kodieren!
     /// Verwenden Sie stattdessen:
     /// - Environment Variables
     /// - Keychain Services  
     /// - Remote Configuration
     /// 
     /// BEISPIEL: private static let hardcodedAPIKey: String? = "uuid:uuid"
-    private static let hardcodedAPIKey: String? = "d4ece7aa-d2f6-459a-a3e5-474fbae0d75d:4a80f277-2faa-476e-b3ed-e139da4da6e4" // <- IHREN ECHTEN ERA5 API-SCHLÜSSEL HIER EINTRAGEN (Format: "uuid:uuid")
+    private static let hardcodedAPIKey: String? = nil // Configure via Settings → ERA5 API Key or Environment Variable ERA5_API_KEY
     
     // MARK: - API Key Retrieval
     
@@ -122,12 +122,12 @@ struct ERA5Config {
     /// Für Debug-Zwecke: Zeigt API-Schlüssel Status
     static var debugStatus: String {
         if !isConfigured {
-            return "❌ Kein API-Schlüssel konfiguriert"
+            return "[ERROR] Kein API-Schlüssel konfiguriert"
         } else if !isValidFormat {
-            return "⚠️ API-Schlüssel Format ungültig"
+            return "[WARN] API-Schlüssel Format ungültig"
         } else {
             let masked = maskAPIKey(apiKey!)
-            return "✅ API-Schlüssel konfiguriert: \(masked)"
+            return "[OK] API-Schlüssel konfiguriert: \(masked)"
         }
     }
     

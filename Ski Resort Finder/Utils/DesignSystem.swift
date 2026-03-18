@@ -40,54 +40,63 @@ struct DesignSystem {
         static let primary = Color(hex: "4A90E2") // Ski blue
         static let secondary = Color(hex: "6B7280") // Mountain gray
         static let accent = Color(hex: "F59E0B") // Warm orange for highlights
-        
+
         // Semantic Colors
         static let success = Color(hex: "10B981") // Forest green
         static let warning = Color(hex: "F59E0B") // Amber
         static let error = Color(hex: "EF4444") // Red
         static let info = Color(hex: "3B82F6") // Blue
-        
-        // Dark Glassmorphism Background Colors
-        static let background = Color(hex: "0F172A") // Very dark blue-gray
-        static let secondaryBackground = Color(hex: "1E293B") // Dark slate
-        static let tertiaryBackground = Color(hex: "334155") // Medium slate
-        static let groupedBackground = Color(hex: "0F172A")
-        
-        // Glassmorphism Card Colors
-        static let glassBackground = Color.white.opacity(0.1)
-        static let glassStroke = Color.white.opacity(0.2)
-        static let glassSecondary = Color.white.opacity(0.05)
-        
+
+        // Liquid Glass Background Colors
+        static let background = Color(hex: "0A0F1E") // Deep navy
+        static let secondaryBackground = Color(hex: "151C30") // Midnight blue
+        static let tertiaryBackground = Color(hex: "1E2740") // Dark slate blue
+        static let groupedBackground = Color(hex: "0A0F1E")
+
+        // Liquid Glass Card Colors
+        static let glassBackground = Color.white.opacity(0.08)
+        static let glassStroke = Color.white.opacity(0.15)
+        static let glassSecondary = Color.white.opacity(0.04)
+        static let glassHighlight = Color.white.opacity(0.25) // Top edge highlight
+
         // Text Colors for dark theme
         static let primaryText = Color.white
-        static let secondaryText = Color.white.opacity(0.8)
-        static let tertiaryText = Color.white.opacity(0.6)
-        static let quaternaryText = Color.white.opacity(0.4)
-        
+        static let secondaryText = Color.white.opacity(0.75)
+        static let tertiaryText = Color.white.opacity(0.55)
+        static let quaternaryText = Color.white.opacity(0.35)
+
         // UI Element Colors
-        static let separator = Color.white.opacity(0.1)
-        static let fill = Color.white.opacity(0.1)
-        static let secondaryFill = Color.white.opacity(0.08)
-        static let tertiaryFill = Color.white.opacity(0.06)
-        static let quaternaryFill = Color.white.opacity(0.04)
-        
+        static let separator = Color.white.opacity(0.08)
+        static let fill = Color.white.opacity(0.08)
+        static let secondaryFill = Color.white.opacity(0.06)
+        static let tertiaryFill = Color.white.opacity(0.04)
+        static let quaternaryFill = Color.white.opacity(0.03)
+
         // Mountain/Ski Category Colors
         static let elevation = Color(hex: "8B5CF6") // Purple
         static let snowfall = Color(hex: "06B6D4") // Cyan
         static let slopes = Color(hex: "10B981") // Emerald
         static let accommodation = Color(hex: "6366F1") // Indigo
-        
-        // Gradient Colors
+
+        // Liquid Glass Gradients
         static let mountainGradient = LinearGradient(
-            colors: [Color(hex: "1E293B"), Color(hex: "0F172A")],
+            colors: [Color(hex: "0D1326"), Color(hex: "0A0F1E"), Color(hex: "0F1628")],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
-        
+
         static let cardGradient = LinearGradient(
-            colors: [Color.white.opacity(0.15), Color.white.opacity(0.05)],
+            colors: [Color.white.opacity(0.12), Color.white.opacity(0.04)],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
+        )
+
+        // Ambient glow for depth
+        static let ambientGlow = RadialGradient(
+            colors: [Color(hex: "4A90E2").opacity(0.15), Color.clear],
+            center: .topLeading,
+            startRadius: 0,
+            endRadius: 400
         )
     }
     
@@ -141,25 +150,27 @@ struct DesignSystem {
         static let continuous: RoundedCornerStyle = .continuous
     }
     
-    // MARK: - Shadows
+    // MARK: - Shadows (softer for Liquid Glass)
     struct Shadow {
         let color: Color
         let radius: CGFloat
         let x: CGFloat
         let y: CGFloat
-        
-        static let small = Shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
-        static let medium = Shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
-        static let large = Shadow(color: .black.opacity(0.15), radius: 8, x: 0, y: 4)
-        static let extraLarge = Shadow(color: .black.opacity(0.2), radius: 16, x: 0, y: 8)
+
+        static let small = Shadow(color: .black.opacity(0.08), radius: 3, x: 0, y: 1)
+        static let medium = Shadow(color: .black.opacity(0.12), radius: 8, x: 0, y: 4)
+        static let large = Shadow(color: .black.opacity(0.15), radius: 16, x: 0, y: 8)
+        static let extraLarge = Shadow(color: .black.opacity(0.2), radius: 24, x: 0, y: 12)
+        static let glow = Shadow(color: Color(hex: "4A90E2").opacity(0.15), radius: 20, x: 0, y: 0)
     }
-    
-    // MARK: - Animation
+
+    // MARK: - Animation (Apple-style spring physics)
     struct Animation {
         static let fast = SwiftUI.Animation.easeInOut(duration: 0.2)
-        static let medium = SwiftUI.Animation.easeInOut(duration: 0.3)
-        static let slow = SwiftUI.Animation.easeInOut(duration: 0.5)
-        static let spring = SwiftUI.Animation.spring(response: 0.5, dampingFraction: 0.8)
+        static let medium = SwiftUI.Animation.spring(response: 0.35, dampingFraction: 0.85)
+        static let slow = SwiftUI.Animation.spring(response: 0.5, dampingFraction: 0.8)
+        static let spring = SwiftUI.Animation.spring(response: 0.45, dampingFraction: 0.75, blendDuration: 0.1)
+        static let bouncy = SwiftUI.Animation.spring(response: 0.4, dampingFraction: 0.65)
     }
     
     // MARK: - Layout
@@ -182,52 +193,29 @@ struct DesignSystem {
 // MARK: - View Extensions for Design System
 extension View {
     
-    // MARK: - Card Styles
+    // MARK: - iOS 26 Liquid Glass Card Styles
+
     func glassCard() -> some View {
         self
-            .background(
-                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous)
-                    .fill(DesignSystem.Colors.cardGradient)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous)
-                            .stroke(DesignSystem.Colors.glassStroke, lineWidth: 1)
-                    )
-            )
-            .shadow(color: Color.black.opacity(0.3), radius: 20, x: 0, y: 10)
+            .padding(DesignSystem.Spacing.xs)
+            .glassEffect(in: .rect(cornerRadius: DesignSystem.CornerRadius.xl, style: DesignSystem.CornerRadius.continuous))
+            .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 6)
     }
-    
+
     func primaryCard() -> some View {
         self
-            .background(DesignSystem.Colors.glassBackground)
-            .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous)
-                    .stroke(DesignSystem.Colors.glassStroke, lineWidth: 1)
-            )
-            .shadow(color: Color.black.opacity(0.2), radius: 15, x: 0, y: 8)
+            .glassEffect(in: .rect(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous))
     }
-    
+
     func secondaryCard() -> some View {
         self
-            .background(DesignSystem.Colors.glassSecondary)
-            .clipShape(RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.md, style: DesignSystem.CornerRadius.continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.md, style: DesignSystem.CornerRadius.continuous)
-                    .stroke(DesignSystem.Colors.glassStroke.opacity(0.5), lineWidth: 0.5)
-            )
+            .glassEffect(in: .rect(cornerRadius: DesignSystem.CornerRadius.md, style: DesignSystem.CornerRadius.continuous))
     }
-    
+
     func highlightCard() -> some View {
         self
-            .background(
-                RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous)
-                    .fill(DesignSystem.Colors.primary.opacity(0.15))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous)
-                            .stroke(DesignSystem.Colors.primary.opacity(0.4), lineWidth: 1)
-                    )
-            )
-            .shadow(color: DesignSystem.Colors.primary.opacity(0.3), radius: 12, x: 0, y: 6)
+            .glassEffect(in: .rect(cornerRadius: DesignSystem.CornerRadius.lg, style: DesignSystem.CornerRadius.continuous))
+            .tint(DesignSystem.Colors.primary)
     }
     
     // MARK: - Button Styles
@@ -279,17 +267,18 @@ extension View {
 }
 
 // MARK: - Haptic Feedback
+@MainActor
 struct HapticFeedback {
     static func impact(_ style: UIImpactFeedbackGenerator.FeedbackStyle = .medium) {
         let impactFeedback = UIImpactFeedbackGenerator(style: style)
         impactFeedback.impactOccurred()
     }
-    
+
     static func notification(_ type: UINotificationFeedbackGenerator.FeedbackType) {
         let notificationFeedback = UINotificationFeedbackGenerator()
         notificationFeedback.notificationOccurred(type)
     }
-    
+
     static func selection() {
         let selectionFeedback = UISelectionFeedbackGenerator()
         selectionFeedback.selectionChanged()

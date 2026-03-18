@@ -4,8 +4,8 @@ import CoreLocation
 /// Objektives Bewertungssystem basierend auf messbaren Kriterien
 /// Folgt der NO FAKE DATA Policy - nur echte, berechenbare Bewertungen
 class ObjectiveRatingCalculator {
-    
-    static let shared = ObjectiveRatingCalculator()
+
+    nonisolated(unsafe) static let shared = ObjectiveRatingCalculator()
     private init() {}
     
     /// Berechnet objektive Bewertung basierend auf messbaren Kriterien
@@ -67,7 +67,7 @@ class ObjectiveRatingCalculator {
         
         // Minimum 3 Kriterien für gültige Bewertung
         guard criteriaCount >= 3 else {
-            print("🚫 Nicht genügend Daten für Bewertung (\(criteriaCount) Kriterien)")
+            print("Nicht genügend Daten für Bewertung (\(criteriaCount) Kriterien)")
             return nil
         }
         
@@ -75,20 +75,20 @@ class ObjectiveRatingCalculator {
         let normalizedScore = (totalScore / maxPossibleScore)
         let finalRating = 1.0 + (normalizedScore * 4.0) // 1-5 Sterne
         
-        print("🏨 \(hotelName) - Objektive Bewertung: \(String(format: "%.3f", finalRating)) Sterne (raw: \(String(format: "%.6f", normalizedScore)))")
-        print("   📍 Distance to lift: \(distanceToLift)m -> Score: \(String(format: "%.2f", liftScore))")
-        print("   🏊 Spa features: Pool=\(spaFeatures.hasPool), Spa=\(spaFeatures.hasSpa), Sauna=\(spaFeatures.hasSauna), Jacuzzi=\(spaFeatures.hasJacuzzi) -> Score: \(String(format: "%.2f", spaScore))")
-        print("   🏔️ Resort: \(resort.name) (\(resort.totalSlopes)km, \(resort.maxElevation)m) -> Score: \(String(format: "%.2f", resortScore))")
-        if snowData != nil { 
-            print("   ❄️ Snow: \(String(format: "%.1f", snowData?.averageSnowfall ?? 0))cm avg -> Score: \(String(format: "%.2f", snowScore))") 
+        print("\(hotelName) - Objektive Bewertung: \(String(format: "%.3f", finalRating)) Sterne (raw: \(String(format: "%.6f", normalizedScore)))")
+        print("   Distance to lift: \(distanceToLift)m -> Score: \(String(format: "%.2f", liftScore))")
+        print("   Spa features: Pool=\(spaFeatures.hasPool), Spa=\(spaFeatures.hasSpa), Sauna=\(spaFeatures.hasSauna), Jacuzzi=\(spaFeatures.hasJacuzzi) -> Score: \(String(format: "%.2f", spaScore))")
+        print("   Resort: \(resort.name) (\(resort.totalSlopes)km, \(resort.maxElevation)m) -> Score: \(String(format: "%.2f", resortScore))")
+        if snowData != nil {
+            print("   Snow: \(String(format: "%.1f", snowData?.averageSnowfall ?? 0))cm avg -> Score: \(String(format: "%.2f", snowScore))")
         }
-        if let osmData = osmData { 
-            print("   🏨 Hotel: stars=\(osmData.stars?.description ?? "nil"), capacity=\(osmData.capacity?.description ?? "nil") -> Score: \(String(format: "%.2f", hotelScore))") 
+        if let osmData = osmData {
+            print("   Hotel: stars=\(osmData.stars?.description ?? "nil"), capacity=\(osmData.capacity?.description ?? "nil") -> Score: \(String(format: "%.2f", hotelScore))")
         }
-        print("   ⛰️ Elevation: \((resort.maxElevation + resort.minElevation) / 2)m avg -> Score: \(String(format: "%.2f", elevationScore))")
+        print("   Elevation: \((resort.maxElevation + resort.minElevation) / 2)m avg -> Score: \(String(format: "%.2f", elevationScore))")
         
         let roundedRating = finalRating.rounded(toPlaces: 1)
-        print("🔄 Gerundet: \(String(format: "%.1f", roundedRating))")
+        print("Gerundet: \(String(format: "%.1f", roundedRating))")
         print("═" * 50)
         return roundedRating
     }

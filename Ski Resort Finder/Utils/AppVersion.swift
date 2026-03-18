@@ -3,12 +3,16 @@ import Foundation
 /// Utility für dynamische App-Versionierung basierend auf aktuellem Datum
 class AppVersion {
     
-    /// Generiert Versionsnummer im Format 1.YYYY.MM.DD
+    /// Statische Versionsnummer aus Info.plist (gesetzt zur Build-Zeit)
     static var currentVersion: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy.MM.dd"
-        let dateString = dateFormatter.string(from: Date())
-        return "1.\(dateString)"
+        // Primär: Bundle-Version aus Info.plist verwenden
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
+           !version.isEmpty && version != "1.0" {
+            return version
+        }
+        
+        // Fallback: Falls keine Version in Info.plist, verwende Build-Zeit Fallback
+        return "1.0.0"
     }
     
     /// Vollständige Versionsinformation

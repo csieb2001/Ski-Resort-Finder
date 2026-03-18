@@ -8,6 +8,8 @@
 "to" = "Bis";
 "search_accommodations" = "Unterkünfte suchen";
 "search_again" = "Erneut suchen";
+"loading_snow_data" = "Lade Schneedaten...";
+"searching_emails_spa" = "Suche E-Mails & Spa...";
 "search_radius" = "Suchradius";
 "search_radius_1km" = "1 km";
 "search_radius_km" = "%d km";
@@ -221,7 +223,7 @@
 "worldwide_countries" = "Weltweit in 36 Ländern";
 "accommodations_worldwide" = "Unterkünfte Weltweit";
 "openstreetmap_api" = "Via API";
-"osr_objective_rating" = "OSR Objektive Bewertung";
+"osr_objective_rating" = "ORS Objektive Bewertung";
 "osr_rating_description" = "Messbare und transparente Hotelbewertungen ohne Fake-Reviews";
 "detailed_resort_info" = "Detaillierte Gebietsinformationen";
 "lifts_slopes_info" = "Liftanzahl und Pistenaufteilung";
@@ -340,6 +342,7 @@
 "top3_slope_count" = "Pistenanzahl";
 "top3_max_elevation" = "Max Höhe";
 "top3_hotel_rating" = "Hotel Bewertung";
+"top3_hotel_rating_info" = "Für genaue Bewertungen Skigebiet auswählen und Hotels laden";
 "pisten_count" = "Pisten";
 
 /* Sorting Extended */
@@ -636,3 +639,54 @@
 "trail_map" = "Pistenkarte";
 "choose_map_style" = "Kartenstil wählen";
 "piste_label" = "Piste";
+
+/* Datenschutz und Werbung */
+"privacy_settings" = "Datenschutz-Einstellungen";
+"privacy_protection" = "Datenschutz";
+"privacy_description" = "Ihre Privatsphäre ist uns wichtig";
+"privacy_detailed_info" = "Wir verwenden Ihre Daten nur für die App-Funktionalität und zeigen relevante Werbung. Sie haben jederzeit die Kontrolle über Ihre Datenschutz-Einstellungen.";
+"ad_preferences" = "Werbe-Einstellungen";
+"personalized_ads" = "Personalisierte Werbung";
+"personalized_ads_description" = "Werbung basierend auf Ihren Interessen und Aktivitäten";
+"manage_ad_preferences" = "Werbe-Einstellungen verwalten";
+"consent_given" = "Erteilt";
+"consent_required" = "Erforderlich";
+"consent_not_required" = "Nicht erforderlich";
+"consent_unknown" = "Unbekannt";
+"data_usage" = "Datennutzung";
+"location_data" = "Standortdaten";  
+"location_data_description" = "Für Skigebiet-Suche und Unterkünfte in der Nähe";
+"contact_data" = "Kontaktdaten";
+"contact_data_description" = "Für Buchungsanfragen an Hotels";
+"usage_analytics" = "Nutzungsanalyse";
+"usage_analytics_description" = "Zur Verbesserung der App-Erfahrung";
+"advertising_data" = "Werbedaten";
+"advertising_data_description" = "Für relevante Werbeanzeigen";
+"in_use" = "In Nutzung";
+"legal" = "Rechtliches";
+"privacy_policy" = "Datenschutzerklärung";
+"google_privacy_policy" = "Google Datenschutzerklärung";
+"privacy_policy_content" = "Diese App sammelt und verwendet Daten gemäß unserer Datenschutzerklärung. Wir respektieren Ihre Privatsphäre und geben Ihnen die Kontrolle über Ihre Daten.";
+
+"no_spa_info" = "Keine Spa-Info";
+"contact_available" = "Kontakt verfügbar";
+"details_tap" = "Details ansehen";
+"top3_avg_elevation" = "Ø Pistenhöhe";
+
+/* Welcome Wizard / Onboarding */
+"welcome_title" = "Ski Resort Finder";
+"welcome_subtitle" = "Finde dein perfektes Skigebiet";
+"welcome_resorts_title" = "100+ Skigebiete weltweit";
+"welcome_resorts_desc" = "Echte Daten aus 15+ Ländern, keine Fake-Daten";
+"welcome_snow_title" = "Schnee & Wetter";
+"welcome_snow_desc" = "10 Jahre Schneestatistiken, 7-Tage Wettervorhersage";
+"welcome_hotels_title" = "Unterkünfte mit Spa-Filter";
+"welcome_hotels_desc" = "Hotels, Pensionen & Chalets direkt am Lift. Pool, Jacuzzi, Spa & Sauna Filter.";
+"welcome_start_title" = "Los geht's!";
+"welcome_start_desc" = "Wähle dein erstes Skigebiet";
+"welcome_start_button" = "Start";
+"show_all_rankings" = "Alle Rankings anzeigen";
+"ranking_title" = "Ranking";
+"location_and_lifts" = "Lage & Lifte";
+"lifts_nearby" = "Lifte in der Nähe";
+"ors_rating_explanation" = "ORS: Objektives Rating basierend auf Liftnaehe, Wellness, Gebiet, Schnee und Hoehenlage";

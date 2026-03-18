@@ -1,0 +1,44 @@
+{
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/ERA5SnowService.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ERA5SnowService.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ERA5SnowService.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ERA5SnowService.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ERA5SnowService.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ERA5SnowService.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/FavoritesManager.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/FavoritesManager.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/FavoritesManager.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/FavoritesManager.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/FavoritesManager.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/FavoritesManager.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/LocalizationService.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/LocalizationService.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/LocalizationService.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/LocalizationService.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/LocalizationService.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/LocalizationService.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/ObjectiveRatingCalculator.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ObjectiveRatingCalculator.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ObjectiveRatingCalculator.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ObjectiveRatingCalculator.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ObjectiveRatingCalculator.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/ObjectiveRatingCalculator.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/OpenMeteoService.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OpenMeteoService.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OpenMeteoService.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OpenMeteoService.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OpenMeteoService.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OpenMeteoService.swiftdeps"
+  },
+  "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Services/OverpassService.swift" : {
+    "const-values" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OverpassService.swiftconstvalues",
+    "dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OverpassService.d",
+    "diagnostics" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OverpassService.dia",
+    "object" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OverpassService.o",
+    "swift-dependencies" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/.build/DerivedData/Build/Intermediates.noindex/Ski Resort Finder.build/Debug-iphonesimulator/Ski Resort Finder.build/Objects-normal/arm64/OverpassService.swiftdeps"
+  }
+}

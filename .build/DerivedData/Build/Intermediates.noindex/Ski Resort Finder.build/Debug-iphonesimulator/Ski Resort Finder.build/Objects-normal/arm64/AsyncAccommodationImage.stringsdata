@@ -1,0 +1,32 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/AsyncAccommodationImage.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Foto lädt...",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 38
+        }
+      },
+      {
+        "comment": "",
+        "key": "Hotel Foto",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "DEMO",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 72
+        }
+      }
+    ]
+  },
+  "version": 1
+}

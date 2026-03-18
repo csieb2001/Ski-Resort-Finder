@@ -1,0 +1,88 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/DebugView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Lat: %@, Lon: %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 460
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 442
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld km",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 449
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld m",
+        "location": {
+          "startingColumn": 39,
+          "startingLine": 453
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld Resorts",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 473
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 508
+        }
+      },
+      {
+        "comment": "",
+        "key": "Coordinates",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 569
+        }
+      },
+      {
+        "comment": "",
+        "key": "Latitude: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 571
+        }
+      },
+      {
+        "comment": "",
+        "key": "Longitude: %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 574
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 645
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,6 @@
+Target dependency graph (3 targets)
+Target 'Ski Resort FinderUITests' in project 'Ski Resort Finder'
+➜ Explicit dependency on target 'Ski Resort Finder' in project 'Ski Resort Finder'
+Target 'Ski Resort FinderTests' in project 'Ski Resort Finder'
+➜ Explicit dependency on target 'Ski Resort Finder' in project 'Ski Resort Finder'
+Target 'Ski Resort Finder' in project 'Ski Resort Finder' (no dependencies)

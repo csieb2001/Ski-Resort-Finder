@@ -57,11 +57,6 @@ struct DebugView: View {
                         APIStatusIndicator(status: debugViewModel.overpassAPIStatus)
                     }
                     
-                    HStack {
-                        Text("era5_api".localized)
-                        Spacer()
-                        APIStatusIndicator(status: debugViewModel.era5APIStatus)
-                    }
                     
                     Button("test_apis".localized) {
                         debugViewModel.testAPIs()
@@ -75,7 +70,6 @@ struct DebugView: View {
                         DebugRow(title: "Open-Meteo API", value: lastTest.weatherSuccess ? "test_successful".localized : "test_error".localized)
                         DebugRow(title: "Website Screenshots", value: lastTest.websiteScreenshotSuccess ? "test_successful".localized : "test_error".localized)
                         DebugRow(title: "Overpass API (OSM)", value: lastTest.overpassSuccess ? "test_successful".localized : "test_error".localized)
-                        DebugRow(title: "ERA5 API", value: lastTest.era5Success ? "test_successful".localized : "test_error".localized)
                         
                         if let weatherError = lastTest.weatherError {
                             Text("weather_error".localized(with: weatherError))
@@ -95,11 +89,6 @@ struct DebugView: View {
                                 .foregroundColor(.red)
                         }
                         
-                        if let era5Error = lastTest.era5Error {
-                            Text("era5_error".localized(with: era5Error))
-                                .font(.caption)
-                                .foregroundColor(.red)
-                        }
                     } else {
                         Text("no_test_performed".localized)
                             .foregroundColor(.secondary)
@@ -216,7 +205,7 @@ struct DebugView: View {
         // Reset AccommodationDatabase
         accommodationDB.clearAllData()
         
-        print("🗑️ Database has been reset")
+        print("Database has been reset")
     }
     
     // MARK: - Helper Views
@@ -333,18 +322,15 @@ struct TestResult {
     let weatherSuccess: Bool
     let websiteScreenshotSuccess: Bool
     let overpassSuccess: Bool
-    let era5Success: Bool
     let weatherError: String?
     let websiteScreenshotError: String?
     let overpassError: String?
-    let era5Error: String?
 }
 
-class DebugViewModel: ObservableObject {
+@MainActor class DebugViewModel: ObservableObject {
     @Published var weatherAPIStatus: APIStatus = .unknown
     @Published var websiteScreenshotStatus: APIStatus = .unknown
     @Published var overpassAPIStatus: APIStatus = .unknown
-    @Published var era5APIStatus: APIStatus = .unknown
     @Published var isConnectedToInternet = true
     @Published var lastTestResult: TestResult?
     @Published var resortsByCountry: [String: [SkiResort]] = [:]
@@ -352,7 +338,6 @@ class DebugViewModel: ObservableObject {
     private let weatherService = OpenMeteoService()
     private let overpassService = OverpassService.shared
     private let screenshotService = WebsiteScreenshotService.shared
-    private let era5Service = ERA5SnowService()
     
     func loadDebugInfo() {
         // Gruppiere Skigebiete nach Land
@@ -364,81 +349,62 @@ class DebugViewModel: ObservableObject {
         weatherAPIStatus = .testing
         websiteScreenshotStatus = .testing
         overpassAPIStatus = .testing
-        era5APIStatus = .testing
-        
-        Task {
-            async let weatherResult: (success: Bool, error: String?) = testWeatherAPI()
-            async let websiteScreenshotResult: (success: Bool, error: String?) = testWebsiteScreenshotAPI()
-            async let overpassResult: (success: Bool, error: String?) = testOverpassAPI()
-            async let era5Result: (success: Bool, error: String?) = testERA5API()
-            
-            let results = await (weatherResult, websiteScreenshotResult, overpassResult, era5Result)
-            
-            await MainActor.run {
-                self.lastTestResult = TestResult(
-                    timestamp: Date(),
-                    weatherSuccess: results.0.success,
-                    websiteScreenshotSuccess: results.1.success,
-                    overpassSuccess: results.2.success,
-                    era5Success: results.3.success,
-                    weatherError: results.0.error,
-                    websiteScreenshotError: results.1.error,
-                    overpassError: results.2.error,
-                    era5Error: results.3.error
-                )
-            }
+
+        Task { @MainActor in
+            let weatherResult = await testWeatherAPI()
+            let websiteScreenshotResult = await testWebsiteScreenshotAPI()
+            let overpassResult = await testOverpassAPI()
+
+            self.lastTestResult = TestResult(
+                timestamp: Date(),
+                weatherSuccess: weatherResult.success,
+                websiteScreenshotSuccess: websiteScreenshotResult.success,
+                overpassSuccess: overpassResult.success,
+                weatherError: weatherResult.error,
+                websiteScreenshotError: websiteScreenshotResult.error,
+                overpassError: overpassResult.error
+            )
         }
     }
-    
-    
+
+    @MainActor
     private func testWeatherAPI() async -> (success: Bool, error: String?) {
         let testCoordinate = CLLocationCoordinate2D(latitude: 47.1296, longitude: 10.2686)
         do {
             let _ = try await weatherService.fetchWeather(for: testCoordinate)
-            await MainActor.run { self.weatherAPIStatus = .success }
+            self.weatherAPIStatus = .success
             return (true, nil)
         } catch {
-            await MainActor.run { self.weatherAPIStatus = .failure }
+            self.weatherAPIStatus = .failure
             return (false, error.localizedDescription)
         }
     }
-    
+
+    @MainActor
     private func testWebsiteScreenshotAPI() async -> (success: Bool, error: String?) {
         let screenshot = await screenshotService.generateScreenshot(
             from: "https://www.hotel-arlberg.com",
             accommodationName: "Test Hotel Arlberg"
         )
-        
+
         if screenshot != nil {
-            await MainActor.run { self.websiteScreenshotStatus = .success }
+            self.websiteScreenshotStatus = .success
             return (true, nil)
         } else {
-            await MainActor.run { self.websiteScreenshotStatus = .failure }
+            self.websiteScreenshotStatus = .failure
             return (false, "Failed to generate screenshot")
         }
     }
-    
-    
+
+    @MainActor
     private func testOverpassAPI() async -> (success: Bool, error: String?) {
         let testCoordinate = CLLocationCoordinate2D(latitude: 47.1296, longitude: 10.2686)
         do {
             let _ = try await overpassService.searchAccommodations(around: testCoordinate, radius: 5000)
-            await MainActor.run { self.overpassAPIStatus = .success }
+            self.overpassAPIStatus = .success
             return (true, nil)
         } catch {
-            await MainActor.run { self.overpassAPIStatus = .failure }
-            return (false, error.localizedDescription)
-        }
-    }
-    
-    private func testERA5API() async -> (success: Bool, error: String?) {
-        let testCoordinate = CLLocationCoordinate2D(latitude: 47.1296, longitude: 10.2686)
-        do {
-            let _ = try await era5Service.fetchHistoricalSnowData(for: testCoordinate)
-            await MainActor.run { self.era5APIStatus = .success }
-            return (true, nil)
-        } catch {
-            await MainActor.run { self.era5APIStatus = .failure }
+            self.overpassAPIStatus = .failure
             return (false, error.localizedDescription)
         }
     }

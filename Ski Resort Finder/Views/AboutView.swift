@@ -5,6 +5,7 @@ struct AboutView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showingDebugScreen = false
     @State private var showingPinEntry = false
+    @State private var showingPrivacySettings = false
     @ObservedObject private var localization = LocalizationService.shared
     
     var body: some View {
@@ -53,7 +54,7 @@ struct AboutView: View {
                         HStack {
                             Image(systemName: "star.fill")
                                 .foregroundColor(.orange)
-                            Text("\("objective_rating_system".localized) (OSR)")
+                            Text("\("objective_rating_system".localized) (ORS)")
                                 .font(.headline)
                         }
                         
@@ -152,15 +153,33 @@ struct AboutView: View {
                     .padding()
                     
                     // Debug Button
-                    Button(action: { showingPinEntry = true }) {
-                        HStack {
-                            Image(systemName: "gear")
-                            Text("debug_system_info".localized)
+                    VStack(spacing: 12) {
+                        Button(action: { showingPrivacySettings = true }) {
+                            HStack {
+                                Image(systemName: "hand.raised.fill")
+                                Text("privacy_settings".localized)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.blue.opacity(0.1))
+                            .foregroundColor(.blue)
+                            .cornerRadius(10)
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(10)
+                        
+                        Button(action: { showingPinEntry = true }) {
+                            HStack {
+                                Image(systemName: "gear")
+                                Text("debug_system_info".localized)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.gray.opacity(0.1))
+                            .cornerRadius(10)
+                        }
                     }
                     .padding()
                     
@@ -181,6 +200,9 @@ struct AboutView: View {
             }
             .sheet(isPresented: $showingDebugScreen) {
                 DebugView()
+            }
+            .sheet(isPresented: $showingPrivacySettings) {
+                PrivacySettingsView()
             }
         }
     }

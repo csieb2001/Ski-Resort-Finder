@@ -82,20 +82,29 @@ struct SnowDaysChart: View {
                     }
                     .frame(height: 200)
                     
-                    // X-Axis Labels
-                    HStack {
+                    // X-Axis Labels - Improved Spacing
+                    HStack(spacing: 0) {
                         ForEach(Array(sortedData.enumerated()), id: \.offset) { index, yearData in
-                            VStack(spacing: DesignSystem.Spacing.xs) {
-                                Text("\(yearData.year)")
-                                    .font(DesignSystem.Typography.caption1)
-                                    .fontWeight(.medium)
+                            VStack(spacing: 2) {
+                                Text("'\(String(yearData.year).suffix(2))")
+                                    .font(.system(size: 11, weight: .medium, design: .rounded))
                                     .foregroundColor(DesignSystem.Colors.primaryText)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.8)
                                 
-                                Text("\(yearData.snowDays) \("days".localized)")
-                                    .font(DesignSystem.Typography.caption2)
+                                Text("\(yearData.snowDays)")
+                                    .font(.system(size: 9, weight: .regular, design: .rounded))
                                     .foregroundColor(DesignSystem.Colors.secondaryText)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.8)
+                                
+                                Text("days".localized)
+                                    .font(.system(size: 8, weight: .regular, design: .rounded))
+                                    .foregroundColor(DesignSystem.Colors.secondaryText.opacity(0.7))
+                                    .lineLimit(1)
                             }
                             .frame(maxWidth: .infinity)
+                            .multilineTextAlignment(.center)
                         }
                     }
                     .padding(.top, DesignSystem.Spacing.sm)

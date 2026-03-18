@@ -1,0 +1,56 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/ResortDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 88
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld - %lld m",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld km",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 159
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld km",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 246
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 279
+        }
+      }
+    ]
+  },
+  "version": 1
+}

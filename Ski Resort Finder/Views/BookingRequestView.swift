@@ -299,9 +299,9 @@ struct BookingRequestView: View {
             
             if let mailURL = URL(string: urlString), UIApplication.shared.canOpenURL(mailURL) {
                 await UIApplication.shared.open(mailURL)
-                await showSuccessAlert("E-Mail geöffnet", "Die E-Mail-App wurde geöffnet. Bitte senden Sie Ihre Anfrage von dort aus.")
+                showSuccessAlert("E-Mail geöffnet", "Die E-Mail-App wurde geöffnet. Bitte senden Sie Ihre Anfrage von dort aus.")
             } else {
-                await showErrorAlert("E-Mail nicht möglich", "E-Mail konnte nicht geöffnet werden.")
+                showErrorAlert("E-Mail nicht möglich", "E-Mail konnte nicht geöffnet werden.")
             }
         }
     }
@@ -424,15 +424,15 @@ struct BookingRequestView: View {
                             self.phone = phoneNumber
                         }
                         
-                        print("✅ Owner contact info loaded: \(self.name), \(self.email), \(self.phone)")
+                        print("[OK] Owner contact info loaded: \(self.name), \(self.email), \(self.phone)")
                     }
                     return // Stoppe nach dem ersten brauchbaren Kontakt
                 }
             }
             
-            print("ℹ️ No suitable contact found - user can enter manually")
+            print("[INFO] No suitable contact found - user can enter manually")
         } catch {
-            print("❌ Error fetching contacts: \(error.localizedDescription)")
+            print("[ERROR] Error fetching contacts: \(error.localizedDescription)")
         }
     }
     
@@ -719,8 +719,10 @@ struct MailComposeView: UIViewControllerRepresentable {
             self.parent = parent
         }
         
-        func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-            controller.dismiss(animated: true)
+        nonisolated func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+            DispatchQueue.main.async {
+                controller.dismiss(animated: true)
+            }
         }
     }
 }

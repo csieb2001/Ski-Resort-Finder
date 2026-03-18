@@ -93,15 +93,15 @@ struct AsyncAccommodationImage: View {
     
     private func loadImage() {
         Task {
-            // Versuche zuerst Google Places für echte Hotelbilder
-            let imageURL = await UnsplashImageService.getHotelImageURLWithGoogle(
+            let imageURL = UnsplashImageService.getHotelImageURL(
                 for: accommodation.name,
-                location: accommodation.resort.coordinate,
-                width: Int(width * 2), // 2x für Retina
+                width: Int(width * 2),
                 height: Int(height * 2)
             )
-            
-            await imageLoader.loadImage(from: imageURL)
+
+            if let url = imageURL {
+                await imageLoader.loadImage(from: url)
+            }
         }
     }
     

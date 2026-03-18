@@ -1,5 +1,8 @@
 import Foundation
 
+// Note: .localized extension is now defined in LocalizationService.swift
+// This file contains specialized localization methods
+
 extension String {
     
     /// Lokalisierte Ländernamen

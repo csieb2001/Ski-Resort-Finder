@@ -1,7 +1,7 @@
 import Foundation
 import CoreLocation
 
-class OverpassService: ObservableObject {
+class OverpassService: ObservableObject, @unchecked Sendable {
     static let shared = OverpassService()
     
     private let overpassAPIURL = "https://overpass-api.de/api/interpreter"
@@ -13,48 +13,48 @@ class OverpassService: ObservableObject {
         around coordinate: CLLocationCoordinate2D,
         radius: Int = 5000
     ) async throws -> [OverpassAccommodation] {
-        print("🌍 OverpassService: Starting search at \(coordinate.latitude), \(coordinate.longitude) with radius \(radius)m")
+        print("OverpassService: Starting search at \(coordinate.latitude), \(coordinate.longitude) with radius \(radius)m")
         
         let query = buildOverpassQuery(coordinate: coordinate, radius: radius)
-        print("📝 OverpassService: Built query: \(query.prefix(200))...")
+        print("OverpassService: Built query: \(query.prefix(200))...")
         
         var request = URLRequest(url: URL(string: overpassAPIURL)!)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = "data=\(query)".data(using: .utf8)
         
-        print("🌐 OverpassService: Sending request to Overpass API...")
+        print("OverpassService: Sending request to Overpass API...")
         let (data, response) = try await session.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            print("❌ OverpassService: Invalid response type")
+            print("[ERROR] OverpassService: Invalid response type")
             throw OverpassError.requestFailed
         }
         
-        print("📡 OverpassService: Received response with status code \(httpResponse.statusCode)")
+        print("OverpassService: Received response with status code \(httpResponse.statusCode)")
         
         guard httpResponse.statusCode == 200 else {
-            print("❌ OverpassService: HTTP error \(httpResponse.statusCode)")
+            print("[ERROR] OverpassService: HTTP error \(httpResponse.statusCode)")
             if let errorData = String(data: data, encoding: .utf8) {
-                print("❌ OverpassService: Error response: \(errorData.prefix(500))")
+                print("[ERROR] OverpassService: Error response: \(errorData.prefix(500))")
             }
             throw OverpassError.requestFailed
         }
         
-        print("✅ OverpassService: Successfully received \(data.count) bytes of data")
+        print("[OK] OverpassService: Successfully received \(data.count) bytes of data")
         
         do {
             let overpassResponse = try JSONDecoder().decode(OverpassResponse.self, from: data)
-            print("🏨 OverpassService: Decoded \(overpassResponse.elements.count) elements from API")
+            print("OverpassService: Decoded \(overpassResponse.elements.count) elements from API")
             
             let accommodations = parseAccommodations(from: overpassResponse.elements)
-            print("✅ OverpassService: Parsed \(accommodations.count) valid accommodations")
+            print("[OK] OverpassService: Parsed \(accommodations.count) valid accommodations")
             
             return accommodations
         } catch {
-            print("❌ OverpassService: JSON decoding failed: \(error)")
+            print("[ERROR] OverpassService: JSON decoding failed: \(error)")
             if let jsonString = String(data: data, encoding: .utf8) {
-                print("❌ OverpassService: Raw JSON: \(jsonString.prefix(1000))")
+                print("[ERROR] OverpassService: Raw JSON: \(jsonString.prefix(1000))")
             }
             throw error
         }
@@ -123,7 +123,7 @@ class OverpassService: ObservableObject {
         
         for field in emailFields {
             if let email = tags[field], !email.isEmpty {
-                print("📧 Found email in OSM field '\(field)': \(email)")
+                print("Found email in OSM field '\(field)': \(email)")
                 return email
             }
         }
@@ -196,10 +196,10 @@ class OverpassService: ObservableObject {
         }
         
         // Debug logging to see what tags we're receiving
-        print("🏨 Checking wellness feature '\(featureType)' for '\(element.name)'")
-        print("📋 Available tags: \(tags.keys.sorted())")
+        print("Checking wellness feature '\(featureType)' for '\(element.name)'")
+        print("Available tags: \(tags.keys.sorted())")
         if let facilities = tags["facilities"] {
-            print("🎯 Facilities tag: '\(facilities)'")
+            print("Facilities tag: '\(facilities)'")
         }
         
         let hasFeature: Bool
@@ -270,11 +270,11 @@ class OverpassService: ObservableObject {
         // If no explicit tags found, try heuristic detection from name and description
         if !hasFeature {
             let heuristicResult = detectWellnessFeatureFromName(featureType, element: element)
-            print("🔍 Heuristic detection for '\(featureType)': \(heuristicResult)")
+            print("Heuristic detection for '\(featureType)': \(heuristicResult)")
             return heuristicResult
         }
         
-        print("✅ Found explicit tag for '\(featureType)': true")
+        print("[OK] Found explicit tag for '\(featureType)': true")
         return hasFeature
     }
     
@@ -328,51 +328,124 @@ class OverpassService: ObservableObject {
         }
     }
     
+    // MARK: - Ski Lift Search
+
+    struct SkiLiftResult {
+        let id: String
+        let name: String?
+        let coordinate: CLLocationCoordinate2D
+        let liftType: String // "chair_lift", "gondola", "cable_car", etc.
+    }
+
+    func searchSkiLifts(
+        around coordinate: CLLocationCoordinate2D,
+        radius: Int = 2000
+    ) async throws -> [SkiLiftResult] {
+        let query = """
+        [out:json][timeout:15];
+        (
+          node["aerialway"](around:\(radius),\(coordinate.latitude),\(coordinate.longitude));
+          way["aerialway"](around:\(radius),\(coordinate.latitude),\(coordinate.longitude));
+        );
+        out center body;
+        """
+
+        var request = URLRequest(url: URL(string: overpassAPIURL)!)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpBody = "data=\(query)".data(using: .utf8)
+        request.timeoutInterval = 20
+
+        let (data, response) = try await session.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw OverpassError.requestFailed
+        }
+
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let elements = json["elements"] as? [[String: Any]] else {
+            return []
+        }
+
+        var lifts: [SkiLiftResult] = []
+
+        for element in elements {
+            let tags = element["tags"] as? [String: String] ?? [:]
+            let liftType = tags["aerialway"] ?? "unknown"
+
+            // Skip minor types
+            guard ["chair_lift", "gondola", "cable_car", "mixed_lift", "drag_lift", "t-bar", "platter", "j-bar"].contains(liftType) else { continue }
+
+            var lat: Double?
+            var lon: Double?
+
+            if let center = element["center"] as? [String: Any] {
+                lat = center["lat"] as? Double
+                lon = center["lon"] as? Double
+            } else {
+                lat = element["lat"] as? Double
+                lon = element["lon"] as? Double
+            }
+
+            guard let finalLat = lat, let finalLon = lon else { continue }
+
+            lifts.append(SkiLiftResult(
+                id: "\(element["id"] ?? 0)",
+                name: tags["name"],
+                coordinate: CLLocationCoordinate2D(latitude: finalLat, longitude: finalLon),
+                liftType: liftType
+            ))
+        }
+
+        print("Found \(lifts.count) ski lifts near \(coordinate.latitude), \(coordinate.longitude)")
+        return lifts
+    }
+
     // MARK: - Ski Piste Queries
-    
+
     func searchSkiPistes(
         around coordinate: CLLocationCoordinate2D,
         radius: Int = 10000
     ) async throws -> [SkiPiste] {
-        print("🎿 OverpassService: Starting piste search at \(coordinate.latitude), \(coordinate.longitude) with radius \(radius)m")
+        print("OverpassService: Starting piste search at \(coordinate.latitude), \(coordinate.longitude) with radius \(radius)m")
         
         let query = buildPisteQuery(coordinate: coordinate, radius: radius)
-        print("📝 OverpassService: Built piste query: \(query.prefix(200))...")
+        print("OverpassService: Built piste query: \(query.prefix(200))...")
         
         var request = URLRequest(url: URL(string: overpassAPIURL)!)
         request.httpMethod = "POST"
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         request.httpBody = "data=\(query)".data(using: .utf8)
         
-        print("🌐 OverpassService: Sending piste request to Overpass API...")
+        print("OverpassService: Sending piste request to Overpass API...")
         let (data, response) = try await session.data(for: request)
         
         guard let httpResponse = response as? HTTPURLResponse else {
-            print("❌ OverpassService: Invalid response type for pistes")
+            print("[ERROR] OverpassService: Invalid response type for pistes")
             throw OverpassError.invalidResponse
         }
         
-        print("📡 OverpassService: Piste response status: \(httpResponse.statusCode)")
+        print("OverpassService: Piste response status: \(httpResponse.statusCode)")
         
         guard httpResponse.statusCode == 200 else {
-            print("❌ OverpassService: HTTP error \(httpResponse.statusCode) for pistes")
+            print("[ERROR] OverpassService: HTTP error \(httpResponse.statusCode) for pistes")
             throw OverpassError.requestFailed
         }
         
         guard let jsonData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
               let elements = jsonData["elements"] as? [[String: Any]] else {
-            print("❌ OverpassService: Failed to parse piste JSON response")
+                  print("[ERROR] OverpassService: Failed to parse piste JSON response")
             throw OverpassError.invalidResponse
         }
         
-        print("🔍 OverpassService: Found \(elements.count) piste elements")
+        print("OverpassService: Found \(elements.count) piste elements")
         
         let overpassElements = elements.compactMap { elementDict -> OverpassElement? in
             return parseOverpassElement(from: elementDict)
         }
         
         let pistes = parsePistes(from: overpassElements)
-        print("🎿 OverpassService: Successfully parsed \(pistes.count) ski pistes")
+        print("OverpassService: Successfully parsed \(pistes.count) ski pistes")
         
         return pistes
     }
@@ -395,7 +468,7 @@ class OverpassService: ObservableObject {
         return elements.compactMap { element in
             guard let pisteTypeString = element.tags?["piste:type"],
                   let pisteType = PisteType(rawValue: pisteTypeString) else {
-                print("⚠️ Skipping element without valid piste:type: \(element.tags?["piste:type"] ?? "nil")")
+                      print("[WARN] Skipping element without valid piste:type: \(element.tags?["piste:type"] ?? "nil")")
                 return nil
             }
             
@@ -429,14 +502,14 @@ class OverpassService: ObservableObject {
             
             // Skip if no valid coordinates
             guard !coordinates.isEmpty else {
-                print("⚠️ Skipping piste without coordinates: \(element.name)")
+                print("[WARN] Skipping piste without coordinates: \(element.name)")
                 return nil
             }
             
             let name = element.name.isEmpty ? nil : element.name
             let id = "piste_\(element.id)"
             
-            print("✅ Parsed piste: \(name ?? id) (\(pisteType.rawValue), \(difficulty.rawValue))")
+            print("[OK] Parsed piste: \(name ?? id) (\(pisteType.rawValue), \(difficulty.rawValue))")
             
             return SkiPiste(
                 id: id,
@@ -501,7 +574,7 @@ class OverpassService: ObservableObject {
     
     /// Debug method to test wellness feature detection with sample data
     func debugWellnessFeatureDetection() {
-        print("🧪 Testing Wellness Feature Detection")
+        print("Testing Wellness Feature Detection")
         print("=" * 50)
         
         // Create test accommodation with various wellness tags
@@ -517,7 +590,7 @@ class OverpassService: ObservableObject {
         ]
         
         for (description, tags) in testCases {
-            print("\n🏨 Testing: \(description)")
+            print("\nTesting: \(description)")
             print("   Tags: \(tags)")
             
             let testElement = MockOverpassElement(tags: tags)
@@ -530,26 +603,26 @@ class OverpassService: ObservableObject {
             print("   Results: Pool=\(hasPool), Jacuzzi=\(hasJacuzzi), Spa=\(hasSpa), Sauna=\(hasSauna)")
             
             if hasPool || hasJacuzzi || hasSpa || hasSauna {
-                print("   ✅ Wellness features detected!")
+                print("[OK] Wellness features detected!")
             } else {
-                print("   ❌ No wellness features detected")
+                print("[ERROR] No wellness features detected")
             }
         }
         
         print("\n" + "=" * 50)
-        print("🎯 Debug test completed!")
+        print("Debug test completed!")
     }
     
     /// Test version of parseWellnessFeature that works with mock elements
     private func testParseWellnessFeature(_ featureType: String, from element: MockOverpassElement) -> Bool {
         guard let tags = element.tags else { 
-            print("🏷️ No tags found for element \(element.id)")
+            print("No tags found for element \(element.id)")
             return false 
         }
         
         // Debug logging for wellness feature detection
-        print("🔍 Checking \(featureType) for \(element.name) (ID: \(element.id))")
-        print("🏷️ Available tags: \(tags)")
+        print("Checking \(featureType) for \(element.name) (ID: \(element.id))")
+        print("Available tags: \(tags)")
         
         let hasFeature: Bool
         
@@ -616,13 +689,13 @@ class OverpassService: ObservableObject {
             hasFeature = false
         }
         
-        print("✅ Feature '\(featureType)' result: \(hasFeature)")
+        print("[OK] Feature '\(featureType)' result: \(hasFeature)")
         
         // If no explicit tags found, try heuristic detection from name and description
         if !hasFeature {
             let heuristicResult = testDetectWellnessFeatureFromName(featureType, element: element)
             if heuristicResult {
-                print("🔍 Heuristic detection found '\(featureType)' in name/description")
+                print("Heuristic detection found '\(featureType)' in name/description")
             }
             return heuristicResult
         }

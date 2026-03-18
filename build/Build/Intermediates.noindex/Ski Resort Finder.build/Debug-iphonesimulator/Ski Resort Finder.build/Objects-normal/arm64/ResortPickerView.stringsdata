@@ -1,0 +1,48 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/ResortPickerView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld km",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 129
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld m",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 138
+        }
+      },
+      {
+        "comment": "",
+        "key": "🎿",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 192
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 199
+        }
+      }
+    ]
+  },
+  "version": 1
+}

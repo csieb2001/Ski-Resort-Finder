@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>logFormatVersion</key>
+	<integer>12</integer>
+	<key>logs</key>
+	<dict>
+		<key>C2793162-8BA9-4D5C-9549-6A480EE81E9A</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>C2793162-8BA9-4D5C-9549-6A480EE81E9A.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+				<key>totalNumberOfAnalyzerIssues</key>
+				<integer>0</integer>
+				<key>totalNumberOfErrors</key>
+				<integer>1</integer>
+				<key>totalNumberOfTestFailures</key>
+				<integer>0</integer>
+				<key>totalNumberOfWarnings</key>
+				<integer>40</integer>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>Ski Resort Finder project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>Ski Resort Finder</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Testing project Ski Resort Finder with scheme Ski Resort Finder</string>
+			<key>timeStartedRecording</key>
+			<real>795543381.58008206</real>
+			<key>timeStoppedRecording</key>
+			<real>795543396.53806496</real>
+			<key>title</key>
+			<string>Testing project Ski Resort Finder with scheme Ski Resort Finder</string>
+			<key>uniqueIdentifier</key>
+			<string>C2793162-8BA9-4D5C-9549-6A480EE81E9A</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

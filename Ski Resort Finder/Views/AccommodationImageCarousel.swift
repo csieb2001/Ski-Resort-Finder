@@ -63,7 +63,7 @@ struct AccommodationImageCarousel: View {
         }
         .onTapGesture {
             HapticFeedback.impact(.light)
-            print("🖼️ Single image tap detected - opening full screen gallery")
+            print("Single image tap detected - opening full screen gallery")
             currentImageIndex = 0
             showFullScreenGallery = true
         }
@@ -83,7 +83,7 @@ struct AccommodationImageCarousel: View {
                                 .onTapGesture {
                                     // Direct tap on image - most reliable
                                     HapticFeedback.impact(.light)
-                                    print("🖼️ Direct image tap detected - opening full screen gallery")
+                                    print("Direct image tap detected - opening full screen gallery")
                                     showFullScreenGallery = true
                                 }
                         } placeholder: {
@@ -96,7 +96,7 @@ struct AccommodationImageCarousel: View {
                                 .onTapGesture {
                                     // Tap on placeholder too
                                     HapticFeedback.impact(.light)
-                                    print("🖼️ Placeholder tap detected - opening full screen gallery")
+                                    print("Placeholder tap detected - opening full screen gallery")
                                     showFullScreenGallery = true
                                 }
                         }

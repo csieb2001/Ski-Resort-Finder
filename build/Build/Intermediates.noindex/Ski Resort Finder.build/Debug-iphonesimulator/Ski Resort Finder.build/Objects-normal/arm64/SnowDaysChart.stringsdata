@@ -1,0 +1,24 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Components/SnowDaysChart.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld - %lld %@",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 129
+        }
+      }
+    ]
+  },
+  "version": 1
+}

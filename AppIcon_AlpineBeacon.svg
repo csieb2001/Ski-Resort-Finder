@@ -1,0 +1,60 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D1B3E"/>
+      <stop offset="50%" stop-color="#0A1128"/>
+      <stop offset="100%" stop-color="#0F1E42"/>
+    </linearGradient>
+    <linearGradient id="mountain1a" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#2A4A7A"/>
+      <stop offset="100%" stop-color="#1A2F55"/>
+    </linearGradient>
+    <linearGradient id="mountain1b" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#1E3660"/>
+      <stop offset="100%" stop-color="#142545"/>
+    </linearGradient>
+    <linearGradient id="pin1" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#D8E8F8"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0.5" cy="0.38" r="0.25">
+      <stop offset="0%" stop-color="#4A90E2" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#4A90E2" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pindot1" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0%" stop-color="#6AB0FF"/>
+      <stop offset="60%" stop-color="#4A90E2"/>
+      <stop offset="100%" stop-color="#3570B8"/>
+    </radialGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg1)"/>
+  <!-- Stars -->
+  <circle cx="180" cy="120" r="2" fill="white" opacity="0.4"/>
+  <circle cx="820" cy="180" r="1.5" fill="white" opacity="0.3"/>
+  <circle cx="340" cy="200" r="1.5" fill="white" opacity="0.25"/>
+  <circle cx="700" cy="100" r="2" fill="white" opacity="0.35"/>
+  <circle cx="560" cy="160" r="1" fill="white" opacity="0.3"/>
+  <circle cx="140" cy="280" r="1.5" fill="white" opacity="0.2"/>
+  <circle cx="880" cy="300" r="1" fill="white" opacity="0.25"/>
+  <!-- Back mountain range -->
+  <path d="M0 680 L200 450 L350 540 L500 360 L650 500 L800 400 L1024 580 L1024 1024 L0 1024Z" fill="url(#mountain1b)" opacity="0.7"/>
+  <!-- Main mountain -->
+  <path d="M0 750 L300 420 L420 500 L512 310 L604 500 L724 420 L1024 750 L1024 1024 L0 1024Z" fill="url(#mountain1a)"/>
+  <!-- Snow caps -->
+  <path d="M512 310 L475 370 L500 355 L512 368 L524 355 L549 370Z" fill="white" opacity="0.9"/>
+  <path d="M300 420 L278 465 L295 455 L310 465 L322 455Z" fill="white" opacity="0.7"/>
+  <path d="M724 420 L702 465 L719 455 L734 465 L746 455Z" fill="white" opacity="0.7"/>
+  <!-- Snow ground -->
+  <path d="M0 800 Q256 770 512 785 Q768 800 1024 775 L1024 1024 L0 1024Z" fill="#E8F0FA" opacity="0.12"/>
+  <!-- Glow behind pin -->
+  <rect x="256" y="130" width="512" height="512" fill="url(#glow1)"/>
+  <!-- Location Pin with shadow -->
+  <g opacity="0.3" transform="translate(4, 8)">
+    <path d="M512 620 L420 430 Q380 355 380 320 Q380 248 512 200 Q644 248 644 320 Q644 355 604 430Z" fill="#000"/>
+  </g>
+  <path d="M512 620 L420 430 Q380 355 380 320 Q380 248 512 200 Q644 248 644 320 Q644 355 604 430Z" fill="url(#pin1)"/>
+  <circle cx="512" cy="312" r="68" fill="url(#pindot1)"/>
+  <!-- Pin inner ring -->
+  <circle cx="512" cy="312" r="48" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+</svg>

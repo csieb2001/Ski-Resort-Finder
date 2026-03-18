@@ -39,6 +39,23 @@ Eine iOS-App für Ski-Enthusiasten zum Finden von Unterkünften mit speziellen K
 - Beispiel: `"search_prices".localized` statt `"Preise suchen"`
 - **NIEMALS** nur eine oder zwei Sprachen aktualisieren - immer alle!
 
+**PERSISTENTER SCHNEEDATEN-CACHE:**
+- **SnowDataCache.swift** implementiert persistente Speicherung für OpenMeteo API-Daten
+- **24-Stunden Cache-Gültigkeit:** Daten werden automatisch nach einem Tag als veraltet markiert
+- **Persistente Speicherung:** Cache überlebt App-Neustarts in Documents/SnowDataCache/
+- **Rate-Limiting Integration:** Kombiniert mit OpenMeteo Service Rate-Limiting (6s delays)
+- **Automatische Bereinigung:** Veraltete Einträge werden beim App-Start entfernt
+- **Cache-Limits:** Maximum 100 Skigebiete, älteste Einträge werden automatisch entfernt
+- **Performance-Optimierung:** 
+  - Batch-Preloading für mehrere Skigebiete
+  - Sofortige Rückgabe gecachter Daten (< 1ms vs. 6-10s API-Aufruf)
+  - Background-Speicherung auf Festplatte
+- **Debug-Funktionen:** CacheManagementView.swift für Cache-Statistiken und Verwaltung
+- **Verwendung:** 
+  - `SnowDataCache.shared.getHistoricalSnowData(for: coordinate)` - Standard API
+  - `SnowDataCache.shared.hasCachedData(for: coordinate)` - Cache-Prüfung
+  - `SnowDataCache.shared.preloadSnowData(for: [coordinates])` - Batch-Preloading
+
 ## Projektübersicht
 
 Diese SwiftUI-App ermöglicht es Nutzern:

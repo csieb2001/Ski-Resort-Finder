@@ -1,0 +1,32 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/MapView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "BEISPIELDATEN",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 1047
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld m",
+        "location": {
+          "startingColumn": 31,
+          "startingLine": 981
+        }
+      },
+      {
+        "comment": "",
+        "key": "pro Nacht",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 1015
+        }
+      }
+    ]
+  },
+  "version": 1
+}

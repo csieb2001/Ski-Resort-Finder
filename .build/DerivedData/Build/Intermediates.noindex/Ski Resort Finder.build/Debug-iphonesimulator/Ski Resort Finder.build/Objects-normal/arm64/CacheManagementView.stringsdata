@@ -1,0 +1,144 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/Settings/CacheManagementView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Cache Verwaltung",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 90
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cache löschen",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 94
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cache Statistiken",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 11
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cache Verwaltung",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Information",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 77
+        }
+      },
+      {
+        "comment": "",
+        "key": "Einträge:",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 14
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 17
+        }
+      },
+      {
+        "comment": "",
+        "key": "Geschätzte Größe:",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 22
+        }
+      },
+      {
+        "comment": "",
+        "key": "Ältester Eintrag:",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 31
+        }
+      },
+      {
+        "comment": "",
+        "key": "Neuester Eintrag:",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 42
+        }
+      },
+      {
+        "comment": "",
+        "key": "Veraltete Einträge löschen",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 62
+        }
+      },
+      {
+        "comment": "",
+        "key": "Gesamten Cache löschen",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 72
+        }
+      },
+      {
+        "comment": "",
+        "key": "Der Schneedaten-Cache speichert historische Wetterdaten für 24 Stunden zwischen. Dies reduziert API-Aufrufe und verbessert die Performance.",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 79
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cache-Speicherort: Documents/SnowDataCache/",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 83
+        }
+      },
+      {
+        "comment": "",
+        "key": "Abbrechen",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 95
+        }
+      },
+      {
+        "comment": "",
+        "key": "Löschen",
+        "location": {
+          "startingColumn": 24,
+          "startingLine": 96
+        }
+      },
+      {
+        "comment": "",
+        "key": "Möchten Sie wirklich alle gecachten Schneedaten löschen? Diese werden beim nächsten Laden der Skigebiete neu von der API abgerufen.",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 101
+        }
+      }
+    ]
+  },
+  "version": 1
+}

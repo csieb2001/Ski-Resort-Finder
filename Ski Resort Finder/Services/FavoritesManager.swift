@@ -1,9 +1,8 @@
 import Foundation
-import Combine
 
-class FavoritesManager: ObservableObject {
+@MainActor class FavoritesManager: ObservableObject {
     static let shared = FavoritesManager()
-    
+
     @Published var favoriteResortIDs: Set<String> = []
     
     private let userDefaults = UserDefaults.standard

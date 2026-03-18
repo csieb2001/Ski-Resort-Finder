@@ -1,4 +1,5 @@
 import Foundation
+import CoreLocation
 
 struct WeatherData: Codable {
     let main: MainWeather
@@ -128,4 +129,53 @@ struct SkiResortLocation: Codable {
     let totalSlopes: Int
     let maxElevation: Int
     let minElevation: Int
+}
+
+// MARK: - Historical Snow Data Models
+struct HistoricalSnowData: Codable {
+    let latitude: Double
+    let longitude: Double
+    let yearlyData: [YearlySnowData]
+    let averageSnowfall: Double
+    let averageSnowDays: Int
+    let cacheTimestamp: Date // Für Cache-Verwaltung
+    
+    var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    init(coordinate: CLLocationCoordinate2D, yearlyData: [YearlySnowData], averageSnowfall: Double, averageSnowDays: Int) {
+        self.latitude = coordinate.latitude
+        self.longitude = coordinate.longitude
+        self.yearlyData = yearlyData
+        self.averageSnowfall = averageSnowfall
+        self.averageSnowDays = averageSnowDays
+        self.cacheTimestamp = Date()
+    }
+}
+
+struct YearlySnowData: Codable {
+    let year: Int
+    let totalSnowfall: Double // in cm
+    let averageSnowDepth: Double // in cm
+    let snowDays: Int // Tage mit Schneefall > 0.1cm
+    let peakSnowfall: Double // Höchster Schneefall an einem Tag
+    let seasonStart: Date? // Beginn der Schneesaison
+    let seasonEnd: Date? // Ende der Schneesaison
+    
+    var seasonLength: Int? {
+        guard let start = seasonStart, let end = seasonEnd else { return nil }
+        return Calendar.current.dateComponents([.day], from: start, to: end).day
+    }
+    
+    var formattedSeason: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM"
+        
+        guard let start = seasonStart, let end = seasonEnd else {
+            return "Keine Daten"
+        }
+        
+        return "\(formatter.string(from: start)) - \(formatter.string(from: end))"
+    }
 }

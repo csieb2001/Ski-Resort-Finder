@@ -241,10 +241,24 @@ struct AccommodationListView: View {
                                 HapticFeedback.impact(.light)
                                 showingEmailOptions = true 
                             }) {
-                                Image(systemName: emailScanningIcon)
-                                    .font(DesignSystem.Typography.callout)
-                                    .foregroundColor(emailScanningColor)
+                                if emailService.isProcessing {
+                                    VStack(spacing: DesignSystem.Spacing.xxs) {
+                                        ProgressView()
+                                            .progressViewStyle(CircularProgressViewStyle(tint: emailScanningColor))
+                                            .scaleEffect(0.8)
+                                        
+                                        Text("\(emailService.statistics.processedAccommodations)/\(emailService.statistics.totalAccommodations)")
+                                            .font(DesignSystem.Typography.caption2)
+                                            .foregroundColor(DesignSystem.Colors.secondaryText)
+                                            .lineLimit(1)
+                                    }
                                     .frame(width: DesignSystem.Layout.minTouchTarget, height: DesignSystem.Layout.minTouchTarget)
+                                } else {
+                                    Image(systemName: emailScanningIcon)
+                                        .font(DesignSystem.Typography.callout)
+                                        .foregroundColor(emailScanningColor)
+                                        .frame(width: DesignSystem.Layout.minTouchTarget, height: DesignSystem.Layout.minTouchTarget)
+                                }
                             }
                             .disabled(emailService.isProcessing)
                             
@@ -330,15 +344,15 @@ struct AccommodationListView: View {
                 Text("choose_sort_option".localized)
             }
             .confirmationDialog("email_search_dialog_title".localized, isPresented: $showingEmailOptions) {
-                Button("search_all_emails".localized) {
-                    HapticFeedback.selection()
-                    scrapeEmailsForAllAccommodations()
-                }
-                
                 if emailService.isProcessing {
                     Button("stop_email_search".localized, role: .destructive) {
                         HapticFeedback.impact(.medium)
                         emailService.stopProcessing()
+                    }
+                } else {
+                    Button("search_all_emails".localized) {
+                        HapticFeedback.selection()
+                        scrapeEmailsForAllAccommodations()
                     }
                 }
                 
@@ -441,16 +455,16 @@ struct AccommodationListView: View {
         }
         
         guard !accommodationsWithoutEmailOrWellness.isEmpty else {
-            print("📧🏊‍♀️ Alle Unterkünfte haben bereits E-Mail-Adressen und Wellness-Informationen")
+            print("Alle Unterkünfte haben bereits E-Mail-Adressen und Wellness-Informationen")
             return
         }
         
-        print("🔍 Starte E-Mail- und Wellness-Suche für \(accommodationsWithoutEmailOrWellness.count) Unterkünfte")
+        print("Starte E-Mail- und Wellness-Suche für \(accommodationsWithoutEmailOrWellness.count) Unterkünfte")
         
         emailService.processEmailsAndWellnessFeatures(for: accommodationsWithoutEmailOrWellness) { emailResults, wellnessResults in
             DispatchQueue.main.async {
                 self.updateAccommodationsWithEmailsAndWellness(emailResults, wellnessResults)
-                print("✅ E-Mail- und Wellness-Suche abgeschlossen. \(emailResults.count) E-Mails und \(wellnessResults.count) Wellness-Profile gefunden.")
+                print("[OK] E-Mail- und Wellness-Suche abgeschlossen. \(emailResults.count) E-Mails und \(wellnessResults.count) Wellness-Profile gefunden.")
             }
         }
     }
@@ -465,16 +479,16 @@ struct AccommodationListView: View {
         }
         
         guard !accommodationsWithoutEmailOrWellness.isEmpty else {
-            print("📧🏊‍♀️ Alle ausgewählten Unterkünfte haben bereits E-Mail-Adressen und Wellness-Informationen")
+            print("Alle ausgewählten Unterkünfte haben bereits E-Mail-Adressen und Wellness-Informationen")
             return
         }
         
-        print("🔍 Starte E-Mail- und Wellness-Suche für \(accommodationsWithoutEmailOrWellness.count) ausgewählte Unterkünfte")
+        print("Starte E-Mail- und Wellness-Suche für \(accommodationsWithoutEmailOrWellness.count) ausgewählte Unterkünfte")
         
         emailService.processEmailsAndWellnessFeatures(for: accommodationsWithoutEmailOrWellness) { emailResults, wellnessResults in
             DispatchQueue.main.async {
                 self.updateAccommodationsWithEmailsAndWellness(emailResults, wellnessResults)
-                print("✅ E-Mail- und Wellness-Suche für ausgewählte Unterkünfte abgeschlossen. \(emailResults.count) E-Mails und \(wellnessResults.count) Wellness-Profile gefunden.")
+                print("[OK] E-Mail- und Wellness-Suche für ausgewählte Unterkünfte abgeschlossen. \(emailResults.count) E-Mails und \(wellnessResults.count) Wellness-Profile gefunden.")
             }
         }
     }
@@ -558,7 +572,7 @@ struct AccommodationListView: View {
                     coordinate: updatedAccommodation.coordinate
                 )
                 
-                print("🏊‍♀️ Updated wellness features for \(accommodation.name): Pool=\(wellnessResult.hasPool), Jacuzzi=\(wellnessResult.hasJacuzzi), Spa=\(wellnessResult.hasSpa), Sauna=\(wellnessResult.hasSauna)")
+                print("Updated wellness features for \(accommodation.name): Pool=\(wellnessResult.hasPool), Jacuzzi=\(wellnessResult.hasJacuzzi), Spa=\(wellnessResult.hasSpa), Sauna=\(wellnessResult.hasSauna)")
             }
             
             return updatedAccommodation

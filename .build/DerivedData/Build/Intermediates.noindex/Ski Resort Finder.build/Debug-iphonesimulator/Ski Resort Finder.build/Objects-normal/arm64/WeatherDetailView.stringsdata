@@ -1,0 +1,56 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/WeatherDetailView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld°C",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 76
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld°",
+        "location": {
+          "startingColumn": 18,
+          "startingLine": 475
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@mm",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 518
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@mm",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 523
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld°",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 536
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld°",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 539
+        }
+      }
+    ]
+  },
+  "version": 1
+}

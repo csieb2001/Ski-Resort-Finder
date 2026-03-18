@@ -3,8 +3,8 @@ import CoreLocation
 import SwiftUI
 
 class SkiResortDatabase: ObservableObject {
-    
-    static let shared = SkiResortDatabase()
+
+    nonisolated(unsafe) static let shared = SkiResortDatabase()
     
     private init() {
         // Initialize ski resorts immediately on app start

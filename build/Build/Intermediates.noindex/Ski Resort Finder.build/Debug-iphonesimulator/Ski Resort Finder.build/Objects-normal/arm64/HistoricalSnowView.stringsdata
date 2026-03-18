@@ -1,0 +1,24 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/HistoricalSnowView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "❄️",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 144
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 251
+        }
+      }
+    ]
+  },
+  "version": 1
+}

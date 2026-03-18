@@ -148,7 +148,7 @@ enum PisteDifficulty: String, CaseIterable, Codable {
         case .expert:
             return "◆◆" // Double black diamond
         case .freeride:
-            return "🏔"  // Off-piste
+            return "~" // Off-piste
         }
     }
 }

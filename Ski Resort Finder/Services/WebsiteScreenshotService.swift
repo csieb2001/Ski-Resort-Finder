@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import WebKit
 
-class WebsiteScreenshotService: ObservableObject {
+class WebsiteScreenshotService: ObservableObject, @unchecked Sendable {
     static let shared = WebsiteScreenshotService()
     
     private let session = URLSession.shared
@@ -10,13 +10,16 @@ class WebsiteScreenshotService: ObservableObject {
     private let screenshotCache = NSCache<NSString, UIImage>()
     
     private init() {
-        setupWebView()
+        Task { @MainActor in
+            self.setupWebView()
+        }
     }
-    
+
+    @MainActor
     private func setupWebView() {
         let config = WKWebViewConfiguration()
         config.defaultWebpagePreferences.allowsContentJavaScript = true
-        
+
         webView = WKWebView(frame: CGRect(x: 0, y: 0, width: 375, height: 667), configuration: config)
         webView?.isHidden = true
     }
@@ -26,12 +29,12 @@ class WebsiteScreenshotService: ObservableObject {
         // Check cache first
         let cacheKey = "\(websiteURL)_\(accommodationName)" as NSString
         if let cachedImage = screenshotCache.object(forKey: cacheKey) {
-            print("📸 Using cached screenshot for \(accommodationName)")
+            print("Using cached screenshot for \(accommodationName)")
             return cachedImage
         }
         
         guard let url = sanitizeURL(websiteURL) else {
-            print("❌ Invalid URL for \(accommodationName): \(websiteURL)")
+            print("[ERROR] Invalid URL for \(accommodationName): \(websiteURL)")
             return nil
         }
         
@@ -41,12 +44,12 @@ class WebsiteScreenshotService: ObservableObject {
             // Cache the result
             if let screenshot = screenshot {
                 screenshotCache.setObject(screenshot, forKey: cacheKey)
-                print("📸 Cached new screenshot for \(accommodationName)")
+                print("Cached new screenshot for \(accommodationName)")
             }
             
             return screenshot
         } catch {
-            print("❌ Failed to take screenshot for \(accommodationName): \(error)")
+            print("[ERROR] Failed to take screenshot for \(accommodationName): \(error)")
             return nil
         }
     }
@@ -69,7 +72,7 @@ class WebsiteScreenshotService: ObservableObject {
         }
         
         return try await withCheckedThrowingContinuation { continuation in
-            print("📸 Taking screenshot for \(accommodationName) from \(url.absoluteString)")
+        print("Taking screenshot for \(accommodationName) from \(url.absoluteString)")
             
             // Set timeout for loading
             let timeoutTask = Task {
@@ -88,13 +91,13 @@ class WebsiteScreenshotService: ObservableObject {
                     timeoutTask.cancel()
                     
                     if let error = error {
-                        print("❌ Screenshot error for \(accommodationName): \(error)")
+                        print("[ERROR] Screenshot error for \(accommodationName): \(error)")
                         continuation.resume(returning: nil)
                     } else if let image = image {
-                        print("✅ Screenshot taken for \(accommodationName)")
+                        print("[OK] Screenshot taken for \(accommodationName)")
                         continuation.resume(returning: image)
                     } else {
-                        print("⚠️ No screenshot generated for \(accommodationName)")
+                        print("[WARN] No screenshot generated for \(accommodationName)")
                         continuation.resume(returning: nil)
                     }
                 }

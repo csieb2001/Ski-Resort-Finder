@@ -1,0 +1,112 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/ERA5ConfigView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "ERA5 Setup",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 150
+        }
+      },
+      {
+        "comment": "",
+        "key": "ERA5 Configuration",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 20
+        }
+      },
+      {
+        "comment": "",
+        "key": "Configure your free ERA5 API key for real historical snow data",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 25
+        }
+      },
+      {
+        "comment": "",
+        "key": "Current Status",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "API Key",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 53
+        }
+      },
+      {
+        "comment": "",
+        "key": "Format: UID:API-Key (e.g., 12345:abcd-1234-efgh-5678)",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 68
+        }
+      },
+      {
+        "comment": "",
+        "key": "12345:abcd-1234-efgh-5678",
+        "location": {
+          "startingColumn": 37,
+          "startingLine": 58
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save API Key",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 81
+        }
+      },
+      {
+        "comment": "",
+        "key": "Delete API Key",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 98
+        }
+      },
+      {
+        "comment": "",
+        "key": "How to get your free ERA5 API Key:",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Open ERA5 Website",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 132
+        }
+      },
+      {
+        "comment": "",
+        "key": "Done",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 154
+        }
+      },
+      {
+        "comment": "",
+        "key": "OK",
+        "location": {
+          "startingColumn": 20,
+          "startingLine": 161
+        }
+      }
+    ]
+  },
+  "version": 1
+}

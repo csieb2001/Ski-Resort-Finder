@@ -1,0 +1,16 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/ModernResortInfoCard.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 30,
+          "startingLine": 41
+        }
+      }
+    ]
+  },
+  "version": 1
+}

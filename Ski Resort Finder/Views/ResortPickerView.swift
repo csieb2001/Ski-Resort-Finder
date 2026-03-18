@@ -189,7 +189,7 @@ struct ResortInfoCard: View {
             // Header mit Gradient Background
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("🎿")
+                    Image(systemName: "figure.skiing.downhill")
                         .font(.title)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(resort.name)

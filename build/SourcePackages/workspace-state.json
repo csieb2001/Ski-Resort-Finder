@@ -1,0 +1,78 @@
+{
+  "object" : {
+    "artifacts" : [
+      {
+        "kind" : "xcframework",
+        "packageRef" : {
+          "identity" : "swift-package-manager-google-mobile-ads",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+          "name" : "swift-package-manager-google-mobile-ads"
+        },
+        "path" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/build/SourcePackages/artifacts/swift-package-manager-google-mobile-ads/GoogleMobileAds/GoogleMobileAds.xcframework",
+        "source" : {
+          "checksum" : "8531a0cd8303d9fc3d0b334fde9c92750bc5dda453a78c1c37bc95d61a9b609f",
+          "type" : "remote",
+          "url" : "https://dl.google.com/googleadmobadssdk/8531a0cd8303d9fc/googlemobileadsios-spm-12.8.0.zip"
+        },
+        "targetName" : "GoogleMobileAds"
+      },
+      {
+        "kind" : "xcframework",
+        "packageRef" : {
+          "identity" : "swift-package-manager-google-user-messaging-platform",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+          "name" : "swift-package-manager-google-user-messaging-platform"
+        },
+        "path" : "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/build/SourcePackages/artifacts/swift-package-manager-google-user-messaging-platform/UserMessagingPlatform/UserMessagingPlatform.xcframework",
+        "source" : {
+          "checksum" : "5ca3e33572cac088f5bfd1249712d172c20905932402b6fe60b8f544961d5ee1",
+          "type" : "remote",
+          "url" : "https://dl.google.com/googleadmobadssdk/5ca3e33572cac088/googleusermessagingplatformios-spm-3.0.0.zip"
+        },
+        "targetName" : "UserMessagingPlatform"
+      }
+    ],
+    "dependencies" : [
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swift-package-manager-google-mobile-ads",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+          "name" : "swift-package-manager-google-mobile-ads"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "49efd19f8f4bbe130de7e2ee9e061d202a9a2a8b",
+            "version" : "12.8.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "swift-package-manager-google-mobile-ads"
+      },
+      {
+        "basedOn" : null,
+        "packageRef" : {
+          "identity" : "swift-package-manager-google-user-messaging-platform",
+          "kind" : "remoteSourceControl",
+          "location" : "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+          "name" : "swift-package-manager-google-user-messaging-platform"
+        },
+        "state" : {
+          "checkoutState" : {
+            "revision" : "69b53394c5258b3fe688e625a998047d1f393497",
+            "version" : "3.0.0"
+          },
+          "name" : "sourceControlCheckout"
+        },
+        "subpath" : "swift-package-manager-google-user-messaging-platform"
+      }
+    ],
+    "prebuilts" : [
+
+    ]
+  },
+  "version" : 7
+}

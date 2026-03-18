@@ -141,8 +141,9 @@ struct YearlySnowCard: View {
                     .foregroundColor(DesignSystem.Colors.primaryText)
                 Spacer()
                 if yearData.totalSnowfall > 0 {
-                    Text("❄️")
+                    Image(systemName: "snowflake")
                         .font(DesignSystem.Typography.title2)
+                        .foregroundColor(.blue)
                 }
             }
             

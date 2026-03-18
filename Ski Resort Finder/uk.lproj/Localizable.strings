@@ -8,6 +8,8 @@
 "to" = "До";
 "search_accommodations" = "Знайти житло";
 "search_again" = "Шукати знову";
+"loading_snow_data" = "Завантаження снігових даних...";
+"searching_emails_spa" = "Пошук email та спа...";
 "selected_resort" = "Обраний гірськолижний курорт";
 
 /* Вибір курорту */
@@ -278,3 +280,55 @@
 "data_sources" = "Джерела Даних";
 "debug_system_info" = "Налагодження та Системна Інформація";
 "about_app" = "Про Додаток";
+"top3_hotel_rating_info" = "Для точних оцінок оберіть курорт і завантажте дані готелів";
+
+/* Privacy and Advertising */
+"privacy_settings" = "Налаштування Конфіденційності";
+"privacy_protection" = "Захист Конфіденційності";
+"privacy_description" = "Ваша конфіденційність важлива для нас";
+"privacy_detailed_info" = "Ми використовуємо ваші дані лише для функціональності додатку та показуємо релевантну рекламу. Ви контролюєте налаштування конфіденційності в будь-який час.";
+"ad_preferences" = "Налаштування Реклами";
+"personalized_ads" = "Персоналізована Реклама";
+"personalized_ads_description" = "Реклама, заснована на ваших інтересах та діяльності";
+"manage_ad_preferences" = "Управління Налаштуваннями Реклами";
+"consent_given" = "Надано";
+"consent_required" = "Потрібно";
+"consent_not_required" = "Не Потрібно";
+"consent_unknown" = "Невідомо";
+"data_usage" = "Використання Даних";
+"location_data" = "Дані про Місцезнаходження";  
+"location_data_description" = "Для пошуку гірськолижних курортів та житла поблизу";
+"contact_data" = "Контактні Дані";
+"contact_data_description" = "Для запитів на бронювання в готелі";
+"usage_analytics" = "Аналітика Використання";
+"usage_analytics_description" = "Для покращення досвіду користування додатком";
+"advertising_data" = "Рекламні Дані";
+"advertising_data_description" = "Для релевантної реклами";
+"in_use" = "Використовується";
+"legal" = "Правова Інформація";
+"privacy_policy" = "Політика Конфіденційності";
+"google_privacy_policy" = "Політика Конфіденційності Google";
+"privacy_policy_content" = "Цей додаток збирає та використовує дані відповідно до нашої політики конфіденційності. Ми поважаємо вашу конфіденційність та даємо вам контроль над вашими даними.";
+
+"no_spa_info" = "Немає даних про спа";
+"contact_available" = "Контакт доступний";
+"details_tap" = "Детальніше";
+"top3_avg_elevation" = "Сер. висота";
+
+/* Welcome Wizard / Onboarding */
+"welcome_title" = "Ski Resort Finder";
+"welcome_subtitle" = "Знайдіть ідеальний гірськолижний курорт";
+"welcome_resorts_title" = "100+ курортів по всьому світу";
+"welcome_resorts_desc" = "Реальні дані з 15+ країн, жодних фейкових даних";
+"welcome_snow_title" = "Сніг та Погода";
+"welcome_snow_desc" = "Статистика снігу за 10 років, прогноз погоди на 7 днів";
+"welcome_hotels_title" = "Житло з фільтром Spa";
+"welcome_hotels_desc" = "Готелі, пансіони та шале біля підйомників. Фільтри: басейн, джакузі, спа та сауна.";
+"welcome_start_title" = "Почнімо!";
+"welcome_start_desc" = "Оберіть ваш перший гірськолижний курорт";
+"welcome_start_button" = "Почати";
+"show_all_rankings" = "Всі рейтинги";
+"ranking_title" = "Рейтинг";
+"location_and_lifts" = "Розташування та підйомники";
+"lifts_nearby" = "підйомників поблизу";
+"ors_rating_explanation" = "ORS: Об'єктивний рейтинг на основі відстані до підйомників, велнесу, курорту, снігу та висоти";

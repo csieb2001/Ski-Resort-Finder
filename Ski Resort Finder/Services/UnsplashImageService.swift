@@ -108,7 +108,7 @@ class UnsplashImageService: ObservableObject {
 
 // MARK: - Caching für bessere Performance
 class ImageCache {
-    static let shared = ImageCache()
+    nonisolated(unsafe) static let shared = ImageCache()
     private var cache = NSCache<NSString, UIImage>()
     
     private init() {

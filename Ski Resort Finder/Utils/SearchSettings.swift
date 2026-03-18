@@ -2,8 +2,8 @@ import Foundation
 
 /// Sucheinstellungen für Accommodations
 class SearchSettings: ObservableObject {
-    
-    static let shared = SearchSettings()
+
+    nonisolated(unsafe) static let shared = SearchSettings()
     
     private init() {
         // Lade gespeicherte Einstellungen
@@ -26,7 +26,7 @@ class SearchSettings: ObservableObject {
             
             // Speichere Einstellung
             UserDefaults.standard.set(searchRadius, forKey: searchRadiusKey)
-            print("🔍 Search radius updated to: \(searchRadius)km")
+            print("Search radius updated to: \(searchRadius)km")
         }
     }
     

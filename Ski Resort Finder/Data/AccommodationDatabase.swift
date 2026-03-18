@@ -1,9 +1,10 @@
 import Foundation
 import CoreLocation
+import SwiftUI
 
-class AccommodationDatabase: ObservableObject {
+@MainActor class AccommodationDatabase: ObservableObject {
     static let shared = AccommodationDatabase()
-    
+
     @Published var accommodations: [String: [CachedAccommodation]] = [:] // Key: resort.id
     @Published var lastUpdateDates: [String: Date] = [:]
     @Published var loadingStatus: AccommodationLoadingStatus = .idle
@@ -92,7 +93,7 @@ class AccommodationDatabase: ObservableObject {
         Task { @MainActor in
             loadingStatus = .idle
             statistics.currentResort = ""
-            print("🛑 User stopped accommodation loading")
+            print("User stopped accommodation loading")
         }
     }
     
@@ -118,7 +119,7 @@ class AccommodationDatabase: ObservableObject {
         userDefaults.removeObject(forKey: accommodationsKey)
         userDefaults.removeObject(forKey: lastUpdateKey)
         
-        print("🗑️ AccommodationDatabase: All data cleared")
+        print("AccommodationDatabase: All data cleared")
     }
     
     /// Prüft ob eine Aktualisierung für ein Skigebiet benötigt wird
@@ -131,7 +132,7 @@ class AccommodationDatabase: ObservableObject {
     
     /// Startet E-Mail-Entdeckung für eine Liste von Unterkünften mit Progress-Anzeige
     private func startEmailDiscoveryForAccommodations(_ cachedAccommodations: [CachedAccommodation]) async {
-        print("📧 Starting email discovery for \(cachedAccommodations.count) accommodations...")
+        print("Starting email discovery for \(cachedAccommodations.count) accommodations...")
         
         // Filtere Unterkünfte, die keine E-Mail haben und konvertiere zu Accommodation-Objekten
         var accommodationsNeedingEmails: [Accommodation] = []
@@ -140,13 +141,13 @@ class AccommodationDatabase: ObservableObject {
         for cachedAccommodation in cachedAccommodations {
             // Prüfe auf Cancellation
             if isCancelled {
-                print("🛑 Email discovery cancelled")
+                print("Email discovery cancelled")
                 return
             }
             
             // Finde das SkiResort für diese CachedAccommodation
             guard let resort = SkiResortDatabase.shared.allSkiResorts.first(where: { $0.id == cachedAccommodation.resortId }) else {
-                print("❌ Could not find resort for accommodation \(cachedAccommodation.name)")
+                print("[ERROR] Could not find resort for accommodation \(cachedAccommodation.name)")
                 continue
             }
             
@@ -155,7 +156,7 @@ class AccommodationDatabase: ObservableObject {
             
             // Überspringe, wenn bereits eine E-Mail verfügbar ist
             if let existingEmail = regularAccommodation.email, !existingEmail.isEmpty {
-                print("✅ Email already available for \(cachedAccommodation.name): \(existingEmail)")
+                print("[OK] Email already available for \(cachedAccommodation.name): \(existingEmail)")
                 continue
             }
             
@@ -165,7 +166,7 @@ class AccommodationDatabase: ObservableObject {
         
         // Wenn keine E-Mails benötigt werden, beende
         guard !accommodationsNeedingEmails.isEmpty else {
-            print("✅ All accommodations already have emails")
+            print("[OK] All accommodations already have emails")
             return
         }
         
@@ -180,7 +181,7 @@ class AccommodationDatabase: ObservableObject {
             )
         }
         
-        print("📧 Email discovery completed for \(cachedAccommodations.count) accommodations")
+        print("Email discovery completed for \(cachedAccommodations.count) accommodations")
     }
     
     /// Helper method to process email results and avoid complex closure structures
@@ -191,7 +192,7 @@ class AccommodationDatabase: ObservableObject {
     ) {
         Task { @MainActor in
             AdvancedEmailService.shared.processEmails(for: accommodationsNeedingEmails) { emailResults in
-                print("📧 Batch email processing completed with \(emailResults.count) results")
+            print("Batch email processing completed with \(emailResults.count) results")
                 
                 Task { @MainActor in
                     self.updateCachedAccommodationsWithEmails(emailResults, accommodationMapping)
@@ -218,7 +219,7 @@ class AccommodationDatabase: ObservableObject {
                         updatedAccommodations[index] = updatedAccommodation
                         self.accommodations[cachedAccommodation.resortId.uuidString] = updatedAccommodations
                         
-                        print("✅ Updated \(accommodationName) with email: \(email) (quality: \(emailResult.quality.description))")
+                        print("[OK] Updated \(accommodationName) with email: \(email) (quality: \(emailResult.quality.description))")
                     }
                 }
             }
@@ -241,17 +242,17 @@ class AccommodationDatabase: ObservableObject {
         let imageUrl = ""
         let imageUrls: [String] = []
         
-        print("✅ Accommodation \(osmPlace.name) added (screenshot will be generated on-demand)")
+        print("[OK] Accommodation \(osmPlace.name) added (screenshot will be generated on-demand)")
         
         return CachedAccommodation(
             placeId: osmPlace.id,
             name: osmPlace.name,
             coordinate: osmPlace.coordinate,
             distanceToLift: Int(distance),
-            hasPool: false, // OSM rarely includes specific amenity details
-            hasJacuzzi: false,
-            hasSpa: false,
-            hasSauna: false,
+            hasPool: osmPlace.hasPool,
+            hasJacuzzi: osmPlace.hasJacuzzi,
+            hasSpa: osmPlace.hasSpa,
+            hasSauna: osmPlace.hasSauna,
             pricePerNight: estimatedPrice,
             rating: 0.0, // Will be calculated objectively later
             imageUrl: imageUrl, // Website screenshot or placeholder
@@ -286,17 +287,17 @@ class AccommodationDatabase: ObservableObject {
     private func ensureAccommodationsLoaded(for resortId: String) async {
         // Wenn bereits Accommodations für dieses Resort im Speicher sind, nichts tun
         if let existingAccommodations = accommodations[resortId], !existingAccommodations.isEmpty {
-            print("🔄 Resort \(resortId) already has \(existingAccommodations.count) accommodations loaded")
+            print("Resort \(resortId) already has \(existingAccommodations.count) accommodations loaded")
             return
         }
         
         // Wenn die Datenbank noch nicht vom Disk geladen wurde, lade sie jetzt
         if accommodations.isEmpty {
-            print("📥 Loading accommodations from disk for duplicate check...")
+            print("Loading accommodations from disk for duplicate check...")
             loadFromDisk()
         }
         
-        print("🔄 Ensured accommodations loaded: \(accommodations[resortId]?.count ?? 0) existing accommodations for resort \(resortId)")
+        print("Ensured accommodations loaded: \(accommodations[resortId]?.count ?? 0) existing accommodations for resort \(resortId)")
     }
     
     /// Prüft ob eine Unterkunft mit der gleichen PlaceID bereits existiert
@@ -312,11 +313,11 @@ class AccommodationDatabase: ObservableObject {
             if let existingIndex = result.firstIndex(where: { $0.placeId == newAccommodation.placeId }) {
                 // Ersetze mit neueren Daten
                 result[existingIndex] = newAccommodation
-                print("🔄 Updated existing accommodation: \(newAccommodation.name)")
+                print("Updated existing accommodation: \(newAccommodation.name)")
             } else {
                 // Füge neue Unterkunft hinzu
                 result.append(newAccommodation)
-                print("➕ Added new accommodation: \(newAccommodation.name)")
+                print("Added new accommodation: \(newAccommodation.name)")
             }
         }
         
@@ -336,21 +337,21 @@ class AccommodationDatabase: ObservableObject {
                     uniqueAccommodations.append(accommodation)
                     seenPlaceIds.insert(accommodation.placeId)
                 } else {
-                    print("🗑️ Removed duplicate: \(accommodation.name) (PlaceID: \(accommodation.placeId))")
+                    print("Removed duplicate: \(accommodation.name) (PlaceID: \(accommodation.placeId))")
                     hasChanges = true
                 }
             }
             
             if uniqueAccommodations.count != accommodationList.count {
                 accommodations[resortKey] = uniqueAccommodations
-                print("✅ Cleaned \(accommodationList.count - uniqueAccommodations.count) duplicates from resort \(resortKey)")
+                print("[OK] Cleaned \(accommodationList.count - uniqueAccommodations.count) duplicates from resort \(resortKey)")
             }
         }
         
         if hasChanges {
             calculateStatistics()
             saveToDisk()
-            print("💾 Saved cleaned database without duplicates")
+            print("Saved cleaned database without duplicates")
         }
     }
     
@@ -371,7 +372,7 @@ class AccommodationDatabase: ObservableObject {
                     loadingStatus = .idle
                     statistics.currentResort = ""
                 }
-                print("🛑 Loading cancelled by user at resort \(resort.name)")
+                print("Loading cancelled by user at resort \(resort.name)")
                 return
             }
             
@@ -395,7 +396,7 @@ class AccommodationDatabase: ObservableObject {
                         loadingStatus = .idle
                         statistics.currentResort = ""
                     }
-                    print("🛑 Loading cancelled by user after \(resort.name)")
+                    print("Loading cancelled by user after \(resort.name)")
                     return
                 }
             }
@@ -407,7 +408,7 @@ class AccommodationDatabase: ObservableObject {
             saveToDisk()
         }
         
-        print("✅ AccommodationDatabase: Completed loading accommodations for \(allResorts.count) resorts")
+        print("[OK] AccommodationDatabase: Completed loading accommodations for \(allResorts.count) resorts")
     }
     
     /// Lädt Unterkünfte für ein einzelnes Skigebiet
@@ -425,7 +426,7 @@ class AccommodationDatabase: ObservableObject {
                 loadingStatus = .idle
                 statistics.currentResort = ""
             }
-            print("🛑 Loading cancelled by user")
+            print("Loading cancelled by user")
             return
         }
         
@@ -438,7 +439,7 @@ class AccommodationDatabase: ObservableObject {
             saveToDisk()
         }
         
-        print("✅ AccommodationDatabase: Completed loading accommodations for \(resort.name)")
+        print("[OK] AccommodationDatabase: Completed loading accommodations for \(resort.name)")
     }
     
     /// Lädt Unterkünfte für eine Liste von ausgewählten Skigebieten
@@ -456,7 +457,7 @@ class AccommodationDatabase: ObservableObject {
                     loadingStatus = .idle
                     statistics.currentResort = ""
                 }
-                print("🛑 Loading cancelled by user at resort \(resort.name)")
+                print("Loading cancelled by user at resort \(resort.name)")
                 return
             }
             
@@ -477,7 +478,7 @@ class AccommodationDatabase: ObservableObject {
                     loadingStatus = .idle
                     statistics.currentResort = ""
                 }
-                print("🛑 Loading cancelled by user after \(resort.name)")
+                print("Loading cancelled by user after \(resort.name)")
                 return
             }
         }
@@ -489,7 +490,7 @@ class AccommodationDatabase: ObservableObject {
             saveToDisk()
         }
         
-        print("✅ AccommodationDatabase: Completed loading accommodations for \(resorts.count) selected resorts")
+        print("[OK] AccommodationDatabase: Completed loading accommodations for \(resorts.count) selected resorts")
     }
     
     /// Lädt Unterkünfte für ein bestimmtes Skigebiet
@@ -502,21 +503,21 @@ class AccommodationDatabase: ObservableObject {
             let hasRecentData = !needsUpdate(for: resort)
             let lastUpdate = lastUpdateDates[resortKey]
             
-            print("🔍 Checking \(resort.name): \(existingAccommodations.count) existing, hasRecentData: \(hasRecentData), lastUpdate: \(lastUpdate?.description ?? "nil")")
+            print("Checking \(resort.name): \(existingAccommodations.count) existing, hasRecentData: \(hasRecentData), lastUpdate: \(lastUpdate?.description ?? "nil")")
             
             if !existingAccommodations.isEmpty && hasRecentData {
-                print("✅ Using existing accommodations for \(resort.name) (\(existingAccommodations.count) items)")
+                print("[OK] Using existing accommodations for \(resort.name) (\(existingAccommodations.count) items)")
                 return
             } else if !existingAccommodations.isEmpty {
-                print("🔄 Data exists but outdated for \(resort.name), reloading...")
+                print("Data exists but outdated for \(resort.name), reloading...")
             } else {
                 print("🆕 No existing data for \(resort.name), loading for first time...")
             }
         } else {
-            print("🔄 Force update requested for \(resort.name)")
+            print("Force update requested for \(resort.name)")
         }
         
-        print("🏨 Loading accommodations for \(resort.name)...")
+        print("Loading accommodations for \(resort.name)...")
         
         do {
             var cachedAccommodations: [CachedAccommodation] = []
@@ -529,24 +530,24 @@ class AccommodationDatabase: ObservableObject {
                 if !accommodationExists(testHotelPlaceId, in: existingAccommodations) {
                     let testHotel = createTestHotel(for: resort)
                     cachedAccommodations.append(testHotel)
-                    print("🧪 Added test hotel for Test Skigebiet")
+                    print("Added test hotel for Test Skigebiet")
                     
                     // Progress callback für Test-Unterkünfte
                     await MainActor.run {
                         progressCallback?(cachedAccommodations)
                     }
                 } else {
-                    print("⏭️ Test hotel already exists for Test Skigebiet")
+                    print("Test hotel already exists for Test Skigebiet")
                 }
             } else {
                 // Lade Unterkünfte von OpenStreetMap für echte Skigebiete
                 let searchRadius = SearchSettings.shared.searchRadiusInMeters
-                print("🌍 Searching OpenStreetMap around \(resort.name) at coordinate \(resort.coordinate.latitude), \(resort.coordinate.longitude) with \(SearchSettings.shared.searchRadius)km radius...")
+                print("Searching OpenStreetMap around \(resort.name) at coordinate \(resort.coordinate.latitude), \(resort.coordinate.longitude) with \(SearchSettings.shared.searchRadius)km radius...")
                 let osmAccommodations = try await overpassService.searchAccommodations(
                     around: resort.coordinate,
                     radius: searchRadius
                 )
-                print("🏨 OpenStreetMap returned \(osmAccommodations.count) accommodations for \(resort.name)")
+                print("OpenStreetMap returned \(osmAccommodations.count) accommodations for \(resort.name)")
             
                 // Hole bereits existierende Unterkünfte für dieses Resort (auch von Disk)
                 await ensureAccommodationsLoaded(for: resort.id.uuidString)
@@ -565,10 +566,10 @@ class AccommodationDatabase: ObservableObject {
                     
                     // WICHTIG: Prüfe zuerst ob diese PlaceID bereits existiert
                     if accommodationExists(osmPlace.id, in: existingAccommodations) {
-                        print("⏭️ Skipping existing accommodation: \(osmPlace.name) (ID: \(osmPlace.id)) - already in database")
+                        print("Skipping existing accommodation: \(osmPlace.name) (ID: \(osmPlace.id)) - already in database")
                         continue
                     } else {
-                        print("✅ Adding new accommodation: \(osmPlace.name) (ID: \(osmPlace.id))")
+                        print("[OK] Adding new accommodation: \(osmPlace.name) (ID: \(osmPlace.id))")
                     }
                     
                     // Konvertiere OverpassAccommodation zu CachedAccommodation
@@ -585,7 +586,7 @@ class AccommodationDatabase: ObservableObject {
                     )
                     
                     cachedAccommodations.append(cached)
-                    print("✅ Added new accommodation from OSM: \(osmPlace.name) (ID: \(osmPlace.id))")
+                    print("[OK] Added new accommodation from OSM: \(osmPlace.name) (ID: \(osmPlace.id))")
                     
                     // UI Update: Aktualisiere Statistiken live
                     let currentCount = cachedAccommodations.count
@@ -604,24 +605,24 @@ class AccommodationDatabase: ObservableObject {
                 let skippedCount = osmPlacesCount - newAccommodationsCount
                 
                 if skippedCount > 0 {
-                    print("📊 \(resort.name): Found \(osmPlacesCount) OSM places, added \(newAccommodationsCount) new, skipped \(skippedCount) existing")
+                    print("\(resort.name): Found \(osmPlacesCount) OSM places, added \(newAccommodationsCount) new, skipped \(skippedCount) existing")
                 } else {
-                    print("📊 \(resort.name): Added \(newAccommodationsCount) new accommodations from OpenStreetMap")
+                    print("\(resort.name): Added \(newAccommodationsCount) new accommodations from OpenStreetMap")
                 }
             }
             
             // Update auf dem Main Thread mit lokalen Kopien
-            await self.updateAccommodationsOnMainThread(
+            self.updateAccommodationsOnMainThread(
                 resort: resort,
                 newAccommodations: cachedAccommodations
             )
             
             // Email scraping is now on-demand only - no automatic background scraping
             
-            print("✅ Loaded \(cachedAccommodations.count) accommodations for \(resort.name)")
+            print("[OK] Loaded \(cachedAccommodations.count) accommodations for \(resort.name)")
             
         } catch {
-            print("❌ Failed to load accommodations for \(resort.name): \(error)")
+            print("[ERROR] Failed to load accommodations for \(resort.name): \(error)")
         }
     }
     
@@ -649,9 +650,9 @@ class AccommodationDatabase: ObservableObject {
         let existingCount = existingAccommodations.count
         
         if existingCount == 0 {
-            print("📊 First load for \(resort.name): \(totalCount) accommodations")
+            print("First load for \(resort.name): \(totalCount) accommodations")
         } else {
-            print("🔄 Updated \(resort.name): \(newCount) new, \(totalCount) total (was \(existingCount))")
+            print("Updated \(resort.name): \(newCount) new, \(totalCount) total (was \(existingCount))")
         }
     }
     
@@ -664,35 +665,17 @@ class AccommodationDatabase: ObservableObject {
     
     /// Startet die Hintergrundaktualisierung
     private func startBackgroundUpdates() {
-        // DEAKTIVIERT: Keine automatische Ladung beim App-Start
-        // Die Ladung erfolgt nur wenn der User ein Skigebiet auswählt
+        // KOMPLETT DEAKTIVIERT: Keine automatischen Updates mehr!
+        // Hotels werden nur geladen wenn der User ein Skigebiet explizit auswählt
         
-        // Periodische Updates (nur für bereits geladene Daten)
-        Timer.scheduledTimer(withTimeInterval: 6 * 60 * 60, repeats: true) { _ in // Alle 6 Stunden prüfen
-            self.checkForUpdates()
-        }
+        print("Background updates DISABLED - Lazy loading only!")
+        
+        // KEIN Timer mehr - verhindert DDoS-ähnliches Verhalten
+        // Timer.scheduledTimer... --> ENTFERNT
     }
     
-    /// Prüft ob Updates benötigt werden
-    private func checkForUpdates() {
-        Task {
-            let resortsNeedingUpdate = SkiResortDatabase.shared.allSkiResorts.filter { needsUpdate(for: $0) }
-            
-            if !resortsNeedingUpdate.isEmpty {
-                print("🔄 Updating \(resortsNeedingUpdate.count) resorts with outdated accommodation data")
-                
-                for resort in resortsNeedingUpdate {
-                    await loadAccommodationsForResort(resort)
-                    try? await Task.sleep(nanoseconds: 2_000_000_000) // 2 Sekunden Pause
-                }
-                
-                await MainActor.run {
-                    calculateStatistics()
-                    saveToDisk()
-                }
-            }
-        }
-    }
+    /// ENTFERNT: checkForUpdates() - keine automatischen Updates mehr
+    // private func checkForUpdates() { ... } --> DEAKTIVIERT
     
     /// Berechnet Statistiken
     private func calculateStatistics() {
@@ -734,9 +717,9 @@ class AccommodationDatabase: ObservableObject {
             let updateData = try JSONEncoder().encode(lastUpdateDates)
             userDefaults.set(updateData, forKey: lastUpdateKey)
             
-            print("💾 Saved \(accommodations.values.flatMap { $0 }.count) accommodations to disk")
+            print("Saved \(accommodations.values.flatMap { $0 }.count) accommodations to disk")
         } catch {
-            print("❌ Failed to save accommodations to disk: \(error)")
+            print("[ERROR] Failed to save accommodations to disk: \(error)")
         }
     }
     
@@ -744,17 +727,17 @@ class AccommodationDatabase: ObservableObject {
         do {
             if let data = userDefaults.data(forKey: accommodationsKey) {
                 accommodations = try JSONDecoder().decode([String: [CachedAccommodation]].self, from: data)
-                print("📥 Loaded \(accommodations.values.flatMap { $0 }.count) accommodations from disk")
+                print("Loaded \(accommodations.values.flatMap { $0 }.count) accommodations from disk")
             }
             
             if let updateData = userDefaults.data(forKey: lastUpdateKey) {
                 lastUpdateDates = try JSONDecoder().decode([String: Date].self, from: updateData)
-                print("📅 Loaded last update dates from disk")
+                print("Loaded last update dates from disk")
             }
             
             calculateStatistics()
         } catch {
-            print("❌ Failed to load accommodations from disk: \(error)")
+            print("[ERROR] Failed to load accommodations from disk: \(error)")
             accommodations = [:]
             lastUpdateDates = [:]
         }
@@ -763,7 +746,7 @@ class AccommodationDatabase: ObservableObject {
     /// Consolidates duplicate accommodations that might exist under different resort UUIDs
     /// This addresses the issue where resorts had unstable UUIDs in earlier versions
     func consolidateDuplicateResorts() {
-        print("🔄 Starting resort consolidation to fix UUID-based duplicates...")
+        print("Starting resort consolidation to fix UUID-based duplicates...")
         
         // Group accommodations by placeId to identify true duplicates
         var placeIdGroups: [String: [String]] = [:] // placeId -> [uuidStrings where this placeId exists]
@@ -787,7 +770,7 @@ class AccommodationDatabase: ObservableObject {
         // For each accommodation that appears under multiple resort UUIDs, keep only the most recent
         for (placeId, uuidStrings) in placeIdGroups {
             if uuidStrings.count > 1 {
-                print("🔍 Found accommodation \(placeId) in \(uuidStrings.count) different resort UUID entries")
+                print("Found accommodation \(placeId) in \(uuidStrings.count) different resort UUID entries")
                 
                 // Find the accommodation with the most recent lastUpdated date
                 var mostRecentUUID: String?
@@ -823,7 +806,7 @@ class AccommodationDatabase: ObservableObject {
                     // Remove the entire UUID entry if no accommodations left
                     accommodations.removeValue(forKey: uuidString)
                     lastUpdateDates.removeValue(forKey: uuidString)
-                    print("🗑️ Removed empty resort UUID entry: \(uuidString)")
+                    print("Removed empty resort UUID entry: \(uuidString)")
                 } else {
                     // Update the list with remaining accommodations
                     accommodations[uuidString] = accommodationList
@@ -834,9 +817,9 @@ class AccommodationDatabase: ObservableObject {
         if hasChanges {
             calculateStatistics()
             saveToDisk()
-            print("✅ Resort consolidation completed and saved")
+            print("[OK] Resort consolidation completed and saved")
         } else {
-            print("✅ No resort consolidation needed")
+            print("[OK] No resort consolidation needed")
         }
     }
     
@@ -903,7 +886,7 @@ struct CachedAccommodation: Identifiable, Codable {
     let formattedAddress: String?
     let types: [String]?
     
-    init(from realAccommodation: RealAccommodation, placeId: String, details: GooglePlaceDetails?, photoUrls: [String]? = nil, lastUpdated: Date) {
+    init(from realAccommodation: RealAccommodation, placeId: String, photoUrls: [String]? = nil, lastUpdated: Date) {
         self.id = UUID()
         self.placeId = placeId
         self.name = realAccommodation.name
@@ -912,29 +895,24 @@ struct CachedAccommodation: Identifiable, Codable {
         self.hasPool = realAccommodation.hasPool
         self.hasJacuzzi = realAccommodation.hasJacuzzi
         self.hasSpa = realAccommodation.hasSpa
-        self.hasSauna = false // RealAccommodation hat kein hasSauna
+        self.hasSauna = false
         self.pricePerNight = realAccommodation.pricePerNight
         self.rating = realAccommodation.accommodationRating
-        // Verwende photoUrls wenn verfügbar, sonst realAccommodation.imageURLs
         let finalImageUrls = photoUrls ?? realAccommodation.imageURLs
         self.imageUrl = finalImageUrls.first ?? ""
-        self.imageUrls = finalImageUrls // Echte Bilder von Google Places oder Standard-Bilder
+        self.imageUrls = finalImageUrls
         self.resortId = realAccommodation.resort.id
         self.isRealData = true
         self.lastUpdated = lastUpdated
-        
-        // Kontaktdaten von Google Places Details
-        self.email = nil // Google Places hat keine E-Mails
-        self.scrapedEmail = nil // Wird später beim Scraping gesetzt
-        self.phone = details?.formattedPhoneNumber
-        self.website = details?.website
-        
-        // Zusätzliche Google Places Daten
+        self.email = nil
+        self.scrapedEmail = nil
+        self.phone = nil
+        self.website = nil
         self.vicinity = realAccommodation.address
         self.priceLevel = nil
-        self.userRatingsTotal = details?.userRatingsTotal
+        self.userRatingsTotal = nil
         self.businessStatus = nil
-        self.formattedAddress = details?.formattedAddress
+        self.formattedAddress = nil
         self.types = nil
     }
     
@@ -1151,8 +1129,3 @@ struct AccommodationStatistics: Codable {
 
 // MARK: - Extensions
 
-extension PlaceLocation {
-    func toCLLocationCoordinate2D() -> CLLocationCoordinate2D {
-        return CLLocationCoordinate2D(latitude: lat, longitude: lng)
-    }
-}

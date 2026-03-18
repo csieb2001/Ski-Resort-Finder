@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 class LocalizationService: ObservableObject {
-    static let shared = LocalizationService()
-    
+    nonisolated(unsafe) static let shared = LocalizationService()
+
     @Published var currentLanguage: SupportedLanguage = .system {
         didSet {
             updateLanguage()
@@ -185,7 +185,7 @@ extension String {
 // MARK: - SwiftUI Environment
 
 struct LocalizationKey: EnvironmentKey {
-    static let defaultValue = LocalizationService.shared
+    nonisolated(unsafe) static let defaultValue = LocalizationService.shared
 }
 
 extension EnvironmentValues {

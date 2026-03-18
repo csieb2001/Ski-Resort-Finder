@@ -21,7 +21,7 @@ enum EmailQuality: Int, CaseIterable {
 }
 
 // MARK: - Email Result
-class EmailResult {
+final class EmailResult: @unchecked Sendable {
     let email: String
     let quality: EmailQuality
     let source: String
@@ -40,7 +40,7 @@ class EmailResult {
 }
 
 // MARK: - Wellness Features Result
-class WellnessScrapingResult {
+final class WellnessScrapingResult: @unchecked Sendable {
     let hasPool: Bool
     let hasJacuzzi: Bool
     let hasSpa: Bool
@@ -106,7 +106,7 @@ struct EmailProcessingStatistics {
 }
 
 // MARK: - Advanced Email Service
-class AdvancedEmailService: ObservableObject {
+class AdvancedEmailService: ObservableObject, @unchecked Sendable {
     static let shared = AdvancedEmailService()
     
     @Published var processingStatus: EmailProcessingStatus = .idle
@@ -197,12 +197,12 @@ class AdvancedEmailService: ObservableObject {
     private init() {}
     
     /// Find the best email for an accommodation using multiple strategies
-    func findBestEmail(for accommodation: Accommodation, completion: @escaping (EmailResult?) -> Void) {
+    func findBestEmail(for accommodation: Accommodation, completion: @escaping @Sendable (EmailResult?) -> Void) {
         let cacheKey = accommodation.name as NSString
         
         // Check cache first
         if let cached = emailCache.object(forKey: cacheKey) {
-            print("📧 Using cached email for \(accommodation.name): \(cached.email) (\(cached.quality.description))")
+            print("Using cached email for \(accommodation.name): \(cached.email) (\(cached.quality.description))")
             completion(cached)
             return
         }
@@ -235,7 +235,7 @@ class AdvancedEmailService: ObservableObject {
                 confidence: quality == .verified ? 1.0 : 0.0
             )
             candidates.append(result)
-            print("📧 OSM Email found: \(osmEmail) (quality: \(quality.description))")
+            print("OSM Email found: \(osmEmail) (quality: \(quality.description))")
         }
         
         // Strategy 2: Scrape website for emails
@@ -249,7 +249,7 @@ class AdvancedEmailService: ObservableObject {
                     confidence: 0.9
                 )
                 candidates.append(result)
-                print("📧 Scraped email from website: \(email)")
+                print("Scraped email from website: \(email)")
             }
         }
         
@@ -264,7 +264,7 @@ class AdvancedEmailService: ObservableObject {
                     confidence: 0.7
                 )
                 candidates.append(result)
-                print("📧 Inferred email from domain: \(email)")
+                print("Inferred email from domain: \(email)")
             }
         }
         
@@ -277,11 +277,11 @@ class AdvancedEmailService: ObservableObject {
             confidence: 0.5
         )
         candidates.append(fallbackResult)
-        print("📧 Generated fallback email: \(fallbackEmail)")
+        print("Generated fallback email: \(fallbackEmail)")
         
         // Return the best candidate
         let bestEmail = selectBestEmail(from: candidates)
-        print("✅ Best email for \(accommodation.name): \(bestEmail?.email ?? "none") (quality: \(bestEmail?.quality.description ?? "none"), confidence: \(String(format: "%.1f", bestEmail?.confidence ?? 0.0 * 100))%)")
+        print("[OK] Best email for \(accommodation.name): \(bestEmail?.email ?? "none") (quality: \(bestEmail?.quality.description ?? "none"), confidence: \(String(format: "%.1f", bestEmail?.confidence ?? 0.0 * 100))%)")
         
         return bestEmail
     }
@@ -289,12 +289,12 @@ class AdvancedEmailService: ObservableObject {
     // MARK: - Wellness Feature Scraping
     
     /// Scrape wellness features from accommodation website
-    func scrapeWellnessFeatures(for accommodation: Accommodation, completion: @escaping (WellnessScrapingResult?) -> Void) {
+    func scrapeWellnessFeatures(for accommodation: Accommodation, completion: @escaping @Sendable (WellnessScrapingResult?) -> Void) {
         let cacheKey = accommodation.name as NSString
         
         // Check cache first
         if let cached = wellnessCache.object(forKey: cacheKey) {
-            print("🏊‍♀️ Using cached wellness features for \(accommodation.name): \(cached.wellnessFeatureCount) features found")
+            print("Using cached wellness features for \(accommodation.name): \(cached.wellnessFeatureCount) features found")
             completion(cached)
             return
         }
@@ -322,7 +322,7 @@ class AdvancedEmailService: ObservableObject {
         }
         
         do {
-            print("🏊‍♀️ Scraping wellness features from: \(url.absoluteString)")
+            print("Scraping wellness features from: \(url.absoluteString)")
             let (data, _) = try await session.data(from: url)
             
             guard let html = String(data: data, encoding: .utf8) else {
@@ -335,12 +335,12 @@ class AdvancedEmailService: ObservableObject {
             // Detect wellness features from website content
             let result = detectWellnessFeaturesFromText(cleanText, source: "Website Scraping", accommodation: accommodation)
             
-            print("🏊‍♀️ Wellness features detected for \(accommodation.name): Pool=\(result.hasPool), Jacuzzi=\(result.hasJacuzzi), Spa=\(result.hasSpa), Sauna=\(result.hasSauna)")
+            print("Wellness features detected for \(accommodation.name): Pool=\(result.hasPool), Jacuzzi=\(result.hasJacuzzi), Spa=\(result.hasSpa), Sauna=\(result.hasSauna)")
             
             return result
             
         } catch {
-            print("❌ Failed to scrape wellness features from \(website): \(error)")
+            print("[ERROR] Failed to scrape wellness features from \(website): \(error)")
             return detectWellnessFeaturesFromName(accommodation)
         }
     }
@@ -394,7 +394,7 @@ class AdvancedEmailService: ObservableObject {
     /// Fallback detection from accommodation name only
     private func detectWellnessFeaturesFromName(_ accommodation: Accommodation) -> WellnessScrapingResult {
         let result = detectWellnessFeaturesFromText(accommodation.name, source: "Name Detection", accommodation: accommodation)
-        print("🏊‍♀️ Fallback name-based detection for \(accommodation.name): \(result.wellnessFeatureCount) features")
+        print("Fallback name-based detection for \(accommodation.name): \(result.wellnessFeatureCount) features")
         return result
     }
     
@@ -427,7 +427,7 @@ class AdvancedEmailService: ObservableObject {
         guard let url = sanitizeURL(urlString) else { return [] }
         
         do {
-            print("🌐 Scraping emails from: \(url.absoluteString)")
+            print("Scraping emails from: \(url.absoluteString)")
             let (data, _) = try await session.data(from: url)
             
             guard let html = String(data: data, encoding: .utf8) else { return [] }
@@ -436,7 +436,7 @@ class AdvancedEmailService: ObservableObject {
             let rankedEmails = EmailValidator.validateAndRankEmails(emails)
             let validEmails = rankedEmails.map { $0.email }
             
-            print("📧 Found \(validEmails.count) valid emails in website content (from \(emails.count) candidates)")
+            print("Found \(validEmails.count) valid emails in website content (from \(emails.count) candidates)")
             for (index, rankedEmail) in rankedEmails.prefix(3).enumerated() {
                 print("   \(index + 1). \(rankedEmail.email) (quality: \(rankedEmail.validation.qualityDescription), confidence: \(String(format: "%.1f", rankedEmail.validation.confidence * 100))%)")
             }
@@ -444,7 +444,7 @@ class AdvancedEmailService: ObservableObject {
             return validEmails
             
         } catch {
-            print("❌ Failed to scrape website \(urlString): \(error)")
+            print("[ERROR] Failed to scrape website \(urlString): \(error)")
             return []
         }
     }
@@ -626,7 +626,7 @@ class AdvancedEmailService: ObservableObject {
         var wellnessResults: [String: WellnessScrapingResult] = [:]
         var processedCount = 0
         
-        print("📧🏊‍♀️ Starting email and wellness feature processing for \(accommodations.count) accommodations")
+        print("Starting email and wellness feature processing for \(accommodations.count) accommodations")
         
         // Process accommodations sequentially to avoid overwhelming servers
         Task {
@@ -687,10 +687,10 @@ class AdvancedEmailService: ObservableObject {
             
             await MainActor.run {
                 processingStatus = .completed
-                print("✅ Email and wellness processing completed.")
-                print("   📧 Found \(emailResults.count) emails out of \(accommodations.count) accommodations")
-                print("   🏊‍♀️ Found wellness features in \(statistics.foundWellnessFeatures) accommodations (\(String(format: "%.1f", statistics.wellnessDetectionRate * 100))%)")
-                print("   📊 Wellness breakdown: Pools=\(statistics.foundPools), Jacuzzis=\(statistics.foundJacuzzis), Spas=\(statistics.foundSpas), Saunas=\(statistics.foundSaunas)")
+                print("[OK] Email and wellness processing completed.")
+                print("   Found \(emailResults.count) emails out of \(accommodations.count) accommodations")
+                print("   Found wellness features in \(statistics.foundWellnessFeatures) accommodations (\(String(format: "%.1f", statistics.wellnessDetectionRate * 100))%)")
+                print("   Wellness breakdown: Pools=\(statistics.foundPools), Jacuzzis=\(statistics.foundJacuzzis), Spas=\(statistics.foundSpas), Saunas=\(statistics.foundSaunas)")
                 completion(emailResults, wellnessResults)
             }
         }
@@ -701,14 +701,14 @@ class AdvancedEmailService: ObservableObject {
     func stopProcessing() {
         processingStatus = .idle
         statistics = EmailProcessingStatistics()
-        print("⏹️ Email processing stopped by user")
+        print("Email processing stopped by user")
     }
 }
 
 // MARK: - Extension for Backward Compatibility
 extension AdvancedEmailService {
     /// Simple interface for backward compatibility
-    func findEmail(for accommodation: Accommodation, completion: @escaping (String?) -> Void) {
+    func findEmail(for accommodation: Accommodation, completion: @escaping @Sendable (String?) -> Void) {
         findBestEmail(for: accommodation) { result in
             completion(result?.email)
         }

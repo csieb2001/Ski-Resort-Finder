@@ -8,6 +8,8 @@
 "to" = "Al";
 "search_accommodations" = "Cerca Alloggi";
 "search_again" = "Cerca di Nuovo";
+"loading_snow_data" = "Caricamento dati neve...";
+"searching_emails_spa" = "Ricerca email e spa...";
 "selected_resort" = "Stazione Sciistica Selezionata";
 
 /* Selezione Stazione */
@@ -278,3 +280,55 @@
 "data_sources" = "Fonti di Dati";
 "debug_system_info" = "Informazioni di Debug e Sistema";
 "about_app" = "Informazioni sull'App";
+"top3_hotel_rating_info" = "Per valutazioni precise, seleziona la stazione sciistica e carica i dati degli hotel";
+
+/* Privacy and Advertising */
+"privacy_settings" = "Impostazioni Privacy";
+"privacy_protection" = "Protezione della Privacy";
+"privacy_description" = "La tua privacy è importante per noi";
+"privacy_detailed_info" = "Utilizziamo i tuoi dati solo per la funzionalità dell'app e mostriamo pubblicità pertinenti. Hai il controllo delle tue impostazioni privacy in ogni momento.";
+"ad_preferences" = "Preferenze Pubblicitarie";
+"personalized_ads" = "Annunci Personalizzati";
+"personalized_ads_description" = "Pubblicità basata sui tuoi interessi e attività";
+"manage_ad_preferences" = "Gestisci Preferenze Pubblicitarie";
+"consent_given" = "Dato";
+"consent_required" = "Richiesto";
+"consent_not_required" = "Non Richiesto";
+"consent_unknown" = "Sconosciuto";
+"data_usage" = "Utilizzo Dati";
+"location_data" = "Dati di Posizione";  
+"location_data_description" = "Per la ricerca di stazioni sciistiche e alloggi nelle vicinanze";
+"contact_data" = "Dati di Contatto";
+"contact_data_description" = "Per richieste di prenotazione agli hotel";
+"usage_analytics" = "Analisi di Utilizzo";
+"usage_analytics_description" = "Per migliorare l'esperienza dell'app";
+"advertising_data" = "Dati Pubblicitari";
+"advertising_data_description" = "Per annunci pertinenti";
+"in_use" = "In Uso";
+"legal" = "Legale";
+"privacy_policy" = "Politica sulla Privacy";
+"google_privacy_policy" = "Politica sulla Privacy di Google";
+"privacy_policy_content" = "Questa app raccoglie e utilizza dati secondo la nostra politica sulla privacy. Rispettiamo la tua privacy e ti diamo il controllo sui tuoi dati.";
+
+"no_spa_info" = "Nessuna info spa";
+"contact_available" = "Contatto disponibile";
+"details_tap" = "Vedi dettagli";
+"top3_avg_elevation" = "Alt. Media";
+
+/* Welcome Wizard / Onboarding */
+"welcome_title" = "Ski Resort Finder";
+"welcome_subtitle" = "Trova la tua stazione sciistica perfetta";
+"welcome_resorts_title" = "100+ comprensori nel mondo";
+"welcome_resorts_desc" = "Dati reali da oltre 15 paesi, nessun dato fittizio";
+"welcome_snow_title" = "Neve & Meteo";
+"welcome_snow_desc" = "10 anni di statistiche neve, previsioni meteo a 7 giorni";
+"welcome_hotels_title" = "Alloggi con filtro Spa";
+"welcome_hotels_desc" = "Hotel, pensioni e chalet ai piedi degli impianti. Filtri piscina, jacuzzi, spa e sauna.";
+"welcome_start_title" = "Si parte!";
+"welcome_start_desc" = "Scegli il tuo primo comprensorio sciistico";
+"welcome_start_button" = "Inizia";
+"show_all_rankings" = "Mostra classifica completa";
+"ranking_title" = "Classifica";
+"location_and_lifts" = "Posizione & Impianti";
+"lifts_nearby" = "impianti nelle vicinanze";
+"ors_rating_explanation" = "ORS: Valutazione oggettiva basata su distanza impianti, benessere, comprensorio, neve e altitudine";

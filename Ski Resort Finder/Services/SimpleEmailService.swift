@@ -2,26 +2,26 @@ import Foundation
 
 /// Vereinfachter Email Service für Hotel-Kontaktdaten
 class SimpleEmailService: ObservableObject {
-    static let shared = SimpleEmailService()
+    nonisolated(unsafe) static let shared = SimpleEmailService()
     
     private init() {}
     
     /// Einfache Email-Suche für Unterkünfte
     func findEmail(for accommodation: Accommodation, completion: @escaping (String?) -> Void) {
-        print("🔍 Finding email for: \(accommodation.name)")
+        print("Finding email for: \(accommodation.name)")
         
         // 1. Existierende Email verwenden falls vorhanden
         if let existingEmail = accommodation.email, 
            !existingEmail.isEmpty,
            isValidEmail(existingEmail) {
-            print("✅ Using existing email: \(existingEmail)")
+               print("[OK] Using existing email: \(existingEmail)")
             completion(existingEmail)
             return
         }
         
         // 2. Fallback Email generieren
         let generatedEmail = generateFallbackEmail(for: accommodation)
-        print("📧 Generated fallback email: \(generatedEmail)")
+        print("Generated fallback email: \(generatedEmail)")
         completion(generatedEmail)
     }
     

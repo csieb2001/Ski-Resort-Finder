@@ -1,0 +1,24 @@
+{
+  "source": "/Users/christophersiebert/Documents/Ski resort Finder/Ski Resort Finder/Ski Resort Finder/Views/AccommodationListView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld %@",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 66
+        }
+      },
+      {
+        "comment": "",
+        "key": "%lld/%lld",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 250
+        }
+      }
+    ]
+  },
+  "version": 1
+}

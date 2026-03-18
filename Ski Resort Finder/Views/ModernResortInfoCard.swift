@@ -144,16 +144,23 @@ struct ModernResortInfoCard: View {
     
     private func loadHistoricalSnowData() {
         Task {
+            // Zuerst Cache prüfen (sofort, kein API-Call)
+            if let cachedData = await SnowDataCache.shared.getHistoricalSnowData(for: resort.coordinate) {
+                await MainActor.run {
+                    self.historicalSnowData = cachedData
+                }
+                return
+            }
+
+            // Kein Cache - lade von API
             do {
                 let snowData = try await weatherService.fetchHistoricalSnowData(for: resort.coordinate)
                 await MainActor.run {
                     self.historicalSnowData = snowData
                 }
-                
-                // Preload snow data für hotel ratings
-                SnowDataCache.shared.preloadSnowData(for: resort.coordinate)
             } catch {
                 print("Error loading historical snow data: \(error)")
+                // Kein Fehler an UI propagieren - Sheet zeigt dann den Error-State
             }
         }
     }
